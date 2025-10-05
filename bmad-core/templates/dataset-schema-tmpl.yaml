@@ -1,0 +1,20 @@
+[[LLM: This template defines entity schema for dataset generation. Create one per entity.]]
+
+entity: {{entity_name}}
+description: {{entity_description}}
+
+attributes:
+  - name: {{field_name}}
+    type: {{field_type}}
+    required: {{is_required}}
+    unique: {{is_unique}}
+    constraints: {{field_constraints}}
+    distribution: {{value_distribution}}
+
+relationships:
+  - to: {{related_entity}}
+    type: {{relationship_type}}
+    foreign_key: {{fk_field}}
+    cascade: {{cascade_rule}}
+
+validations: {{validation_rules}}

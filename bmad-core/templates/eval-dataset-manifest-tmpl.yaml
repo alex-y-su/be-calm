@@ -1,0 +1,24 @@
+[[LLM: This template defines the master manifest for all evaluation datasets.]]
+
+eval_dataset_manifest:
+  version: 1.0.0
+  generated_at: {{generation_timestamp}}
+  domain: {{domain_type}}
+
+  summary:
+    total_entities: {{entity_count}}
+    total_records: {{total_record_count}}
+    total_size_mb: {{total_size}}
+
+  datasets:
+    unit: {{unit_dataset_info}}
+    integration: {{integration_dataset_info}}
+    performance: {{performance_dataset_info}}
+    edge_cases: {{edge_case_info}}
+
+  entities: {{entity_inventory}}
+
+  qa_handoff:
+    test_assertions: eval/validation/test-assertions.yaml
+    expected_results: eval/validation/expected-results.yaml
+    usage_guide: eval/README.md

@@ -1,0 +1,19 @@
+[[LLM: This template defines configuration for evaluation dataset generation. Populate based on domain analysis results.]]
+
+domain:
+  type: {{domain_type}}
+  description: {{domain_description}}
+  confidence: {{detection_confidence}}
+
+generation_settings:
+  unit_test_records_per_entity: 50
+  integration_test_total_records: 500
+  performance_test_records_per_entity: 100000
+
+entities: {{entity_list}}
+
+relationships: {{relationship_map}}
+
+constraints: {{constraint_rules}}
+
+data_patterns: {{distribution_patterns}}

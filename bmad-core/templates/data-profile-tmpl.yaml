@@ -1,0 +1,20 @@
+[[LLM: This template defines expected data profiles and validation outcomes.]]
+
+entity: {{entity_name}}
+test_type: {{test_type}}
+
+expected_outcomes:
+  - operation: {{operation_name}}
+    input: {{input_data}}
+    expected_result: {{expected_output}}
+    expected_state: {{expected_state}}
+
+assertions:
+  - field: {{field_name}}
+    rule: {{assertion_rule}}
+    expected_value: {{expected_value}}
+
+performance_benchmarks:
+  - operation: {{operation}}
+    max_response_time_ms: {{max_time}}
+    min_throughput_per_sec: {{min_throughput}}
