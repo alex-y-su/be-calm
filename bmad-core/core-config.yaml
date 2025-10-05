@@ -21,3 +21,234 @@ devLoadAlwaysFiles:
 devDebugLog: .ai/debug-log.md
 devStoryLocation: docs/stories
 slashPrefix: BMad
+
+# Truth Infrastructure (v5.0)
+truth:
+  # Domain Truth (Greenfield & Brownfield)
+  domainTruthFile: docs/domain-truth.yaml
+  domainTruthVersion: v5
+
+  # Brownfield-specific truth files
+  existingSystemTruthFile: docs/existing-system-truth.yaml
+  enhancementTruthFile: docs/enhancement-truth.yaml
+
+  # Terminology and consistency
+  terminologyMapFile: docs/terminology-map.yaml
+  consistencyReportLocation: docs/validation
+
+  # Mode detection
+  brownfieldMode: auto  # auto | greenfield | brownfield
+  brownfieldIndicators:
+    - existing-system-truth.yaml
+    - enhancement-truth.yaml
+
+# Validation Infrastructure (v5.0)
+validation:
+  # Validation outputs
+  validationLocation: docs/validation
+  traceabilityMatrixFile: docs/validation/traceability-matrix.yaml
+
+  # Validation settings
+  enforceSemanticValidation: true
+  enforceEmpiricalValidation: true
+  enforceConsistencyValidation: true
+  enforceCompletenessValidation: true
+
+  # Validation thresholds
+  semanticValidationThreshold: 90  # Minimum percentage to pass
+  empiricalValidationThreshold: 90
+  consistencyValidationThreshold: 95
+  completenessValidationThreshold: 100  # Must be 100% for traceability
+
+  # Continuous validation
+  watchMode: false  # Enable file watching for auto-validation
+  validateOnCommit: false  # Enable pre-commit validation hook
+
+  # Coverage requirements
+  requireDomainFactCoverage: true  # All domain facts must have tests
+  domainFactCoverageThreshold: 100
+
+# Eval/Test Infrastructure (v5.0)
+eval:
+  # Test datasets
+  testDatasetsLocation: test-datasets
+  testDatasetSubdirs:
+    domain: test-datasets/domain
+    functional: test-datasets/functional
+    integration: test-datasets/integration
+    regression: test-datasets/regression  # Brownfield
+    compatibility: test-datasets/compatibility  # Brownfield
+    migration: test-datasets/migration  # Brownfield
+
+  # Eval criteria
+  evalCriteriaFile: docs/eval-criteria.yaml
+  evalCriteriaVersion: v5
+
+  # Test execution
+  autoRunTests: false  # Run tests on file save
+  testReportLocation: docs/validation/test-reports
+
+# Templates (v5.0)
+templates:
+  templatesLocation: bmad-core/templates
+
+  # Truth templates
+  domainTruthTemplate: bmad-core/templates/domain-truth-tmpl.yaml
+  existingSystemTruthTemplate: bmad-core/templates/existing-system-truth-tmpl.yaml
+  enhancementTruthTemplate: bmad-core/templates/enhancement-truth-tmpl.yaml
+
+  # Validation templates
+  validationChainProofTemplate: bmad-core/templates/validation-chain-proof-tmpl.md
+  traceabilityMatrixTemplate: bmad-core/templates/traceability-matrix-tmpl.yaml
+  consistencyReportTemplate: bmad-core/templates/consistency-report-tmpl.md
+  terminologyMapTemplate: bmad-core/templates/terminology-map-tmpl.yaml
+  compatibilityValidationTemplate: bmad-core/templates/compatibility-validation-tmpl.md
+
+# Migration Infrastructure (v5.0) - Brownfield
+migration:
+  migrationStrategiesLocation: docs/migration-strategies
+  compatibilityLayerLocation: docs/compatibility-layers
+  phasedRolloutPlansLocation: docs/rollout-plans
+
+  # Backward compatibility
+  backwardCompatibilityPeriodDefault: 90  # Days
+  requireMigrationForBreakingChanges: true
+
+# Agent Behavior (v5.0)
+agents:
+  # Oracle agent settings
+  oracle:
+    alwaysValidateAgainstTruth: true
+    blockInconsistentChanges: true
+    autoGenerateTerminologyMap: true
+
+  # Validator agent settings
+  validator:
+    backgroundValidation: false  # Continuous validation mode
+    validationFrequency: on_demand  # on_demand | on_save | on_commit | continuous
+
+  # Eval agent settings
+  eval:
+    enforceTestCreationBeforeCode: true  # Tests must exist before code
+    require100DomainCoverage: true
+
+  # Compatibility agent settings (Brownfield)
+  compatibility:
+    enabled: auto  # auto | true | false
+    runInPhaseNegativeOne: true  # Run before domain research in brownfield
+
+  # Monitor agent settings (Stage 3)
+  monitor:
+    enabled: true
+    continuousMode: true  # Run continuously in background
+
+    # Drift detection thresholds
+    thresholds:
+      domainTruthAlignment: 85  # Minimum semantic similarity score (0-100)
+      requirementsDrift: 10  # Max % of code without PRD backing
+      architectureDrift: 5  # Max % component deviation
+      testDrift: 90  # Minimum eval test coverage %
+      evalTestPassRate: 90  # Minimum eval test pass rate %
+      testCoverage: 70  # Minimum unit/integration test coverage %
+      performanceDegradation: 10  # Max % degradation from baseline
+      oracleValidationSuccess: 95  # Minimum Oracle success rate %
+
+    # Alerting configuration
+    alerts:
+      enabled: true
+      blockOnCritical: true  # Block commits on critical alerts
+      notifyOnWarning: true
+      logInfo: true
+
+    # Baseline management
+    baselines:
+      autoCreate: true  # Auto-create baselines in Phase -1 and Phase 3
+      updateOnPhaseComplete: true
+      baselinesLocation: baselines
+
+    # Metrics collection
+    metrics:
+      retentionDays: 90  # Historical metrics retention
+      metricsLocation: metrics
+      historicalTrendsFile: metrics/historical-trends.json
+
+    # Health dashboard
+    healthDashboard:
+      updateFrequency: on_commit  # continuous | on_save | on_commit | on_demand
+      dashboardFile: baselines/health-dashboard.yaml
+
+  # Reflection agent settings (Stage 3)
+  reflection:
+    enabled: true
+
+    # Triggers for analysis
+    triggers:
+      evalFailure: true  # Analyze when eval test fails
+      oracleBlock: true  # Analyze when Oracle blocks artifact
+      gateFailure: true  # Analyze when validation gate fails
+      storyComplete: true  # Analyze success patterns
+      sprintEnd: true  # Generate sprint retrospective
+      weeklyReview: true  # Generate weekly improvement report
+
+    # Analysis configuration
+    analysis:
+      autoGenerateRecommendations: true  # Auto-create improvement recommendations
+      patternDetectionThreshold: 3  # Occurrences before flagging as pattern
+      rootCauseDepth: deep  # shallow | moderate | deep
+
+    # Pattern library
+    patterns:
+      autoUpdatePatternLibrary: true
+      patternLibraryFile: reflections/pattern-library.yaml
+      trackPatternEffectiveness: true
+
+    # Outputs
+    outputs:
+      reflectionsLocation: reflections
+      failureAnalysisLocation: reflections/failures
+      improvementRecommendationsFile: reflections/improvement-recommendations.yaml
+      agentTuningSuggestionsFile: reflections/agent-tuning-suggestions.yaml
+
+    # Learning configuration
+    learning:
+      requireHumanApprovalForAgentTuning: true  # Safety: don't auto-tune agents
+      trackRecommendationImplementation: true
+      measureRecommendationEffectiveness: true
+
+    # Recommendation prioritization
+    recommendations:
+      prioritizeByROI: true  # time_saved / effort
+      maxRecommendationsPerWeek: 10  # Focus on top 10
+      autoAssignOwners: false  # Require manual assignment
+
+# Monitoring & Reflection Infrastructure (Stage 3 - v5.5)
+monitoring:
+  # Overall monitoring settings
+  enabled: true
+  continuousMode: true
+
+  # Integration points
+  integration:
+    monitorOnFileSave: true
+    monitorOnCommit: true
+    monitorOnValidationGate: true
+    reflectionOnFailure: true
+    reflectionOnSprintEnd: true
+
+  # Drift alerts
+  driftAlerts:
+    alertsFile: baselines/drift-alerts.yaml
+    autoResolveOnFix: true
+    retentionDays: 30
+
+  # Trend analysis
+  trends:
+    trackTrends: true
+    trendAnalysisFile: baselines/trend-analysis.md
+    compareToBaseline: true
+
+# Stage 3 Documentation (v5.5)
+documentation:
+  stage3:
+    monitorGuide: docs/stage-3-monitor-guide.md
+    reflectionGuide: docs/stage-3-reflection-guide.md

@@ -1,0 +1,89 @@
+{
+  "$schema": "https://bmad-method.org/schemas/test-dataset.schema.json",
+  "dataset_id": "TEST-{PROJECT}-{NUMBER}",
+  "name": "Descriptive test dataset name",
+  "description": "What this test dataset validates",
+  "type": "unit",
+  "version": "1.0.0",
+  "created_date": "2025-10-04T00:00:00Z",
+  "validates": {
+    "domain_rule_ids": ["RULE-001"],
+    "functional_requirement_ids": ["FR-001"],
+    "concept_ids": ["CONCEPT-001"]
+  },
+  "test_cases": [
+    {
+      "case_id": "CASE-001",
+      "name": "Positive test case - happy path",
+      "description": "Description of what this test case validates",
+      "input": {
+        "field1": "value1",
+        "field2": 42,
+        "field3": true
+      },
+      "expected_output": {
+        "result": "success",
+        "value": 100
+      },
+      "preconditions": [
+        "System is initialized",
+        "Required data exists"
+      ],
+      "postconditions": [
+        "Result is calculated",
+        "State is updated"
+      ],
+      "edge_cases": [],
+      "boundary_conditions": []
+    },
+    {
+      "case_id": "CASE-002",
+      "name": "Negative test case - error handling",
+      "description": "Validates error handling for invalid input",
+      "input": {
+        "field1": "invalid",
+        "field2": -1
+      },
+      "expected_error": {
+        "type": "ValidationError",
+        "message": "Field2 must be positive"
+      },
+      "preconditions": [],
+      "postconditions": []
+    },
+    {
+      "case_id": "CASE-003",
+      "name": "Edge case - boundary condition",
+      "description": "Validates behavior at boundary",
+      "input": {
+        "field1": "value",
+        "field2": 0
+      },
+      "expected_output": {
+        "result": "boundary_case_handled",
+        "value": 0
+      },
+      "preconditions": [],
+      "postconditions": [],
+      "edge_cases": ["Zero value"],
+      "boundary_conditions": ["Minimum value"]
+    }
+  ],
+  "execution": {
+    "test_framework": "Jest|Mocha|Pytest|JUnit",
+    "test_file": "path/to/test/implementation.test.js",
+    "setup_script": "path/to/setup.sh",
+    "teardown_script": "path/to/teardown.sh",
+    "timeout": 5000
+  },
+  "pass_criteria": [
+    {
+      "criterion": "All test cases pass",
+      "measurement": "Test execution results",
+      "threshold": "100%"
+    }
+  ],
+  "tags": ["unit", "critical", "component-name"],
+  "priority": "critical",
+  "automation_status": "automated"
+}

@@ -1,0 +1,337 @@
+# BMAD Collaboration Modes Configuration
+# Version: 2.0
+# Defines how agents collaborate and communicate
+
+collaboration_modes:
+  sequential:
+    description: "Agents execute one after another"
+    use_case: "Pipeline processing where each agent builds on previous output"
+    examples:
+      - "Analyst → Oracle → Eval (domain research flow)"
+      - "PM → Oracle → Validator → Eval (PRD creation)"
+      - "Architect → Oracle → Validator (architecture validation)"
+
+    implementation:
+      - "Agent A completes task"
+      - "Output becomes input for Agent B"
+      - "Agent B starts when A finishes"
+
+    benefits:
+      - "Clear data flow"
+      - "Each agent validates previous work"
+      - "Easy to debug failures"
+
+  parallel:
+    description: "Agents execute simultaneously"
+    use_case: "Independent validations that don't depend on each other"
+    examples:
+      - "Oracle + Eval + Validator (PRD validation)"
+      - "Oracle + Validator + Monitor (architecture validation)"
+      - "Multiple dev agents on different features"
+
+    implementation:
+      - "All agents start together"
+      - "Execute independently"
+      - "Orchestrator waits for all to complete"
+
+    benefits:
+      - "Faster execution"
+      - "Independent validation perspectives"
+      - "Efficient use of resources"
+
+  collaborative:
+    description: "Agents work together on same task"
+    use_case: "Continuous validation during primary work"
+    examples:
+      - "Dev + Eval (continuous testing during development)"
+      - "PM + Oracle (continuous validation during PRD creation)"
+      - "Architect + Validator (continuous traceability checking)"
+
+    implementation:
+      - "Primary agent executes"
+      - "Supporting agent watches and validates"
+      - "Continuous feedback loop"
+
+    benefits:
+      - "Real-time feedback"
+      - "Catch issues early"
+      - "Integrated quality assurance"
+
+  competitive:
+    description: "Multiple agents solve same problem, best wins"
+    use_case: "Multiple solutions evaluated for optimal choice"
+    examples:
+      - "Multiple architecture proposals"
+      - "Different implementation approaches"
+      - "Alternative migration strategies"
+
+    implementation:
+      - "Multiple agents generate solutions"
+      - "Validator/Oracle score solutions"
+      - "Best solution selected"
+
+    benefits:
+      - "Multiple perspectives"
+      - "Optimal solution selection"
+      - "Innovation through competition"
+
+communication_protocol:
+  agent_to_agent:
+    format: "Structured JSON messages"
+    channel: "Agent message bus"
+
+    message_types:
+      task_request:
+        from: "Requesting agent"
+        to: "Target agent"
+        payload:
+          task_id: "unique_id"
+          task_type: "validate-artifact"
+          inputs: "artifact data"
+          priority: "high|medium|low"
+
+      task_response:
+        from: "Executing agent"
+        to: "Requesting agent"
+        payload:
+          task_id: "unique_id"
+          status: "complete|failed"
+          result: "result data"
+          metadata:
+            confidence: 0.95
+            duration: 1234
+
+      notification:
+        from: "Notifying agent"
+        to: "all_agents|specific_agent"
+        payload:
+          event: "domain_truth_updated"
+          affected_artifacts: []
+          timestamp: "ISO-8601"
+
+      alert:
+        from: "Alerting agent"
+        to: "orchestrator"
+        payload:
+          severity: "critical|high|medium|low"
+          issue: "eval_test_fail_rate_high"
+          details: {}
+          requires_action: true
+
+  agent_to_human:
+    format: "Human-readable Markdown"
+    channel: "CLI output / Web UI"
+
+    message_types:
+      status_update: "Agent progress notifications"
+      approval_request: "Human decision needed"
+      alert: "Critical issues requiring attention"
+      report: "Analysis results, recommendations"
+
+handoff_protocols:
+  explicit_handoff:
+    description: "Deliberate hand-off between agents"
+    example: "Analyst completes domain-analysis.md → Hands off to Oracle"
+
+    protocol:
+      - "Agent A signals completion"
+      - "Agent A packages outputs"
+      - "Orchestrator validates outputs"
+      - "Orchestrator invokes Agent B"
+      - "Agent B acknowledges receipt"
+      - "Agent B begins work"
+
+    validations:
+      - "Output completeness check"
+      - "Format validation"
+      - "Required fields present"
+
+  implicit_handoff:
+    description: "Automatic triggering based on events"
+    example: "Dev saves file → Eval automatically triggered"
+
+    protocol:
+      - "Event occurs (file save)"
+      - "Orchestrator detects event"
+      - "Orchestrator determines relevant agents"
+      - "Agents auto-invoked"
+      - "No explicit handoff needed"
+
+    triggers:
+      - "File save events"
+      - "Artifact creation"
+      - "State transitions"
+      - "Validation completions"
+
+dependency_management:
+  agent_dependencies:
+    oracle:
+      depends_on: []
+      required_by:
+        - eval
+        - validator
+        - pm
+        - architect
+        - dev
+
+    eval:
+      depends_on:
+        - oracle
+      required_by:
+        - dev
+        - qa
+        - validator
+
+    validator:
+      depends_on:
+        - oracle
+        - eval
+      required_by:
+        - orchestrator
+
+    monitor:
+      depends_on:
+        - validator
+      required_by:
+        - reflection
+        - orchestrator
+
+    reflection:
+      depends_on:
+        - monitor
+        - validator
+        - eval
+        - oracle
+      required_by:
+        - orchestrator
+
+    pm:
+      depends_on:
+        - oracle
+      required_by:
+        - architect
+        - po
+        - sm
+
+    architect:
+      depends_on:
+        - oracle
+        - pm
+      required_by:
+        - dev
+
+    dev:
+      depends_on:
+        - architect
+        - eval
+        - oracle
+      required_by:
+        - qa
+
+    qa:
+      depends_on:
+        - dev
+        - eval
+      required_by: []
+
+  resolution_strategy:
+    - "Build dependency graph"
+    - "Topological sort for execution order"
+    - "Parallel execution where no dependencies"
+    - "Sequential where dependencies exist"
+
+conflict_resolution:
+  when_agents_disagree:
+    example: "Oracle says 'valid', Validator says 'broken chain'"
+
+    resolution_rules:
+      priority_1: "Truth-keeper agents (Oracle, Eval) have highest authority"
+      priority_2: "Validator overrides on traceability issues"
+      priority_3: "Monitor provides data for human decision"
+      priority_4: "Reflection analyzes conflict pattern"
+      default: "Route to human for decision"
+
+  tie_breaking:
+    - "Check agent confidence scores"
+    - "Review historical accuracy"
+    - "Analyze conflict context"
+    - "If still unresolved → human decision"
+
+  escalation_criteria:
+    - "Confidence difference < 0.1"
+    - "Both agents have high priority"
+    - "Critical impact on workflow"
+    - "Repeated conflicts on same issue"
+
+background_execution_capable:
+  agents:
+    - agent: oracle
+      tasks:
+        - "Validate artifacts in background"
+        - "Continuous semantic checking"
+
+    - agent: eval
+      tasks:
+        - "Generate test datasets in background"
+        - "Run long test suites"
+
+    - agent: validator
+      tasks:
+        - "Check traceability in background"
+        - "Generate matrices"
+
+    - agent: monitor
+      tasks:
+        - "Continuous metrics tracking"
+        - "Health monitoring"
+
+    - agent: qa
+      tasks:
+        - "Supplemental testing while dev continues"
+        - "Long-running test suites"
+
+workflow_patterns:
+  domain_research_flow:
+    mode: sequential
+    agents:
+      - analyst
+      - oracle
+      - eval
+    description: "Research domain → Validate → Create tests"
+
+  prd_creation_flow:
+    mode: sequential_with_parallel_validation
+    primary:
+      - pm
+    validators:
+      - oracle
+      - eval
+      - validator
+    description: "Create PRD with parallel validation"
+
+  architecture_design_flow:
+    mode: sequential_with_parallel_validation
+    primary:
+      - architect
+    validators:
+      - oracle
+      - validator
+      - monitor
+    description: "Design architecture with validation"
+
+  development_flow:
+    mode: collaborative
+    primary: dev
+    supporting:
+      - eval
+      - monitor
+    description: "Develop with continuous testing and monitoring"
+
+  brownfield_analysis_flow:
+    mode: sequential
+    agents:
+      - compatibility
+      - oracle
+      - eval
+      - validator
+    description: "Analyze existing → Validate → Test → Trace"

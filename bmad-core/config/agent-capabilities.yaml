@@ -1,0 +1,242 @@
+# BMAD Agent Capabilities Configuration
+# Version: 2.0
+# Defines what each agent can do autonomously vs requiring approval
+
+agents:
+  dev:
+    can_auto_proceed_when:
+      - eval_tests_pass
+      - oracle_validated
+      - validator_traceability_confirmed
+      - monitor_health_green
+      - no_blocking_issues
+
+    can_auto_execute:
+      - "Implement features from stories"
+      - "Fix bugs"
+      - "Refactor code"
+      - "Update dependencies"
+      - "Create unit tests"
+
+    requires_approval_for:
+      - merge_to_main
+      - deploy_to_production
+      - breaking_api_changes
+      - security_changes
+      - infrastructure_changes
+
+  pm:
+    can_auto_create_requirements_when:
+      - traces_to_domain_truth
+      - eval_tests_generated
+      - oracle_approved
+      - no_conflicts_with_existing
+
+    can_auto_execute:
+      - "Create PRD from domain truth"
+      - "Define functional requirements"
+      - "Define non-functional requirements"
+      - "Create epics and stories"
+
+    requires_approval_for:
+      - major_scope_changes
+      - new_constraints_not_in_domain
+      - deprecated_features
+      - priority_changes
+
+  architect:
+    can_auto_design_when:
+      - domain_constraints_satisfied
+      - eval_test_scenarios_supported
+      - oracle_consistency_verified
+      - no_major_tech_changes
+
+    can_auto_execute:
+      - "Create architecture documents"
+      - "Define system components"
+      - "Design data models"
+      - "Define API contracts"
+
+    requires_approval_for:
+      - new_technology_stack
+      - major_architectural_changes
+      - security_model_changes
+      - scalability_model_changes
+
+  oracle:
+    can_auto_validate: true
+    can_auto_block_inconsistencies: true
+
+    can_auto_execute:
+      - "Validate semantic consistency"
+      - "Check domain coverage"
+      - "Verify terminology usage"
+      - "Block inconsistent artifacts"
+
+    requires_approval_for:
+      - domain_truth_updates
+      - terminology_changes
+      - constraint_relaxation
+      - domain_scope_changes
+
+  eval:
+    can_auto_generate_tests: true
+    can_auto_run_tests: true
+    can_auto_block_commits: true
+
+    can_auto_execute:
+      - "Generate test datasets from domain truth"
+      - "Run eval tests"
+      - "Block commits on test failures"
+      - "Update test datasets"
+      - "Generate test reports"
+
+    requires_approval_for:
+      - lower_test_coverage_threshold
+      - disable_test_categories
+      - skip_tests
+      - modify_test_framework
+
+  validator:
+    can_auto_check_traceability: true
+    can_auto_block_broken_chains: true
+
+    can_auto_execute:
+      - "Check traceability chains"
+      - "Generate traceability matrix"
+      - "Validate cross-artifact consistency"
+      - "Block on broken chains"
+
+    requires_approval_for:
+      - relax_traceability_requirements
+      - override_traceability_failures
+      - modify_validation_rules
+
+  monitor:
+    can_auto_track_metrics: true
+    can_auto_alert: true
+    can_auto_establish_baselines: true
+
+    can_auto_execute:
+      - "Track metrics continuously"
+      - "Alert on drift"
+      - "Establish baselines"
+      - "Generate health reports"
+      - "Track performance trends"
+
+    requires_approval_for:
+      - change_alert_thresholds
+      - disable_monitoring
+      - reset_baselines
+      - modify_metrics
+
+  reflection:
+    can_auto_analyze: true
+    can_auto_generate_recommendations: true
+
+    can_auto_execute:
+      - "Analyze failures"
+      - "Generate improvement recommendations"
+      - "Track patterns"
+      - "Create lessons learned"
+
+    requires_approval_for:
+      - apply_recommendations_automatically
+      - modify_agent_strategies
+      - update_validation_rules
+      - change_workflow_rules
+
+  compatibility:
+    can_auto_analyze: true
+    can_auto_detect_breaking_changes: true
+
+    can_auto_execute:
+      - "Analyze existing system"
+      - "Detect breaking changes"
+      - "Generate compatibility rules"
+      - "Create migration tests"
+
+    requires_approval_for:
+      - accept_breaking_changes
+      - modify_existing_system
+      - override_compatibility_rules
+
+  po:
+    can_auto_shard: true
+    can_auto_validate_alignment: true
+
+    can_auto_execute:
+      - "Shard PRD into epics"
+      - "Validate document alignment"
+      - "Check cross-document consistency"
+
+    requires_approval_for:
+      - major_restructuring
+      - scope_reduction
+      - priority_reordering
+
+  sm:
+    can_auto_create_stories: true
+
+    can_auto_execute:
+      - "Create detailed development stories"
+      - "Generate acceptance criteria"
+      - "Add implementation context"
+
+    requires_approval_for:
+      - story_point_changes
+      - sprint_modifications
+      - dependency_changes
+
+  qa:
+    can_auto_test: true
+    can_auto_block_failures: true
+
+    can_auto_execute:
+      - "Run test suites"
+      - "Generate test reports"
+      - "Block on critical failures"
+      - "Create test assessments"
+
+    requires_approval_for:
+      - lower_quality_gates
+      - disable_tests
+      - override_failures
+
+  analyst:
+    can_auto_research: true
+
+    can_auto_execute:
+      - "Conduct domain research"
+      - "Analyze competitors"
+      - "Generate project briefs"
+      - "Create domain analysis"
+
+    requires_approval_for:
+      - major_pivot_recommendations
+      - scope_expansion
+
+  bmad-master:
+    can_auto_guide: true
+
+    can_auto_execute:
+      - "Guide setup process"
+      - "Answer questions"
+      - "Provide recommendations"
+
+    requires_approval_for:
+      - project_type_changes
+      - workflow_modifications
+
+global_capabilities:
+  all_agents_can:
+    - "Generate reports"
+    - "Log activities"
+    - "Emit events"
+    - "Request human input"
+
+  all_agents_require_approval_for:
+    - "Modify core configuration"
+    - "Change orchestration rules"
+    - "Disable other agents"
+    - "Override system rules"

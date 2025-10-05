@@ -1,0 +1,117 @@
+{
+  "dataset_id": "TEST-CART-001",
+  "name": "Shopping Cart Total Calculation",
+  "description": "Validates cart total calculation with items, tax, and discount",
+  "type": "unit",
+  "version": "1.0.0",
+  "created_date": "2025-10-04T00:00:00Z",
+  "validates": {
+    "domain_rule_ids": ["RULE-001"],
+    "functional_requirement_ids": ["FR-001"],
+    "concept_ids": ["CONCEPT-001"]
+  },
+  "test_cases": [
+    {
+      "case_id": "CASE-001",
+      "name": "Basic cart total with tax",
+      "description": "Two items with 10% tax should calculate total correctly",
+      "input": {
+        "items": [
+          {"productId": "P001", "price": 10.00, "quantity": 2},
+          {"productId": "P002", "price": 15.00, "quantity": 1}
+        ],
+        "taxRate": 0.10,
+        "discountCode": null
+      },
+      "expected_output": {
+        "subtotal": 35.00,
+        "tax": 3.50,
+        "discount": 0.00,
+        "total": 38.50
+      },
+      "preconditions": [
+        "Cart is initialized",
+        "Products P001 and P002 exist"
+      ],
+      "postconditions": [
+        "Cart total is calculated",
+        "Breakdown is available"
+      ]
+    },
+    {
+      "case_id": "CASE-002",
+      "name": "Cart total with discount",
+      "description": "Apply 10% discount code to cart total",
+      "input": {
+        "items": [
+          {"productId": "P001", "price": 100.00, "quantity": 1}
+        ],
+        "taxRate": 0.10,
+        "discountCode": "SAVE10"
+      },
+      "expected_output": {
+        "subtotal": 100.00,
+        "tax": 10.00,
+        "discount": 11.00,
+        "total": 99.00,
+        "appliedDiscount": {
+          "code": "SAVE10",
+          "type": "percentage",
+          "value": 10
+        }
+      }
+    },
+    {
+      "case_id": "CASE-003",
+      "name": "Invalid discount code",
+      "description": "Reject invalid discount code",
+      "input": {
+        "items": [
+          {"productId": "P001", "price": 50.00, "quantity": 1}
+        ],
+        "taxRate": 0.10,
+        "discountCode": "INVALID"
+      },
+      "expected_error": {
+        "type": "InvalidDiscountCodeError",
+        "message": "Discount code 'INVALID' is not valid",
+        "code": "DISCOUNT_INVALID"
+      }
+    },
+    {
+      "case_id": "CASE-004",
+      "name": "Empty cart",
+      "description": "Empty cart should have zero total",
+      "input": {
+        "items": [],
+        "taxRate": 0.10,
+        "discountCode": null
+      },
+      "expected_output": {
+        "subtotal": 0.00,
+        "tax": 0.00,
+        "discount": 0.00,
+        "total": 0.00
+      },
+      "edge_cases": ["Empty cart"],
+      "boundary_conditions": ["Zero items"]
+    }
+  ],
+  "execution": {
+    "test_framework": "Jest",
+    "test_file": "src/__tests__/cart/calculator.test.js",
+    "setup_script": null,
+    "teardown_script": null,
+    "timeout": 5000
+  },
+  "pass_criteria": [
+    {
+      "criterion": "All calculations are correct",
+      "measurement": "Exact match of expected values",
+      "threshold": "100%"
+    }
+  ],
+  "tags": ["cart", "calculation", "critical"],
+  "priority": "critical",
+  "automation_status": "automated"
+}

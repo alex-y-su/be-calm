@@ -1,0 +1,147 @@
+# BMAD Orchestration Rules
+# Version: 2.0
+# Defines rules for agent orchestration and autonomous workflows
+
+never_proceed_without:
+  oracle_validation: "All artifacts must pass Oracle semantic validation"
+  eval_test_coverage: "100% domain fact coverage required in test datasets"
+  validator_traceability: "Complete chain from domain to code verified"
+  monitor_health_check: "No critical drift detected in system health"
+
+auto_blocking_conditions:
+  eval_tests_failing:
+    threshold: 90
+    description: "Block commit if eval test pass rate < 90%"
+    severity: high
+
+  oracle_validation_failed:
+    description: "Block artifact if Oracle detects semantic inconsistency"
+    severity: critical
+
+  validator_traceability_broken:
+    description: "Block if traceability chain is incomplete"
+    severity: high
+
+  monitor_drift_alert:
+    description: "Block if Monitor detects critical drift"
+    severity: critical
+
+  performance_degradation:
+    threshold: 10
+    description: "Block if performance degraded >10% from baseline"
+    severity: medium
+
+auto_recovery_enabled: true
+
+auto_recovery_flow:
+  - step: agent_detects_issue
+    examples:
+      - "Eval test fails"
+      - "Oracle blocks artifact"
+      - "Drift alert triggered"
+
+  - step: reflection_analyzes
+    actions:
+      - "Determine root cause"
+      - "Classify issue type"
+      - "Identify affected artifacts"
+
+  - step: oracle_determines_truth
+    actions:
+      - "Validate domain-truth accuracy"
+      - "Check for truth gaps"
+      - "Confirm semantic consistency"
+
+  - step: validator_identifies_affected
+    actions:
+      - "Trace impact through chain"
+      - "Identify broken links"
+      - "List affected artifacts"
+
+  - step: monitor_assesses_impact
+    actions:
+      - "Measure degradation"
+      - "Track affected metrics"
+      - "Estimate recovery effort"
+
+  - step: orchestrator_routes
+    decision_tree:
+      - if: "Truth gap identified"
+        then: "Route to Oracle for truth update"
+
+      - if: "Code implementation error"
+        then: "Route to Dev for fix"
+
+      - if: "Test error"
+        then: "Route to Eval for test update"
+
+      - if: "Unclear requirement"
+        then: "Route to human for clarification"
+
+  - step: eval_validates_resolution
+    actions:
+      - "Re-run affected tests"
+      - "Verify fix completeness"
+      - "Confirm resolution"
+
+parallel_validation_enabled: true
+
+parallel_validation:
+  trigger: "every_artifact_creation"
+
+  background_agents:
+    - agent: oracle
+      task: "validate-semantic-consistency"
+      mode: "non-blocking"
+
+    - agent: validator
+      task: "check-traceability"
+      mode: "non-blocking"
+
+    - agent: eval
+      task: "create-tests"
+      mode: "non-blocking"
+
+    - agent: monitor
+      task: "establish-baseline"
+      mode: "non-blocking"
+
+  completion_gate:
+    condition: "all_background_agents_complete"
+    on_success: "mark_artifact_validated"
+    on_failure: "mark_artifact_needs_review"
+
+conflict_resolution:
+  priority_order:
+    - oracle: 10  # Truth-keeper has highest authority
+    - eval: 9     # Eval also truth-keeper
+    - validator: 8 # Validator overrides on traceability
+    - monitor: 7
+    - reflection: 6
+    - architect: 5
+    - pm: 4
+    - dev: 3
+    - qa: 2
+
+  escalation_threshold:
+    min_confidence: 0.6
+    description: "Route to human if confidence < 0.6"
+
+  tie_breaking:
+    - "Check agent confidence scores"
+    - "Review historical accuracy"
+    - "Analyze conflict context"
+    - "If still unresolved → human decision"
+
+agent_invocation:
+  timeout_default: 30000  # 30 seconds
+  max_retries: 3
+  retry_delay: 1000  # 1 second
+
+  timeouts_by_task:
+    analyze_failure: 60000
+    validate_truth: 60000
+    trace_impact: 60000
+    assess_impact: 60000
+    fix_implementation: 120000
+    validate_resolution: 60000

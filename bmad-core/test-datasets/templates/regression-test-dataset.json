@@ -1,0 +1,160 @@
+{
+  "$schema": "https://bmad-method.org/schemas/test-dataset.schema.json",
+  "dataset_id": "REGRESSION-{PROJECT}-{NUMBER}",
+  "name": "Regression test dataset name",
+  "description": "Critical path or functionality to protect from regressions",
+  "type": "regression",
+  "version": "1.0.0",
+  "created_date": "2025-10-04T00:00:00Z",
+  "validates": {
+    "component_id": "COMP-001",
+    "baseline_version": "1.0.0",
+    "critical_path": "Name of critical user flow or functionality"
+  },
+  "baseline": {
+    "established_date": "2025-10-04T00:00:00Z",
+    "version": "1.0.0",
+    "behavior_description": "Expected behavior that must be preserved",
+    "performance_baseline": {
+      "response_time_p95": "100ms",
+      "throughput": "1000 req/s",
+      "error_rate": "0.01%"
+    }
+  },
+  "test_cases": [
+    {
+      "case_id": "REG-CASE-001",
+      "name": "Critical path - happy flow",
+      "description": "End-to-end critical user journey that must not break",
+      "baseline_behavior": {
+        "description": "User completes flow successfully",
+        "steps": [
+          "Step 1: User initiates action",
+          "Step 2: System processes request",
+          "Step 3: User receives confirmation",
+          "Step 4: System updates state"
+        ],
+        "expected_outcome": "Flow completes successfully"
+      },
+      "input": {
+        "scenario_data": {
+          "user_id": "user-123",
+          "action": "complete_flow",
+          "parameters": {
+            "param1": "value1",
+            "param2": 42
+          }
+        }
+      },
+      "expected_output": {
+        "flow_completed": true,
+        "steps_executed": 4,
+        "final_state": "success",
+        "data_persisted": true
+      },
+      "performance_expectations": {
+        "total_duration": "< 500ms",
+        "step_1_duration": "< 100ms",
+        "step_2_duration": "< 200ms",
+        "step_3_duration": "< 100ms",
+        "step_4_duration": "< 100ms"
+      },
+      "preconditions": [
+        "User exists in system",
+        "Required data is present"
+      ],
+      "postconditions": [
+        "Flow state is completed",
+        "Audit log entry created"
+      ]
+    },
+    {
+      "case_id": "REG-CASE-002",
+      "name": "Edge case - boundary condition",
+      "description": "Known edge case that must continue to work",
+      "baseline_behavior": {
+        "description": "System handles edge case correctly",
+        "edge_case_description": "Maximum allowed value"
+      },
+      "input": {
+        "scenario_data": {
+          "value": 9999,
+          "type": "maximum"
+        }
+      },
+      "expected_output": {
+        "handled_correctly": true,
+        "no_errors": true,
+        "result": "boundary_case_success"
+      }
+    },
+    {
+      "case_id": "REG-CASE-003",
+      "name": "Known workaround - must preserve",
+      "description": "System behavior that includes a workaround users depend on",
+      "baseline_behavior": {
+        "description": "Workaround continues to function",
+        "workaround_description": "Users rely on this specific behavior",
+        "reason_for_preservation": "Breaking this affects production workflows"
+      },
+      "input": {
+        "scenario_data": {
+          "workaround_trigger": true,
+          "data": "specific_data"
+        }
+      },
+      "expected_output": {
+        "workaround_executed": true,
+        "users_not_impacted": true,
+        "result": "success"
+      }
+    }
+  ],
+  "regression_scope": {
+    "must_not_change": [
+      "API response format",
+      "Database schema (for reads)",
+      "Critical business logic",
+      "User-facing behavior"
+    ],
+    "acceptable_changes": [
+      "Internal implementation details",
+      "Performance improvements",
+      "Bug fixes that don't change behavior"
+    ],
+    "breaking_change_detection": [
+      "API contract changes",
+      "Response schema changes",
+      "Error message changes",
+      "Timing/sequence changes"
+    ]
+  },
+  "execution": {
+    "test_framework": "Jest|Cypress|Selenium|Playwright",
+    "test_file": "path/to/regression.test.js",
+    "setup_script": "path/to/regression-setup.sh",
+    "teardown_script": "path/to/regression-teardown.sh",
+    "timeout": 60000
+  },
+  "pass_criteria": [
+    {
+      "criterion": "All critical paths execute successfully",
+      "measurement": "Test pass rate",
+      "threshold": "100%"
+    },
+    {
+      "criterion": "Performance within baseline range",
+      "measurement": "Response time comparison",
+      "threshold": "Within 10% of baseline"
+    },
+    {
+      "criterion": "No breaking changes detected",
+      "measurement": "Contract validation",
+      "threshold": "100% compatibility"
+    }
+  ],
+  "tags": ["regression", "critical-path", "must-not-break"],
+  "priority": "critical",
+  "automation_status": "automated",
+  "execution_frequency": "every_commit"
+}

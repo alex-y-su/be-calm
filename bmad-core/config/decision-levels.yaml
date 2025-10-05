@@ -1,0 +1,129 @@
+# BMAD Decision Levels Configuration
+# Version: 2.0
+# Defines autonomous decision-making levels and routing rules
+
+decision_levels:
+  fully_automatic:
+    description: "Execute without human approval"
+    confidence_threshold: 0.95
+    examples:
+      - "Run eval tests on file save"
+      - "Generate test datasets from domain-truth"
+      - "Validate traceability chains"
+      - "Track metrics and trends"
+      - "Generate reports"
+      - "Auto-validate semantic consistency"
+      - "Check domain coverage"
+
+  automatic_with_notification:
+    description: "Execute automatically, notify human"
+    confidence_threshold: 0.80
+    examples:
+      - "Transition to next workflow phase"
+      - "Create functional test datasets"
+      - "Generate validation chain proof"
+      - "Update baselines"
+      - "Generate traceability matrix"
+      - "Create assessment reports"
+
+  automatic_with_preview:
+    description: "Show preview, auto-execute if no objection"
+    confidence_threshold: 0.65
+    preview_delay_ms: 5000
+    examples:
+      - "Create enhancement-truth.yaml (brownfield)"
+      - "Generate migration strategy"
+      - "Update domain-truth based on learnings"
+      - "Propose architectural changes"
+      - "Suggest requirement refinements"
+
+  require_approval:
+    description: "Require explicit human approval"
+    confidence_threshold: 0.0
+    examples:
+      - "Accept breaking changes (brownfield)"
+      - "Modify domain-truth.yaml"
+      - "Override blocking validation"
+      - "Force state transition"
+      - "Deploy to production"
+      - "Merge to main branch"
+
+confidence_scoring:
+  method: "Weighted factor analysis"
+  scale: "0.0 - 1.0"
+
+  factors:
+    similar_pattern_success_rate:
+      weight: 0.30
+      description: "Success rate of similar past decisions"
+
+    oracle_validation_strength:
+      weight: 0.25
+      description: "Strength of Oracle validation"
+
+    eval_test_coverage:
+      weight: 0.20
+      description: "Eval test coverage percentage"
+
+    historical_accuracy:
+      weight: 0.15
+      description: "Agent's historical accuracy"
+
+    complexity_factor:
+      weight: 0.10
+      description: "Inverse of task complexity"
+
+  routing:
+    - range: [0.95, 1.0]
+      level: "fully_automatic"
+      action: "Execute immediately"
+
+    - range: [0.80, 0.95]
+      level: "automatic_with_notification"
+      action: "Execute and notify"
+
+    - range: [0.65, 0.80]
+      level: "automatic_with_preview"
+      action: "Show preview, auto-execute after delay"
+
+    - range: [0.0, 0.65]
+      level: "require_approval"
+      action: "Request human approval"
+
+human_checkpoint_rules:
+  always_require_approval:
+    - "Production deployment"
+    - "Main branch merge"
+    - "Breaking API changes"
+    - "Security model changes"
+    - "Domain truth modifications"
+    - "Technology stack changes"
+
+  never_require_approval:
+    - "Generate reports"
+    - "Run tests"
+    - "Validate consistency"
+    - "Track metrics"
+    - "Check traceability"
+
+  context_dependent:
+    - action: "Update architecture"
+      require_if: "major_change"
+
+    - action: "Create requirements"
+      require_if: "scope_change"
+
+    - action: "Modify tests"
+      require_if: "coverage_reduction"
+
+preview_settings:
+  default_delay_ms: 5000
+  min_delay_ms: 3000
+  max_delay_ms: 30000
+  allow_cancellation: true
+  show_impact_analysis: true
+
+approval_timeout:
+  default: 3600000  # 1 hour
+  critical: 7200000  # 2 hours
+  low_priority: 86400000  # 24 hours

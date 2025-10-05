@@ -1,0 +1,145 @@
+{
+  "$schema": "https://bmad-method.org/schemas/test-dataset.schema.json",
+  "dataset_id": "INT-{PROJECT}-{NUMBER}",
+  "name": "Integration test dataset name",
+  "description": "What integration point this validates",
+  "type": "integration",
+  "version": "1.0.0",
+  "created_date": "2025-10-04T00:00:00Z",
+  "validates": {
+    "integration_point": "ServiceName",
+    "contract_version": "v1",
+    "functional_requirement_ids": ["FR-001"]
+  },
+  "test_cases": [
+    {
+      "case_id": "INT-CASE-001",
+      "name": "Successful integration scenario",
+      "description": "Validates successful interaction with external service",
+      "mock_setup": {
+        "service": "ExternalServiceName",
+        "endpoint": "/api/v1/resource",
+        "method": "POST",
+        "response": {
+          "status": 200,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": {
+            "id": "resource-123",
+            "status": "success",
+            "data": {
+              "field1": "value1"
+            }
+          }
+        }
+      },
+      "input": {
+        "request_to_service": {
+          "field1": "value1",
+          "field2": 42
+        }
+      },
+      "expected_behavior": {
+        "api_called": true,
+        "request_validated": true,
+        "response_validated": true,
+        "result": "success",
+        "side_effects": [
+          "Database updated",
+          "Event published"
+        ]
+      },
+      "preconditions": [
+        "External service is available",
+        "Authentication token is valid"
+      ],
+      "postconditions": [
+        "Integration completed successfully",
+        "Data synchronized"
+      ]
+    },
+    {
+      "case_id": "INT-CASE-002",
+      "name": "Integration failure - service unavailable",
+      "description": "Validates error handling when external service fails",
+      "mock_setup": {
+        "service": "ExternalServiceName",
+        "endpoint": "/api/v1/resource",
+        "method": "POST",
+        "response": {
+          "status": 503,
+          "body": {
+            "error": "Service Unavailable"
+          }
+        }
+      },
+      "input": {
+        "request_to_service": {
+          "field1": "value1"
+        }
+      },
+      "expected_behavior": {
+        "api_called": true,
+        "error_handled": true,
+        "fallback_executed": true,
+        "retry_attempted": true,
+        "final_state": "fallback_success"
+      },
+      "preconditions": [],
+      "postconditions": [
+        "Fallback mechanism activated",
+        "Error logged"
+      ]
+    },
+    {
+      "case_id": "INT-CASE-003",
+      "name": "Contract validation - response schema",
+      "description": "Validates external service response matches contract",
+      "mock_setup": {
+        "service": "ExternalServiceName",
+        "endpoint": "/api/v1/resource",
+        "method": "GET",
+        "response": {
+          "status": 200,
+          "body": {
+            "id": "string",
+            "name": "string",
+            "created_at": "2025-10-04T00:00:00Z"
+          }
+        }
+      },
+      "input": {
+        "resource_id": "resource-123"
+      },
+      "expected_behavior": {
+        "response_schema_valid": true,
+        "required_fields_present": true,
+        "data_types_correct": true,
+        "contract_satisfied": true
+      }
+    }
+  ],
+  "execution": {
+    "test_framework": "Jest|Mocha|RestAssured",
+    "test_file": "path/to/integration.test.js",
+    "setup_script": "path/to/integration-setup.sh",
+    "teardown_script": "path/to/integration-teardown.sh",
+    "timeout": 30000
+  },
+  "pass_criteria": [
+    {
+      "criterion": "All integration scenarios pass",
+      "measurement": "Test execution results",
+      "threshold": "100%"
+    },
+    {
+      "criterion": "Contract validation passes",
+      "measurement": "Schema validation",
+      "threshold": "100%"
+    }
+  ],
+  "tags": ["integration", "external-service", "contract"],
+  "priority": "high",
+  "automation_status": "automated"
+}

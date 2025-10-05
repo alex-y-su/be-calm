@@ -1,0 +1,302 @@
+$schema: https://bmad-method.org/schemas/test-dataset.schema.json
+dataset_id: PERF-{PROJECT}-{NUMBER}
+name: Performance test dataset name
+description: What performance characteristics this validates
+type: performance
+version: 1.0.0
+created_date: 2025-10-04T00:00:00Z
+
+validates:
+  component: ComponentName
+  metric: response_time|throughput|resource_usage
+  quality_attribute_id: QA-001
+
+baseline:
+  established_date: 2025-10-04T00:00:00Z
+  version: 1.0.0
+  environment: production|staging
+  metrics:
+    response_time_p50: 50ms
+    response_time_p95: 100ms
+    response_time_p99: 150ms
+    throughput: 1000 req/s
+    error_rate: 0.01%
+    cpu_usage: 40%
+    memory_usage: 512MB
+
+test_scenarios:
+  - scenario_id: PERF-SCENARIO-001
+    name: Load test - normal traffic
+    description: Validates performance under normal load conditions
+
+    load_profile:
+      type: constant
+      concurrent_users: 100
+      duration: 5m
+      ramp_up: 30s
+      ramp_down: 30s
+
+    requests:
+      - name: API Request
+        endpoint: /api/v1/resource
+        method: POST
+        headers:
+          Content-Type: application/json
+          Authorization: Bearer ${AUTH_TOKEN}
+        body:
+          field1: value1
+          field2: 42
+
+        think_time: 1s  # Pause between requests
+
+    success_criteria:
+      - metric: p95_response_time
+        threshold: < 150ms
+        measurement_method: Percentile calculation
+
+      - metric: throughput
+        threshold: "> 800 req/s"
+        measurement_method: Request count / duration
+
+      - metric: error_rate
+        threshold: < 0.1%
+        measurement_method: (errors / total) * 100
+
+      - metric: cpu_usage
+        threshold: < 60%
+        measurement_method: System metrics
+
+      - metric: memory_usage
+        threshold: < 1GB
+        measurement_method: System metrics
+
+  - scenario_id: PERF-SCENARIO-002
+    name: Stress test - peak traffic
+    description: Validates performance under peak load
+
+    load_profile:
+      type: ramp
+      start_users: 100
+      end_users: 1000
+      duration: 10m
+      ramp_up: 2m
+
+    requests:
+      - name: Heavy API Request
+        endpoint: /api/v1/resource/complex
+        method: GET
+        query_params:
+          page: 1
+          limit: 100
+
+    success_criteria:
+      - metric: p95_response_time
+        threshold: < 500ms
+        measurement_method: Percentile calculation
+
+      - metric: error_rate
+        threshold: < 1%
+        measurement_method: Error percentage
+
+      - metric: system_stability
+        threshold: no_crashes
+        measurement_method: Service availability
+
+  - scenario_id: PERF-SCENARIO-003
+    name: Spike test - sudden traffic increase
+    description: Validates system handles sudden traffic spikes
+
+    load_profile:
+      type: spike
+      baseline_users: 100
+      spike_users: 1000
+      spike_duration: 1m
+      total_duration: 10m
+
+    requests:
+      - name: Standard Request
+        endpoint: /api/v1/resource
+        method: GET
+
+    success_criteria:
+      - metric: recovery_time
+        threshold: < 30s
+        measurement_method: Time to return to baseline performance
+
+      - metric: error_rate_during_spike
+        threshold: < 5%
+        measurement_method: Errors during spike period
+
+      - metric: degradation_level
+        threshold: graceful
+        measurement_method: Service remains available
+
+  - scenario_id: PERF-SCENARIO-004
+    name: Endurance test - sustained load
+    description: Validates system stability over extended period
+
+    load_profile:
+      type: constant
+      concurrent_users: 500
+      duration: 2h
+      ramp_up: 5m
+
+    requests:
+      - name: Continuous Request
+        endpoint: /api/v1/resource
+        method: POST
+        body:
+          data: sample_data
+
+    success_criteria:
+      - metric: memory_leak_detection
+        threshold: no_degradation
+        measurement_method: Memory usage trend analysis
+
+      - metric: response_time_stability
+        threshold: variance < 10%
+        measurement_method: Response time variance over duration
+
+      - metric: error_rate_stability
+        threshold: < 0.1%
+        measurement_method: Sustained low error rate
+
+performance_assertions:
+  response_time:
+    - percentile: p50
+      threshold: < 100ms
+      criticality: high
+
+    - percentile: p95
+      threshold: < 200ms
+      criticality: critical
+
+    - percentile: p99
+      threshold: < 500ms
+      criticality: medium
+
+  throughput:
+    - metric: requests_per_second
+      threshold: "> 500"
+      criticality: high
+
+    - metric: concurrent_users_supported
+      threshold: "> 1000"
+      criticality: medium
+
+  resource_usage:
+    - metric: cpu_usage
+      threshold: < 70%
+      criticality: high
+
+    - metric: memory_usage
+      threshold: < 2GB
+      criticality: high
+
+    - metric: database_connections
+      threshold: < 100
+      criticality: medium
+
+  reliability:
+    - metric: error_rate
+      threshold: < 0.1%
+      criticality: critical
+
+    - metric: timeout_rate
+      threshold: < 0.01%
+      criticality: high
+
+    - metric: availability
+      threshold: "> 99.9%"
+      criticality: critical
+
+execution:
+  test_framework: k6|JMeter|Gatling|Locust
+  test_file: path/to/performance.test.js
+  setup_script: path/to/perf-setup.sh
+  teardown_script: path/to/perf-teardown.sh
+  timeout: 7200000  # 2 hours
+
+  environment:
+    test_environment: staging|production-like
+    infrastructure:
+      cpu: 4 cores
+      memory: 8GB
+      network: 1Gbps
+
+    dependencies:
+      - service: Database
+        version: PostgreSQL 14
+        configuration: production-like
+
+      - service: Cache
+        version: Redis 7
+        configuration: production-like
+
+  data_setup:
+    - type: database_seed
+      records_count: 1000000
+      script: path/to/seed-data.sql
+
+    - type: cache_warmup
+      duration: 5m
+      script: path/to/warmup.sh
+
+monitoring:
+  metrics_to_collect:
+    - response_time
+    - throughput
+    - error_rate
+    - cpu_usage
+    - memory_usage
+    - database_query_time
+    - cache_hit_rate
+
+  sampling_interval: 1s
+
+  dashboards:
+    - name: Performance Test Dashboard
+      url: https://monitoring.example.com/perf-test
+
+  alerts:
+    - condition: p95_response_time > 200ms
+      action: alert_team
+      channel: "#performance-alerts"
+
+    - condition: error_rate > 1%
+      action: stop_test
+      channel: "#critical-alerts"
+
+reporting:
+  report_format: HTML|JSON|PDF
+  report_location: path/to/reports/
+
+  include_in_report:
+    - executive_summary
+    - detailed_metrics
+    - graphs_and_charts
+    - recommendations
+    - comparison_to_baseline
+
+pass_criteria:
+  - criterion: All performance assertions pass
+    measurement: Test execution results
+    threshold: 100%
+
+  - criterion: Performance within acceptable range
+    measurement: Metrics comparison to baseline
+    threshold: Within 10% of baseline
+
+  - criterion: No performance degradation
+    measurement: Trend analysis
+    threshold: Stable or improving
+
+tags:
+  - performance
+  - load-test
+  - stress-test
+  - benchmark
+
+priority: high
+automation_status: automated
+execution_frequency: daily
