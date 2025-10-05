@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "name": "bmad-method",
+  "name": "be-calm",
   "version": "4.44.0",
   "description": "Breakthrough Method of Agile AI-driven Development",
   "keywords": [
@@ -14,14 +14,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bmadcode/BMAD-METHOD.git"
+    "url": "git+https://github.com/alexsu/be-calm.git"
   },
   "license": "MIT",
   "author": "Brian (BMad) Madison",
   "main": "tools/cli.js",
   "bin": {
-    "bmad": "tools/bmad-npx-wrapper.js",
-    "bmad-method": "tools/bmad-npx-wrapper.js"
+    "be-calm": "tools/bmad-npx-wrapper.js",
+    "bmad": "tools/bmad-npx-wrapper.js"
   },
   "scripts": {
     "build": "node tools/cli.js build",

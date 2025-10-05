@@ -2138,7 +2138,7 @@ BMad transforms you into a "Vibe CEO" - directing a team of specialized AI agent
 
 ```bash
 # Interactive installation (recommended)
-npx bmad-method install
+npx be-calm install
 ```
 
 **Installation Steps**:
@@ -2832,7 +2832,7 @@ Expansion packs extend BMAD-METHOD™ beyond traditional software development in
 3. **Install via CLI**:
 
    ```bash
-   npx bmad-method install
+   npx be-calm install
    # Select "Install expansion pack" option
    ```
 

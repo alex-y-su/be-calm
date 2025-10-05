@@ -117,7 +117,7 @@ jobs:
           ## 📦 Installation
 
           ```bash
-          npx bmad-method install
+          npx be-calm install
           ```
 
           **Full Changelog**: https://github.com/bmadcode/BMAD-METHOD/compare/${{ steps.version.outputs.previous_tag }}...v${{ steps.version.outputs.new_version }}
@@ -168,7 +168,7 @@ jobs:
           echo "🎉 Successfully released v${{ steps.version.outputs.new_version }}!"
           echo "📦 Published to NPM with @latest tag"
           echo "🏷️ Git tag: v${{ steps.version.outputs.new_version }}"
-          echo "✅ Users running 'npx bmad-method install' will now get version ${{ steps.version.outputs.new_version }}"
+          echo "✅ Users running 'npx be-calm install' will now get version ${{ steps.version.outputs.new_version }}"
           echo ""
           echo "📝 Release notes preview:"
           cat release_notes.md

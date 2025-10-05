@@ -83,7 +83,7 @@ This two-phase approach eliminates both **planning inconsistency** and **context
 **Stay up-to-date effortlessly!** If you already have BMAD-METHOD™ installed in your project, simply run:
 
 ```bash
-npx bmad-method install
+npx be-calm install
 # OR
 git pull
 npm run install:bmad
@@ -105,7 +105,7 @@ This makes it easy to benefit from the latest improvements, bug fixes, and new a
 **Just run one of these commands:**
 
 ```bash
-npx bmad-method install
+npx be-calm install
 # OR if you already have BMad installed:
 git pull
 npm run install:bmad

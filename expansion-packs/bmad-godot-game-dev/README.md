@@ -133,7 +133,7 @@ If you want to do the planning in the Web with Claude (Sonnet 4 or Opus), Gemini
 
 ```bash
 # Interactive installation (recommended)
-npx bmad-method install
+npx be-calm install
 ```
 
 ## Special Agents

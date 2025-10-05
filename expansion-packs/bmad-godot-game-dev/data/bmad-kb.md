@@ -116,7 +116,7 @@ You are developing games as a "Player Experience CEO" - thinking like a game dir
 
 ```bash
 # Interactive installation (recommended)
-npx bmad-method install
+npx be-calm install
 # Select the bmad-godot-game-dev expansion pack when prompted
 ```
 
@@ -783,7 +783,7 @@ This Godot Game Development expansion pack extends BMad-Method beyond traditiona
 1. **Install via CLI**:
 
    ```bash
-   npx bmad-method install
+   npx be-calm install
    # Select "Install game development expansion pack" option
    ```
 

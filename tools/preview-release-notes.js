@@ -54,7 +54,7 @@ if (chores.length > 0) {
 
 console.log('\n## 📦 Installation\n');
 console.log('```bash');
-console.log('npx bmad-method install');
+console.log('npx be-calm install');
 console.log('```');
 
 console.log(

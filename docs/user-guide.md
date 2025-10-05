@@ -184,7 +184,7 @@ If you want to do the planning on the web with Claude (Sonnet 4 or Opus), Gemini
 
 ```bash
 # Interactive installation (recommended)
-npx bmad-method install
+npx be-calm install
 ```
 
 ### OpenCode
@@ -192,7 +192,7 @@ npx bmad-method install
 BMAD integrates with OpenCode via a project-level `opencode.jsonc`/`opencode.json` (JSON-only, no Markdown fallback).
 
 - Installation:
-  - Run `npx bmad-method install` and choose `OpenCode` in the IDE list.
+  - Run `npx be-calm install` and choose `OpenCode` in the IDE list.
   - The installer will detect an existing `opencode.jsonc`/`opencode.json` or create a minimal `opencode.jsonc` if missing.
   - It will:
     - Ensure `instructions` includes `.bmad-core/core-config.yaml` (and each selected expansion pack’s `config.yaml`).
@@ -220,7 +220,7 @@ BMAD integrates with OpenCode via a project-level `opencode.jsonc`/`opencode.jso
 - Refresh after changes:
   - Re-run:
     ```bash
-    npx bmad-method install -f -i opencode
+    npx be-calm install -f -i opencode
     ```
   - The installer safely updates entries without duplication and preserves your custom fields and comments.
 
@@ -240,9 +240,9 @@ BMAD integrates with OpenAI Codex via `AGENTS.md` and committed core agent files
 
 - Two installation modes:
   - Codex (local only): keeps `.bmad-core/` ignored for local dev.
-    - `npx bmad-method install -f -i codex -d .`
+    - `npx be-calm install -f -i codex -d .`
   - Codex Web Enabled: ensures `.bmad-core/` is tracked so you can commit it for Codex Web.
-    - `npx bmad-method install -f -i codex-web -d .`
+    - `npx be-calm install -f -i codex-web -d .`
 
 - What gets generated:
   - `AGENTS.md` at the project root with a BMAD section containing

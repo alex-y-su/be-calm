@@ -67,7 +67,7 @@ The workflow automatically generates professional release notes like this:
 ## 📦 Installation
 
 ```bash
-npx bmad-method install
+npx be-calm install
 ```
 ````
 
@@ -80,7 +80,7 @@ npx bmad-method install
 After any release, users can immediately get the new version with:
 
 ```bash
-npx bmad-method install    # Always gets latest release
+npx be-calm install    # Always gets latest release
 ```
 
 ## 📊 Preview Before Release
@@ -118,7 +118,7 @@ You can also trigger releases through GitHub Actions:
 1. **Develop Freely** - Merge PRs to main without triggering releases
 2. **Test Unreleased Changes** - Clone repo to test latest main branch
 3. **Release When Ready** - Use command line or GitHub Actions to cut releases
-4. **Users Get Updates** - Via simple `npx bmad-method install` command
+4. **Users Get Updates** - Via simple `npx be-calm install` command
 
 This gives you complete control over when releases happen while automating all the tedious parts like version bumping, release notes, and publishing.
 

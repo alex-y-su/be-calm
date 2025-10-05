@@ -541,12 +541,12 @@ class IdeSetup extends BaseIdeSetup {
         section += `- Run \`opencode\` in this project. OpenCode will read \`AGENTS.md\` and your OpenCode config (opencode.json[c]).\n`;
         section += `- Reference a role naturally, e.g., "As dev, implement ..." or use commands defined in your BMAD tasks.\n`;
         section += `- Commit \`.bmad-core\` and \`AGENTS.md\` if you want teammates to share the same configuration.\n`;
-        section += `- Refresh this section after BMAD updates: \`npx bmad-method install -f -i opencode\`.\n\n`;
+        section += `- Refresh this section after BMAD updates: \`npx be-calm install -f -i opencode\`.\n\n`;
 
         section += `### Helpful Commands\n\n`;
-        section += `- List agents: \`npx bmad-method list:agents\`\n`;
-        section += `- Reinstall BMAD core and regenerate this section: \`npx bmad-method install -f -i opencode\`\n`;
-        section += `- Validate configuration: \`npx bmad-method validate\`\n\n`;
+        section += `- List agents: \`npx be-calm list:agents\`\n`;
+        section += `- Reinstall BMAD core and regenerate this section: \`npx be-calm install -f -i opencode\`\n`;
+        section += `- Validate configuration: \`npx be-calm validate\`\n\n`;
 
         // Brief context note for modes and tools
         section += `Note\n`;
@@ -754,12 +754,12 @@ class IdeSetup extends BaseIdeSetup {
     section += `- Codex CLI: run \`codex\` in this project. Reference an agent naturally, e.g., "As dev, implement ...".\n`;
     section += `- Codex Web: open this repo and reference roles the same way; Codex reads \`AGENTS.md\`.\n`;
     section += `- Commit \`.bmad-core\` and this \`AGENTS.md\` file to your repo so Codex (Web/CLI) can read full agent definitions.\n`;
-    section += `- Refresh this section after agent updates: \`npx bmad-method install -f -i codex\`.\n\n`;
+    section += `- Refresh this section after agent updates: \`npx be-calm install -f -i codex\`.\n\n`;
 
     section += `### Helpful Commands\n\n`;
-    section += `- List agents: \`npx bmad-method list:agents\`\n`;
-    section += `- Reinstall BMAD core and regenerate AGENTS.md: \`npx bmad-method install -f -i codex\`\n`;
-    section += `- Validate configuration: \`npx bmad-method validate\`\n\n`;
+    section += `- List agents: \`npx be-calm list:agents\`\n`;
+    section += `- Reinstall BMAD core and regenerate AGENTS.md: \`npx be-calm install -f -i codex\`\n`;
+    section += `- Validate configuration: \`npx be-calm validate\`\n\n`;
 
     // Agents directory table
     section += `## Agents\n\n`;
