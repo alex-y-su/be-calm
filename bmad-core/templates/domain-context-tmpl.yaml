@@ -1,0 +1,346 @@
+# <!-- Powered by BMAD™ Core -->
+template:
+  id: domain-context-template-v1
+  name: Domain Context Document
+  version: 1.0
+  output:
+    format: markdown
+    filename: docs/domain-context.md
+    title: "Domain Context: {{domain_name}}"
+
+workflow:
+  mode: interactive
+  elicitation: advanced-elicitation
+  custom_elicitation:
+    title: "Domain Context Elicitation Actions"
+    options:
+      - "Expand with more specific details"
+      - "Validate against industry standards"
+      - "Add real-world examples"
+      - "Challenge assumptions about the domain"
+      - "Identify gaps in research"
+      - "Compare with adjacent domains"
+      - "Add expert insights"
+      - "Clarify terminology and concepts"
+      - "Explore emerging trends"
+      - "Proceed to next section"
+
+sections:
+  - id: introduction
+    instruction: |
+      [[LLM: This template guides creation of a comprehensive Domain Context document that establishes foundational knowledge for the project.
+
+      Before beginning:
+      1. Ask user for domain name/area
+      2. Determine user's expertise level (Novice/Intermediate/Expert)
+      3. Use web search to research current, accurate domain information
+      4. Work through each section systematically
+
+      Present each section for user review and offer elicitation options before proceeding.]]
+
+  - id: metadata
+    title: Document Metadata
+    instruction: |
+      [[LLM: Populate metadata based on research conducted]]
+    template: |
+      **Domain:** {{domain_name}}
+      **Research Date:** {{current_date}}
+      **User Expertise Level:** {{expertise_level}}
+      **Version:** 1.0
+      **Last Updated:** {{current_date}}
+
+  - id: domain-overview
+    title: 1. Domain Overview
+    instruction: |
+      [[LLM: Provide a comprehensive overview of the domain. Use web search results to ensure accuracy and currency.
+
+      Include:
+      - Clear definition of the domain
+      - Scope and boundaries
+      - Current state and maturity
+      - Key market trends (2024-2025)
+      - Primary value proposition
+      - Typical project types in this domain
+
+      Keep to 2-4 paragraphs. Be specific and evidence-based.]]
+    template: "{{domain_overview_content}}"
+
+  - id: industry-methodologies
+    title: 2. Industry Methodologies & Frameworks
+    instruction: |
+      [[LLM: Document standard methodologies used in this domain. Research current best practices.
+
+      For each methodology:
+      - Name and brief description
+      - When it's typically used
+      - Key principles or phases
+      - Advantages and limitations
+
+      Include at least 3-5 methodologies. Examples might include Agile, Waterfall, DevOps, Domain-Driven Design, or domain-specific frameworks.]]
+    sections:
+      - id: methodology-list
+        title: Standard Methodologies
+        type: subsections
+        instruction: |
+          [[LLM: Create a subsection for each major methodology]]
+        template: |
+          ### {{methodology_name}}
+
+          **Description:** {{methodology_description}}
+
+          **When Used:** {{use_cases}}
+
+          **Key Principles/Phases:**
+          {{key_principles_or_phases}}
+
+          **Considerations:** {{advantages_and_limitations}}
+
+      - id: framework-comparison
+        title: Framework Selection Guidance
+        instruction: |
+          [[LLM: Provide brief guidance on when to choose which methodology/framework based on project characteristics]]
+        template: "{{framework_selection_guidance}}"
+
+  - id: typical-roles
+    title: 3. Typical Roles & Responsibilities
+    instruction: |
+      [[LLM: Document the roles commonly found in teams working in this domain.
+
+      For each role:
+      - Job title (industry standard naming)
+      - Primary responsibilities
+      - Key skills required
+      - How they interact with other roles
+
+      Include 5-10 roles. Cover both technical and non-technical positions.]]
+    sections:
+      - id: role-list
+        title: Common Roles
+        type: subsections
+        instruction: |
+          [[LLM: Create a subsection for each major role]]
+        template: |
+          ### {{role_title}}
+
+          **Primary Responsibilities:**
+          {{role_responsibilities}}
+
+          **Key Skills:**
+          {{required_skills}}
+
+          **Collaborates With:** {{collaboration_info}}
+
+      - id: team-structure
+        title: Typical Team Structure
+        instruction: |
+          [[LLM: Describe how these roles typically organize into teams. Include team sizes, reporting structures, and common organizational patterns.]]
+        template: "{{team_structure_description}}"
+
+  - id: standard-processes
+    title: 4. Standard Processes & Workflows
+    instruction: |
+      [[LLM: Map the standard processes and workflows used in this domain.
+
+      Include:
+      - Project lifecycle phases
+      - Key workflows and their steps
+      - Decision points and gates
+      - Handoffs between roles/teams
+      - Iteration/cycle patterns
+
+      Focus on industry-standard approaches, not company-specific processes.]]
+    sections:
+      - id: project-lifecycle
+        title: Typical Project Lifecycle
+        instruction: |
+          [[LLM: Describe the phases a typical project goes through in this domain]]
+        template: |
+          {{project_lifecycle_phases}}
+
+      - id: key-workflows
+        title: Key Workflows
+        type: subsections
+        instruction: |
+          [[LLM: Document 3-5 important workflows. For each, describe the trigger, steps, participants, and outcomes.]]
+        template: |
+          ### {{workflow_name}}
+
+          **Purpose:** {{workflow_purpose}}
+
+          **Participants:** {{workflow_participants}}
+
+          **Steps:**
+          {{workflow_steps}}
+
+          **Outcomes:** {{workflow_outcomes}}
+
+  - id: tools-technologies
+    title: 5. Common Tools & Technologies
+    instruction: |
+      [[LLM: List the tools, platforms, frameworks, and technologies commonly used in this domain.
+
+      Organize by category:
+      - Development/Implementation
+      - Collaboration & Communication
+      - Project Management
+      - Testing & Quality Assurance
+      - Deployment & Operations
+      - Domain-Specific Tools
+
+      Include both popular commercial and open-source options. Use web search to ensure current recommendations (2024-2025).]]
+    sections:
+      - id: tool-categories
+        type: subsections
+        instruction: |
+          [[LLM: Create subsections for each tool category relevant to this domain]]
+        template: |
+          ### {{tool_category}}
+
+          {{tool_list_with_descriptions}}
+
+      - id: technology-stack
+        title: Typical Technology Stack
+        instruction: |
+          [[LLM: Describe a common technology stack for this domain, including frontend, backend, database, infrastructure, etc.]]
+        template: "{{technology_stack_description}}"
+
+  - id: terminology
+    title: 6. Key Terminology & Concepts
+    instruction: |
+      [[LLM: Create a glossary of essential domain terminology.
+
+      Include:
+      - Domain-specific jargon
+      - Common acronyms
+      - Technical concepts unique to this domain
+      - Industry buzzwords with real definitions
+
+      Define 15-25 key terms. Order alphabetically or by importance.]]
+    sections:
+      - id: glossary
+        title: Domain Glossary
+        type: definition-list
+        instruction: |
+          [[LLM: For each term, provide a clear, concise definition (1-3 sentences)]]
+        template: |
+          - **{{term}}**: {{definition}}
+
+  - id: standards-compliance
+    title: 7. Standards & Compliance
+    instruction: |
+      [[LLM: Document relevant industry standards, regulations, and compliance requirements.
+
+      Include:
+      - Regulatory frameworks (laws, regulations)
+      - Industry standards (ISO, IEEE, etc.)
+      - Certification requirements
+      - Quality standards
+      - Security/privacy requirements
+      - Accessibility standards
+
+      Be specific about which apply to this domain. If minimal compliance requirements exist, note that explicitly.]]
+    sections:
+      - id: regulations
+        title: Regulatory Requirements
+        instruction: |
+          [[LLM: List applicable regulations and laws (e.g., GDPR, HIPAA, SOX). If none specific to domain, note general requirements.]]
+        template: "{{regulatory_requirements}}"
+
+      - id: industry-standards
+        title: Industry Standards
+        instruction: |
+          [[LLM: Document relevant industry standards and certifications]]
+        template: "{{industry_standards}}"
+
+      - id: quality-standards
+        title: Quality & Best Practice Standards
+        instruction: |
+          [[LLM: Note quality frameworks and best practice guidelines]]
+        template: "{{quality_standards}}"
+
+  - id: best-practices
+    title: 8. Best Practices & Recommendations
+    instruction: |
+      [[LLM: Synthesize best practices from research and industry knowledge.
+
+      Organize by category:
+      - Planning & Requirements
+      - Design & Architecture
+      - Implementation & Development
+      - Testing & Quality Assurance
+      - Deployment & Operations
+      - Team Collaboration
+      - Risk Management
+
+      Provide 3-5 concrete, actionable practices per category.]]
+    sections:
+      - id: practice-categories
+        type: subsections
+        instruction: |
+          [[LLM: Create subsections for each practice category]]
+        template: |
+          ### {{practice_category}}
+
+          {{best_practices_list}}
+
+  - id: challenges-risks
+    title: 9. Common Challenges & Risk Areas
+    instruction: |
+      [[LLM: Identify typical challenges and risks encountered in this domain.
+
+      Include:
+      - Technical challenges
+      - Process/workflow issues
+      - Resource/skill constraints
+      - Market/business risks
+      - Compliance pitfalls
+
+      For each, note common mitigation strategies.]]
+    template: |
+      {{challenges_and_risks_content}}
+
+  - id: resources
+    title: 10. Additional Resources
+    instruction: |
+      [[LLM: Provide curated list of valuable resources for learning more about this domain.
+
+      Include:
+      - Key industry publications/blogs
+      - Professional organizations
+      - Community forums
+      - Learning resources (courses, books)
+      - Conferences and events
+      - Influential thought leaders
+
+      Focus on high-quality, current resources.]]
+    sections:
+      - id: publications
+        title: Key Publications & Blogs
+        template: "{{publications_list}}"
+
+      - id: organizations
+        title: Professional Organizations
+        template: "{{organizations_list}}"
+
+      - id: communities
+        title: Communities & Forums
+        template: "{{communities_list}}"
+
+      - id: learning
+        title: Learning Resources
+        template: "{{learning_resources_list}}"
+
+  - id: next-steps
+    title: Next Steps
+    sections:
+      - id: handoff
+        title: Planning Agent Handoff
+        content: |
+          This Domain Context document provides foundational knowledge for {{domain_name}}.
+
+          **Recommended Next Steps:**
+          1. **Analyst Agent** - Use this domain context to inform market research, competitive analysis, and project brief creation
+          2. **PM Agent** - Reference domain roles, processes, and methodologies when creating PRD
+          3. **Architect Agent** - Consider domain-specific tools, technologies, and compliance requirements in architecture design
+
+          All planning agents should consult this document to ensure domain-appropriate recommendations and decisions.
