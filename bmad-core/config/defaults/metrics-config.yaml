@@ -1,0 +1,69 @@
+# BMAD Metrics Configuration
+# Controls metrics collection, storage, and dashboards
+
+# Collection settings
+collection:
+  enabled: true
+  frequency:
+    real_time:
+      - eval_pass_rate
+      - agent_utilization
+    per_commit:
+      - test_coverage
+      - code_quality
+    per_story:
+      - validation_time
+      - traceability
+    per_sprint:
+      - learning_metrics
+      - quality_metrics
+    per_phase:
+      - phase_duration
+      - gate_time
+
+# Storage settings
+storage:
+  format: json  # json, influxdb
+  retention_days: 90
+  retention_aggregated_days: 365
+  location: .bmad-metrics/
+
+# Target metrics
+targets:
+  autonomy:
+    agent_switch_automation_rate: 0.80
+    human_intervention_rate: 0.20
+    workflow_completion_time_reduction: 0.50
+    agent_utilization: 0.70
+  truth_reliability:
+    domain_coverage: 1.00
+    traceability_score: 1.00
+    eval_pass_rate: 0.95
+    drift_detection_rate: 0.05
+    oracle_accuracy: 0.90
+  quality:
+    bug_escape_rate: 0.10
+    requirements_defect_rate: 0.05
+    architectural_drift: 0.02
+    test_coverage: 0.90
+  learning:
+    reflection_insights_per_sprint: 10
+    process_optimization_rate: 0.20
+
+# Dashboard settings
+dashboards:
+  enabled: true
+  port: 3001
+  real_time_enabled: true
+  health_enabled: true
+  learning_enabled: true
+  project_enabled: true
+
+# Alerting
+alerting:
+  enabled: true
+  thresholds:
+    eval_pass_rate_below: 0.90
+    drift_detection_above: 0.10
+    agent_utilization_below: 0.50
+    test_coverage_below: 0.85

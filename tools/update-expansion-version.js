@@ -1,6 +1,11 @@
-const fs = require('node:fs');
-const path = require('node:path');
-const yaml = require('js-yaml');
+import fs from 'node:fs';
+import path from 'node:path';
+import yaml from 'js-yaml';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const arguments_ = process.argv.slice(2);
 

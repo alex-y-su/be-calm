@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BMAD - Health Dashboard</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0e27; color: #e0e0e0; }
+    .header { background: #1a1f3a; padding: 20px; border-bottom: 2px solid #2a3f5f; }
+    .header h1 { font-size: 24px; color: #4a9eff; }
+    .nav { margin-top: 15px; display: flex; gap: 15px; }
+    .nav a { color: #8fa9c4; text-decoration: none; padding: 8px 16px; border-radius: 4px; transition: all 0.2s; }
+    .nav a:hover, .nav a.active { background: #2a3f5f; color: #4a9eff; }
+    .container { padding: 30px; max-width: 1400px; margin: 0 auto; }
+    .card { background: #1a1f3a; border: 1px solid #2a3f5f; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+    .card h2 { font-size: 16px; color: #8fa9c4; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+    .health-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+    .health-item { text-align: center; padding: 15px; background: #0f1326; border-radius: 6px; }
+    .health-label { font-size: 12px; color: #6a7a8f; margin-bottom: 8px; }
+    .health-value { font-size: 28px; font-weight: bold; color: #4a9eff; }
+    .health-value.good { color: #4ade80; }
+    .health-value.warning { color: #fbbf24; }
+    .health-value.error { color: #ef4444; }
+    .status-badge { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: bold; }
+    .status-badge.healthy { background: #065f46; color: #4ade80; }
+    .status-badge.degraded { background: #78350f; color: #fbbf24; }
+    .status-badge.unhealthy { background: #7f1d1d; color: #ef4444; }
+    .timestamp { font-size: 12px; color: #6a7a8f; margin-top: 20px; text-align: right; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>BMAD Health Dashboard</h1>
+    <div class="nav">
+      <a href="/dashboard/realtime">Real-time</a>
+      <a href="/dashboard/health" class="active">Health</a>
+      <a href="/dashboard/learning">Learning</a>
+      <a href="/dashboard/project">Project</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <h2>System Status: <span class="status-badge healthy" id="system-status">Healthy</span></h2>
+    </div>
+
+    <div class="card">
+      <h2>Truth Alignment</h2>
+      <div class="health-grid">
+        <div class="health-item">
+          <div class="health-label">Domain Coverage</div>
+          <div class="health-value good" id="domain-coverage">--</div>
+        </div>
+        <div class="health-item">
+          <div class="health-label">Traceability</div>
+          <div class="health-value good" id="traceability">--</div>
+        </div>
+        <div class="health-item">
+          <div class="health-label">Eval Pass Rate</div>
+          <div class="health-value good" id="eval-pass-rate">--</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Quality Metrics</h2>
+      <div class="health-grid">
+        <div class="health-item">
+          <div class="health-label">Test Coverage</div>
+          <div class="health-value good" id="test-coverage">--</div>
+        </div>
+        <div class="health-item">
+          <div class="health-label">Code Quality</div>
+          <div class="health-value good" id="code-quality">--</div>
+        </div>
+        <div class="health-item">
+          <div class="health-label">Bug Escape Rate</div>
+          <div class="health-value good" id="bug-escape">--</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timestamp" id="last-update">Last updated: --</div>
+  </div>
+
+  <script>
+    async function fetchHealth() {
+      try {
+        const response = await fetch('/api/health');
+        const data = await response.json();
+
+        // Update truth alignment
+        if (data.truth_alignment) {
+          updateMetric('domain-coverage', data.truth_alignment.domain_coverage);
+          updateMetric('traceability', data.truth_alignment.traceability);
+          updateMetric('eval-pass-rate', data.truth_alignment.eval_pass_rate);
+        }
+
+        // Update quality metrics
+        if (data.quality) {
+          updateMetric('test-coverage', data.quality.test_coverage);
+        }
+
+        // Update system status
+        const statusElem = document.getElementById('system-status');
+        statusElem.textContent = data.status || 'Unknown';
+        statusElem.className = 'status-badge ' + (data.status === 'healthy' ? 'healthy' :
+                               data.status === 'degraded' ? 'degraded' : 'unhealthy');
+
+        // Update timestamp
+        document.getElementById('last-update').textContent =
+          'Last updated: ' + new Date(data.timestamp).toLocaleTimeString();
+
+      } catch (error) {
+        console.error('Failed to fetch health:', error);
+      }
+    }
+
+    function updateMetric(elementId, value) {
+      const elem = document.getElementById(elementId);
+      if (value !== undefined && value !== null) {
+        const percent = (value * 100).toFixed(1);
+        elem.textContent = percent + '%';
+        elem.className = 'health-value ' + (value >= 0.90 ? 'good' :
+                         value >= 0.70 ? 'warning' : 'error');
+      }
+    }
+
+    // Initial fetch and periodic updates
+    fetchHealth();
+    setInterval(fetchHealth, 10000); // Update every 10 seconds
+  </script>
+</body>
+</html>

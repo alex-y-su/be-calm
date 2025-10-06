@@ -3,9 +3,9 @@
  * Reduces duplicate file system operations and memory usage
  */
 
-const path = require('node:path');
-const fs = require('fs-extra');
-const moduleManager = require('./module-manager');
+import path from 'node:path';
+import fs from 'fs-extra';
+import moduleManager from './module-manager.js';
 
 class ResourceLocator {
   constructor() {
@@ -102,8 +102,8 @@ class ResourceLocator {
     }
 
     const agents = [];
-    const yaml = require('js-yaml');
-    const { extractYamlFromAgent } = require('../../lib/yaml-utils');
+    const { default: yaml } = await import('js-yaml');
+    const { extractYamlFromAgent } = await import('../../lib/yaml-utils.js');
 
     // Get agents from bmad-core
     const coreAgents = await this.findFiles('agents/*.md', {
@@ -157,7 +157,7 @@ class ResourceLocator {
           const configPath = path.join(expansionPacksPath, entry.name, 'config.yaml');
           if (await fs.pathExists(configPath)) {
             try {
-              const yaml = require('js-yaml');
+              const { default: yaml } = await import('js-yaml');
               const config = yaml.load(await fs.readFile(configPath, 'utf8'));
               packs.push({
                 id: entry.name,
@@ -200,7 +200,7 @@ class ResourceLocator {
 
     if (await fs.pathExists(teamPath)) {
       try {
-        const yaml = require('js-yaml');
+        const { default: yaml } = await import('js-yaml');
         const content = await fs.readFile(teamPath, 'utf8');
         const config = yaml.load(content);
         this._pathCache.set(cacheKey, config);
@@ -231,7 +231,7 @@ class ResourceLocator {
     }
 
     const content = await fs.readFile(agentPath, 'utf8');
-    const { extractYamlFromAgent } = require('../../lib/yaml-utils');
+    const { extractYamlFromAgent } = await import('../../lib/yaml-utils.js');
     const yamlContent = extractYamlFromAgent(content);
 
     if (!yamlContent) {
@@ -239,7 +239,7 @@ class ResourceLocator {
     }
 
     try {
-      const yaml = require('js-yaml');
+      const { default: yaml } = await import('js-yaml');
       const metadata = yaml.load(yamlContent);
       const dependencies = metadata.dependencies || {};
 
@@ -288,7 +288,7 @@ class ResourceLocator {
 
     if (await fs.pathExists(idePath)) {
       try {
-        const yaml = require('js-yaml');
+        const { default: yaml } = await import('js-yaml');
         const content = await fs.readFile(idePath, 'utf8');
         const config = yaml.load(content);
         this._pathCache.set(cacheKey, config);
@@ -305,4 +305,4 @@ class ResourceLocator {
 // Singleton instance
 const resourceLocator = new ResourceLocator();
 
-module.exports = resourceLocator;
+export default resourceLocator;

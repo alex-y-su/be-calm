@@ -5,15 +5,15 @@
  No external options or flags required. Safe to run multiple times.
 */
 
-const os = require('node:os');
-const path = require('node:path');
-const fs = require('fs-extra');
-const { promisify } = require('node:util');
-const { execFile } = require('node:child_process');
-const process = require('node:process');
-const execFileAsync = promisify(execFile);
+import os from 'node:os';
+import path from 'node:path';
+import fs from 'fs-extra';
+import { promisify } from 'node:util';
+import { execFile } from 'node:child_process';
+import process from 'node:process';
+import { findProjectRoot } from './projectRoot.js';
 
-const { findProjectRoot } = require('./projectRoot.js');
+const execFileAsync = promisify(execFile);
 
 async function cmdAvailable(cmd) {
   try {

@@ -1,10 +1,8 @@
-const fs = require('fs-extra');
-const path = require('node:path');
-
-// Deno/Node compatibility: explicitly import process
-const process = require('node:process');
-const { execFile } = require('node:child_process');
-const { promisify } = require('node:util');
+import fs from 'fs-extra';
+import path from 'node:path';
+import process from 'node:process';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 const execFileAsync = promisify(execFile);
 
 // Simple memoization across calls (keyed by realpath of startDir)
@@ -203,4 +201,4 @@ async function findProjectRoot(startDir) {
   }
 }
 
-module.exports = { findProjectRoot };
+export { findProjectRoot };

@@ -1,6 +1,6 @@
-const fsp = require('node:fs/promises');
-const path = require('node:path');
-const { Buffer } = require('node:buffer');
+import fsp from 'node:fs/promises';
+import path from 'node:path';
+import { Buffer } from 'node:buffer';
 
 /**
  * Efficiently determine if a file is binary without reading the whole file.
@@ -75,6 +75,4 @@ async function isBinaryFile(filePath) {
   }
 }
 
-module.exports = {
-  isBinaryFile,
-};
+export { isBinaryFile };

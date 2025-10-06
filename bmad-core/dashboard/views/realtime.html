@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BMAD - Real-time Dashboard</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0e27; color: #e0e0e0; }
+    .header { background: #1a1f3a; padding: 20px; border-bottom: 2px solid #2a3f5f; }
+    .header h1 { font-size: 24px; color: #4a9eff; }
+    .nav { margin-top: 15px; display: flex; gap: 15px; }
+    .nav a { color: #8fa9c4; text-decoration: none; padding: 8px 16px; border-radius: 4px; transition: all 0.2s; }
+    .nav a:hover, .nav a.active { background: #2a3f5f; color: #4a9eff; }
+    .container { padding: 30px; max-width: 1400px; margin: 0 auto; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 30px; }
+    .card { background: #1a1f3a; border: 1px solid #2a3f5f; border-radius: 8px; padding: 20px; }
+    .card h2 { font-size: 16px; color: #8fa9c4; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+    .metric { margin-bottom: 15px; }
+    .metric-label { font-size: 14px; color: #6a7a8f; margin-bottom: 5px; }
+    .metric-value { font-size: 32px; font-weight: bold; color: #4a9eff; }
+    .metric-value.good { color: #4ade80; }
+    .metric-value.warning { color: #fbbf24; }
+    .metric-value.error { color: #ef4444; }
+    .gauge { width: 100%; height: 100px; position: relative; margin-top: 10px; }
+    .gauge-bar { width: 100%; height: 20px; background: #2a3f5f; border-radius: 10px; overflow: hidden; }
+    .gauge-fill { height: 100%; background: linear-gradient(90deg, #4ade80, #4a9eff); transition: width 0.5s; }
+    .status-indicator { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; }
+    .status-indicator.passing { background: #4ade80; }
+    .status-indicator.warning { background: #fbbf24; }
+    .status-indicator.failing { background: #ef4444; }
+    .timestamp { font-size: 12px; color: #6a7a8f; margin-top: 20px; text-align: right; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>BMAD Real-time Dashboard</h1>
+    <div class="nav">
+      <a href="/dashboard/realtime" class="active">Real-time</a>
+      <a href="/dashboard/health">Health</a>
+      <a href="/dashboard/learning">Learning</a>
+      <a href="/dashboard/project">Project</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="grid">
+      <div class="card">
+        <h2>Eval Test Pass Rate</h2>
+        <div class="metric">
+          <div class="metric-value" id="eval-pass-rate">--</div>
+          <div class="gauge">
+            <div class="gauge-bar">
+              <div class="gauge-fill" id="eval-pass-rate-bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Agent Utilization</h2>
+        <div class="metric">
+          <div class="metric-value" id="agent-utilization">--</div>
+          <div class="gauge">
+            <div class="gauge-bar">
+              <div class="gauge-fill" id="agent-utilization-bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Validation Gates</h2>
+        <div class="metric">
+          <div class="metric-label">
+            <span class="status-indicator passing" id="oracle-status"></span>
+            Oracle Validation
+          </div>
+          <div class="metric-label">
+            <span class="status-indicator passing" id="eval-status"></span>
+            Eval Tests
+          </div>
+          <div class="metric-label">
+            <span class="status-indicator passing" id="trace-status"></span>
+            Traceability
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Drift Alerts</h2>
+        <div class="metric">
+          <div class="metric-value" id="drift-alerts">0</div>
+          <div class="metric-label">Active Alerts</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timestamp" id="last-update">Last updated: --</div>
+  </div>
+
+  <script>
+    async function fetchMetrics() {
+      try {
+        const response = await fetch('/api/realtime');
+        const data = await response.json();
+
+        // Update eval pass rate
+        if (data.eval_pass_rate?.latest !== undefined) {
+          const rate = (data.eval_pass_rate.latest * 100).toFixed(1);
+          document.getElementById('eval-pass-rate').textContent = rate + '%';
+          document.getElementById('eval-pass-rate-bar').style.width = rate + '%';
+
+          const elem = document.getElementById('eval-pass-rate');
+          elem.className = 'metric-value ' + (data.eval_pass_rate.latest >= 0.95 ? 'good' :
+                            data.eval_pass_rate.latest >= 0.80 ? 'warning' : 'error');
+        }
+
+        // Update agent utilization
+        if (data.agent_utilization?.latest !== undefined) {
+          const util = (data.agent_utilization.latest * 100).toFixed(1);
+          document.getElementById('agent-utilization').textContent = util + '%';
+          document.getElementById('agent-utilization-bar').style.width = util + '%';
+        }
+
+        // Update validation gates
+        const gates = data.validation_gates || {};
+        updateGateStatus('oracle-status', gates.oracle);
+        updateGateStatus('eval-status', gates.eval);
+        updateGateStatus('trace-status', gates.traceability);
+
+        // Update drift alerts
+        document.getElementById('drift-alerts').textContent = data.drift_detected || 0;
+
+        // Update timestamp
+        document.getElementById('last-update').textContent =
+          'Last updated: ' + new Date(data.timestamp).toLocaleTimeString();
+
+      } catch (error) {
+        console.error('Failed to fetch metrics:', error);
+      }
+    }
+
+    function updateGateStatus(elementId, status) {
+      const elem = document.getElementById(elementId);
+      elem.className = 'status-indicator ' + (status === 'passing' ? 'passing' :
+                        status === 'warning' ? 'warning' : 'failing');
+    }
+
+    // Initial fetch and periodic updates
+    fetchMetrics();
+    setInterval(fetchMetrics, 5000); // Update every 5 seconds
+  </script>
+</body>
+</html>

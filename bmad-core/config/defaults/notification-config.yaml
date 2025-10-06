@@ -1,0 +1,77 @@
+# BMAD Notification Configuration
+# Controls notification channels and preferences
+
+# Available channels
+channels:
+  cli:
+    enabled: true
+    format: pretty  # pretty, json, minimal
+  web:
+    enabled: true
+    real_time: true
+  email:
+    enabled: false
+    smtp_host: ""
+    smtp_port: 587
+    from_address: ""
+  slack:
+    enabled: false
+    webhook_url: ""
+    channel: "#bmad-notifications"
+
+# Notification levels
+levels:
+  info:
+    enabled: true
+    channels:
+      - cli
+      - web
+  warning:
+    enabled: true
+    channels:
+      - cli
+      - web
+  error:
+    enabled: true
+    channels:
+      - cli
+      - web
+      - email
+  critical:
+    enabled: true
+    channels:
+      - cli
+      - web
+      - email
+      - slack
+
+# Notification types
+types:
+  agent_started:
+    level: info
+    enabled: true
+  agent_completed:
+    level: info
+    enabled: true
+  validation_warning:
+    level: warning
+    enabled: true
+  validation_failure:
+    level: error
+    enabled: true
+  drift_detected:
+    level: warning
+    enabled: true
+  emergency_stop:
+    level: critical
+    enabled: true
+  system_failure:
+    level: critical
+    enabled: true
+
+# Quiet hours (optional)
+quiet_hours:
+  enabled: false
+  start_time: "22:00"
+  end_time: "08:00"
+  emergency_only: true

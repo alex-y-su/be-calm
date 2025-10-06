@@ -1,7 +1,7 @@
-const fs = require('fs-extra');
-const path = require('node:path');
-const os = require('node:os');
-const { isBinaryFile } = require('./binary.js');
+import fs from 'fs-extra';
+import path from 'node:path';
+import os from 'node:os';
+import { isBinaryFile } from './binary.js';
 
 /**
  * Aggregate file contents with bounded concurrency.
@@ -71,6 +71,4 @@ async function aggregateFileContents(files, rootDir, spinner = null) {
   return results;
 }
 
-module.exports = {
-  aggregateFileContents,
-};
+export { aggregateFileContents };

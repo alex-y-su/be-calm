@@ -1,8 +1,8 @@
-const { Command } = require('commander');
-const WebBuilder = require('./builders/web-builder');
-const V3ToV4Upgrader = require('./upgraders/v3-to-v4-upgrader');
-const IdeSetup = require('./installer/lib/ide-setup');
-const path = require('node:path');
+import { Command } from 'commander';
+import WebBuilder from './builders/web-builder.js';
+import V3ToV4Upgrader from './upgraders/v3-to-v4-upgrader.js';
+import IdeSetup from './installer/lib/ide-setup.js';
+import path from 'node:path';
 
 const program = new Command();
 

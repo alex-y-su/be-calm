@@ -1,8 +1,8 @@
-const path = require('node:path');
-const discovery = require('./discovery.js');
-const ignoreRules = require('./ignoreRules.js');
-const { isBinaryFile } = require('./binary.js');
-const { aggregateFileContents } = require('./aggregate.js');
+import path from 'node:path';
+import * as discovery from './discovery.js';
+import * as ignoreRules from './ignoreRules.js';
+import { isBinaryFile } from './binary.js';
+import { aggregateFileContents } from './aggregate.js';
 
 // Backward-compatible signature; delegate to central loader
 async function parseGitignore(gitignorePath) {
@@ -26,10 +26,4 @@ async function filterFiles(files, rootDir) {
   return filteredRelative.map((p) => path.resolve(rootDir, p));
 }
 
-module.exports = {
-  parseGitignore,
-  discoverFiles,
-  isBinaryFile,
-  aggregateFileContents,
-  filterFiles,
-};
+export { parseGitignore, discoverFiles, isBinaryFile, aggregateFileContents, filterFiles };

@@ -1,14 +1,19 @@
-const path = require('node:path');
-const fs = require('fs-extra');
-const yaml = require('js-yaml');
-const chalk = require('chalk');
-const inquirer = require('inquirer');
-const cjson = require('comment-json');
-const fileManager = require('./file-manager');
-const configLoader = require('./config-loader');
-const { extractYamlFromAgent } = require('../../lib/yaml-utils');
-const BaseIdeSetup = require('./ide-base-setup');
-const resourceLocator = require('./resource-locator');
+import path from 'node:path';
+import fs from 'fs-extra';
+import yaml from 'js-yaml';
+import chalk from 'chalk';
+import inquirer from 'inquirer';
+import cjson from 'comment-json';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
+import fileManager from './file-manager.js';
+import configLoader from './config-loader.js';
+import { extractYamlFromAgent } from '../../lib/yaml-utils.js';
+import BaseIdeSetup from './ide-base-setup.js';
+import resourceLocator from './resource-locator.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 class IdeSetup extends BaseIdeSetup {
   constructor() {
@@ -349,7 +354,7 @@ class IdeSetup extends BaseIdeSetup {
           const packKey = packId.replace(/^bmad-/, '').replaceAll('/', '-');
           const info = { packId, packPath, packKey, agents: new Set(), tasks: new Set() };
 
-          const glob = require('glob');
+          const { glob } = await import('glob');
           const agentsDir = path.join(packPath, 'agents');
           if (await fileManager.pathExists(agentsDir)) {
             const files = glob.sync('*.md', { cwd: agentsDir });
@@ -1399,7 +1404,7 @@ class IdeSetup extends BaseIdeSetup {
     ];
 
     // Also check expansion pack directories
-    const glob = require('glob');
+    const { glob } = await import('glob');
     const expansionDirectories = glob.sync('.*/agents', { cwd: installDir });
     for (const expDir of expansionDirectories) {
       possiblePaths.push(path.join(installDir, expDir, `${agentId}.md`));
@@ -1415,7 +1420,7 @@ class IdeSetup extends BaseIdeSetup {
   }
 
   async getAllAgentIds(installDir) {
-    const glob = require('glob');
+    const { glob } = await import('glob');
     const allAgentIds = [];
 
     // Check core agents in .bmad-core or root
@@ -1451,7 +1456,7 @@ class IdeSetup extends BaseIdeSetup {
     }
 
     if (await fileManager.pathExists(agentsDir)) {
-      const glob = require('glob');
+      const { glob } = await import('glob');
       const agentFiles = glob.sync('*.md', { cwd: agentsDir });
       allAgentIds.push(...agentFiles.map((file) => path.basename(file, '.md')));
     }
@@ -1461,7 +1466,7 @@ class IdeSetup extends BaseIdeSetup {
 
   async getCoreTaskIds(installDir) {
     const allTaskIds = [];
-    const glob = require('glob');
+    const { glob } = await import('glob');
 
     // Check core tasks in .bmad-core or root only
     let tasksDir = path.join(installDir, '.bmad-core', 'tasks');
@@ -1477,7 +1482,7 @@ class IdeSetup extends BaseIdeSetup {
     // Check common tasks
     const commonTasksDir = path.join(installDir, 'common', 'tasks');
     if (await fileManager.pathExists(commonTasksDir)) {
-      const glob = require('glob');
+      const { glob } = await import('glob');
       const commonTaskFiles = glob.sync('*.md', { cwd: commonTasksDir });
       allTaskIds.push(...commonTaskFiles.map((file) => path.basename(file, '.md')));
     }
@@ -1493,7 +1498,7 @@ class IdeSetup extends BaseIdeSetup {
     ];
 
     // Also check expansion pack directories
-    const glob = require('glob');
+    const { glob } = await import('glob');
     const expansionDirectories = glob.sync('.*/agents', { cwd: installDir });
     for (const expDir of expansionDirectories) {
       possiblePaths.push(path.join(installDir, expDir, `${agentId}.md`));
@@ -1526,7 +1531,7 @@ class IdeSetup extends BaseIdeSetup {
   }
 
   async getAllTaskIds(installDir) {
-    const glob = require('glob');
+    const { glob } = await import('glob');
     const allTaskIds = [];
 
     // Check core tasks in .bmad-core or root
@@ -1579,7 +1584,7 @@ class IdeSetup extends BaseIdeSetup {
     ];
 
     // Also check expansion pack directories
-    const glob = require('glob');
+    const { glob } = await import('glob');
 
     // Check dot folder expansion packs
     const expansionDirectories = glob.sync('.*/tasks', { cwd: installDir });
@@ -1632,7 +1637,7 @@ class IdeSetup extends BaseIdeSetup {
     const expansionPacks = [];
 
     // Check for dot-prefixed expansion packs in install directory
-    const glob = require('glob');
+    const { glob } = await import('glob');
     const dotExpansions = glob.sync('.bmad-*', { cwd: installDir });
 
     for (const dotExpansion of dotExpansions) {
@@ -1690,7 +1695,7 @@ class IdeSetup extends BaseIdeSetup {
     }
 
     try {
-      const glob = require('glob');
+      const { glob } = await import('glob');
       const agentFiles = glob.sync('*.md', { cwd: agentsDir });
       return agentFiles.map((file) => path.basename(file, '.md'));
     } catch (error) {
@@ -1706,7 +1711,7 @@ class IdeSetup extends BaseIdeSetup {
     }
 
     try {
-      const glob = require('glob');
+      const { glob } = await import('glob');
       const taskFiles = glob.sync('*.md', { cwd: tasksDir });
       return taskFiles.map((file) => path.basename(file, '.md'));
     } catch (error) {
@@ -2360,8 +2365,8 @@ tools: ['changes', 'codebase', 'fetch', 'findTestFiles', 'githubRepo', 'problems
   }
 
   async setupAuggieCLI(installDir, selectedAgent, spinner = null, preConfiguredSettings = null) {
-    const os = require('node:os');
-    const inquirer = require('inquirer');
+    const os = await import('node:os');
+    const { default: inquirer } = await import('inquirer');
     const agents = selectedAgent ? [selectedAgent] : await this.getAllAgentIds(installDir);
 
     // Get the IDE configuration to access location options
@@ -2450,4 +2455,5 @@ tools: ['changes', 'codebase', 'fetch', 'findTestFiles', 'githubRepo', 'problems
   }
 }
 
-module.exports = new IdeSetup();
+const ideSetup = new IdeSetup();
+export default ideSetup;

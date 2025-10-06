@@ -1,13 +1,20 @@
-const path = require('node:path');
-const fs = require('fs-extra');
-const chalk = require('chalk');
-const ora = require('ora');
-const inquirer = require('inquirer');
-const fileManager = require('./file-manager');
-const configLoader = require('./config-loader');
-const ideSetup = require('./ide-setup');
-const { extractYamlFromAgent } = require('../../lib/yaml-utils');
-const resourceLocator = require('./resource-locator');
+import path from 'node:path';
+import fs from 'fs-extra';
+import chalk from 'chalk';
+import ora from 'ora';
+import inquirer from 'inquirer';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
+import { createRequire } from 'node:module';
+import fileManager from './file-manager.js';
+import configLoader from './config-loader.js';
+import ideSetup from './ide-setup.js';
+import { extractYamlFromAgent } from '../../lib/yaml-utils.js';
+import resourceLocator from './resource-locator.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const require = createRequire(import.meta.url);
 
 class Installer {
   async getCoreVersion() {
@@ -627,7 +634,7 @@ class Installer {
     switch (action) {
       case 'upgrade': {
         console.log(chalk.cyan('\n📦 Starting v3 to v4 upgrade process...'));
-        const V3ToV4Upgrader = require('../../upgraders/v3-to-v4-upgrader');
+        const { default: V3ToV4Upgrader } = await import('../../upgraders/v3-to-v4-upgrader.js');
         const upgrader = new V3ToV4Upgrader();
         return await upgrader.upgrade({
           projectPath: installDir,
@@ -798,7 +805,7 @@ class Installer {
 
         if (await fileManager.pathExists(commonSourcePath)) {
           // This is a common/ file - needs template processing
-          const fs = require('node:fs').promises;
+          const { promises: fs } = await import('node:fs');
           const content = await fs.readFile(commonSourcePath, 'utf8');
           const updatedContent = content.replaceAll('{root}', '.bmad-core');
           await fileManager.ensureDirectory(path.dirname(destinationPath));
@@ -816,7 +823,7 @@ class Installer {
               const ymlFile = file.replace(/\.yaml$/, '.yml');
               const ymlPath = path.join(installDir, ymlFile);
               if (await fileManager.pathExists(ymlPath)) {
-                const fs = require('node:fs').promises;
+                const { promises: fs } = await import('node:fs');
                 await fs.unlink(ymlPath);
                 console.log(chalk.dim(`  Removed legacy: ${ymlFile} (replaced by ${file})`));
               }
@@ -1353,8 +1360,8 @@ class Installer {
     pack,
     spinner,
   ) {
-    const yaml = require('js-yaml');
-    const fs = require('node:fs').promises;
+    const { default: yaml } = await import('js-yaml');
+    const { promises: fs } = await import('node:fs');
 
     // Find all agent files in the expansion pack
     const agentFiles = await resourceLocator.findFiles('agents/*.md', {
@@ -1446,8 +1453,8 @@ class Installer {
   }
 
   async resolveExpansionPackCoreAgents(installDir, expansionDotFolder, packId, spinner) {
-    const yaml = require('js-yaml');
-    const fs = require('node:fs').promises;
+    const { default: yaml } = await import('js-yaml');
+    const { promises: fs } = await import('node:fs');
 
     // Find all team files in the expansion pack
     const teamFiles = await resourceLocator.findFiles('agent-teams/*.yaml', {
@@ -1710,7 +1717,7 @@ class Installer {
   }
 
   async copyCommonItems(installDir, targetSubdir, spinner) {
-    const fs = require('node:fs').promises;
+    const { promises: fs } = await import('node:fs');
     const sourceBase = path.dirname(path.dirname(path.dirname(path.dirname(__filename)))); // Go up to project root
     const commonPath = path.join(sourceBase, 'common');
     const targetPath = path.join(installDir, targetSubdir);
@@ -1751,7 +1758,7 @@ class Installer {
   }
 
   async copyDocsItems(installDir, targetSubdir, spinner) {
-    const fs = require('node:fs').promises;
+    const { promises: fs } = await import('node:fs');
     const sourceBase = path.dirname(path.dirname(path.dirname(path.dirname(__filename)))); // Go up to project root
     const docsPath = path.join(sourceBase, 'docs');
     const targetPath = path.join(installDir, targetSubdir);
@@ -1800,7 +1807,7 @@ class Installer {
 
   async detectExpansionPacks(installDir) {
     const expansionPacks = {};
-    const glob = require('glob');
+    const { glob } = await import('glob');
 
     // Find all dot folders that might be expansion packs
     const dotFolders = glob.sync('.*', {
@@ -1877,7 +1884,7 @@ class Installer {
 
         if (await fileManager.pathExists(commonSourcePath)) {
           // This is a common/ file - needs template processing
-          const fs = require('node:fs').promises;
+          const { promises: fs } = await import('node:fs');
           const content = await fs.readFile(commonSourcePath, 'utf8');
           const updatedContent = content.replaceAll('{root}', `.${packId}`);
           await fileManager.ensureDirectory(path.dirname(destinationPath));
@@ -1927,8 +1934,8 @@ class Installer {
   }
 
   async cleanupLegacyYmlFiles(installDir, spinner) {
-    const glob = require('glob');
-    const fs = require('node:fs').promises;
+    const { glob } = await import('glob');
+    const { promises: fs } = await import('node:fs');
 
     try {
       // Find all .yml files in the installation directory
@@ -1988,7 +1995,7 @@ class Installer {
   }
 
   async flatten(options) {
-    const { spawn } = require('node:child_process');
+    const { spawn } = await import('node:child_process');
     const flattenerPath = path.join(__dirname, '..', '..', 'flattener', 'main.js');
 
     const arguments_ = [];
@@ -2010,4 +2017,5 @@ class Installer {
   }
 }
 
-module.exports = new Installer();
+const installer = new Installer();
+export default installer;

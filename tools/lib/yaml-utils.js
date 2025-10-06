@@ -8,7 +8,7 @@
  * @param {boolean} cleanCommands - Whether to clean command descriptions (default: false)
  * @returns {string|null} - The extracted YAML content or null if not found
  */
-function extractYamlFromAgent(agentContent, cleanCommands = false) {
+export function extractYamlFromAgent(agentContent, cleanCommands = false) {
   // Remove carriage returns and match YAML block
   const yamlMatch = agentContent.replaceAll('\r', '').match(/```ya?ml\n([\s\S]*?)\n```/);
   if (!yamlMatch) return null;
@@ -23,7 +23,3 @@ function extractYamlFromAgent(agentContent, cleanCommands = false) {
 
   return yamlContent;
 }
-
-module.exports = {
-  extractYamlFromAgent,
-};

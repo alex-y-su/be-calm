@@ -1,0 +1,64 @@
+# BMAD Deployment Configuration
+# Controls deployment mode and environment settings
+
+# Deployment mode
+mode: local_development  # local_development, team_shared, ci_cd_integration
+
+# Health checks
+health_checks:
+  enabled: true
+  frequency: startup  # startup, runtime, periodic, all
+  startup_checks:
+    - verify_configuration
+    - check_agent_definitions
+    - validate_truth_schemas
+    - test_agent_invocation
+  runtime_checks:
+    - monitor_agent_responsiveness
+    - check_validation_system
+    - verify_state_persistence
+    - monitor_resource_usage
+  periodic_checks:
+    - truth_staleness
+    - metric_collection
+    - audit_log_integrity
+    - backup_system
+  periodic_frequency_hours: 24
+
+# Multi-user settings (team_shared mode)
+multi_user:
+  enabled: false
+  authentication: false
+  shared_storage: .bmad-shared/
+  user_workspaces: true
+
+# CI/CD integration (ci_cd_integration mode)
+ci_cd:
+  validation_only: true
+  auto_deploy_on_pass: false
+  pipeline_hooks:
+    pre_validation: []
+    post_validation: []
+    on_failure: []
+
+# Installation
+installation:
+  method: npm_local  # npm_global, npm_local, docker, cloud_hosted
+  auto_update_check: true
+  version_pinning: false
+
+# Templates
+templates:
+  greenfield:
+    autonomy_level: balanced
+    truth_validation: blocking
+    eval_coverage: 1.00
+  brownfield:
+    autonomy_level: conservative
+    truth_validation: blocking
+    compatibility_required: true
+    regression_tests: true
+  rapid_prototyping:
+    autonomy_level: aggressive
+    truth_validation: warning
+    eval_coverage: 0.80

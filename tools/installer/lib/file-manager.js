@@ -1,11 +1,15 @@
-const fs = require('fs-extra');
-const path = require('node:path');
-const crypto = require('node:crypto');
-const yaml = require('js-yaml');
-const chalk = require('chalk');
-const { createReadStream, createWriteStream, promises: fsPromises } = require('node:fs');
-const { pipeline } = require('node:stream/promises');
-const resourceLocator = require('./resource-locator');
+import fs from 'fs-extra';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import yaml from 'js-yaml';
+import chalk from 'chalk';
+import { createReadStream, createWriteStream, promises as fsPromises } from 'node:fs';
+import { pipeline } from 'node:stream/promises';
+import { Transform } from 'node:stream';
+import { createRequire } from 'node:module';
+import resourceLocator from './resource-locator.js';
+
+const require = createRequire(import.meta.url);
 
 class FileManager {
   constructor() {}
@@ -306,7 +310,6 @@ class FileManager {
       if (stats.size > 5 * 1024 * 1024) {
         // 5MB threshold
         // Use streaming for large files
-        const { Transform } = require('node:stream');
         const replaceStream = new Transform({
           transform(chunk, encoding, callback) {
             const modified = chunk.toString().replaceAll('{root}', rootValue);
@@ -386,4 +389,5 @@ class FileManager {
   manifestFile = 'install-manifest.yaml';
 }
 
-module.exports = new FileManager();
+const fileManagerInstance = new FileManager();
+export default fileManagerInstance;

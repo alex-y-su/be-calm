@@ -1,0 +1,323 @@
+# Intelligent Routing Rules Configuration
+# Defines routing patterns and agent selection rules for the Smart Router
+
+version: "1.0"
+updated: "2025-10-05"
+
+# Agent capabilities definition
+agent_capabilities:
+  pm:
+    capabilities:
+      - create_prd
+      - define_requirements
+      - write_stories
+      - prioritize_features
+    domains:
+      - product
+      - requirements
+      - planning
+    keywords:
+      - prd
+      - requirements
+      - feature
+      - epic
+      - story
+      - product
+
+  architect:
+    capabilities:
+      - design_architecture
+      - validate_design
+      - technical_decisions
+      - system_design
+    domains:
+      - architecture
+      - design
+      - technical
+    keywords:
+      - architecture
+      - design
+      - system
+      - component
+      - integration
+      - technical
+
+  dev:
+    capabilities:
+      - implement_code
+      - fix_bugs
+      - refactor
+      - write_tests
+    domains:
+      - development
+      - implementation
+      - coding
+    keywords:
+      - implement
+      - code
+      - develop
+      - build
+      - fix
+      - bug
+      - refactor
+
+  oracle:
+    capabilities:
+      - validate_truth
+      - check_consistency
+      - verify_terminology
+      - semantic_validation
+    domains:
+      - validation
+      - truth
+      - consistency
+    keywords:
+      - validate
+      - check
+      - verify
+      - truth
+      - consistent
+      - semantic
+
+  eval:
+    capabilities:
+      - create_tests
+      - run_tests
+      - validate_implementation
+      - test_coverage
+    domains:
+      - testing
+      - evaluation
+      - quality
+    keywords:
+      - test
+      - eval
+      - evaluate
+      - coverage
+      - quality
+      - assertion
+
+  validator:
+    capabilities:
+      - gate_validation
+      - compliance_check
+      - traceability
+      - coverage_validation
+    domains:
+      - validation
+      - compliance
+      - gates
+    keywords:
+      - validate
+      - gate
+      - compliance
+      - traceability
+      - coverage
+
+  reflection:
+    capabilities:
+      - analyze_failures
+      - root_cause
+      - suggest_improvements
+      - pattern_detection
+    domains:
+      - analysis
+      - improvement
+      - debugging
+    keywords:
+      - analyze
+      - reflect
+      - failure
+      - why
+      - improve
+      - pattern
+
+  domain-researcher:
+    capabilities:
+      - domain_research
+      - competitive_analysis
+      - best_practices
+      - knowledge_gathering
+    domains:
+      - research
+      - domain
+      - knowledge
+    keywords:
+      - research
+      - domain
+      - investigate
+      - analyze
+      - study
+      - competitive
+
+# Intent-based routing rules
+intent_routing:
+  create:
+    prd:
+      primary: pm
+      secondary: [oracle]
+      background: []
+
+    architecture:
+      primary: architect
+      secondary: [oracle, validator]
+      background: []
+
+    tests:
+      primary: eval
+      secondary: [validator]
+      background: []
+
+    code:
+      primary: dev
+      secondary: [eval]
+      background: [oracle]
+
+  validate:
+    default:
+      primary: oracle
+      secondary: [validator]
+      background: []
+
+    tests:
+      primary: eval
+      secondary: [validator]
+      background: []
+
+  fix:
+    default:
+      primary: dev
+      secondary: [reflection]
+      background: [eval]
+
+    requirements:
+      primary: pm
+      secondary: [oracle]
+      background: []
+
+  analyze:
+    default:
+      primary: reflection
+      secondary: [oracle]
+      background: []
+
+  test:
+    default:
+      primary: eval
+      secondary: [validator]
+      background: []
+
+  plan:
+    default:
+      primary: pm
+      secondary: [architect]
+      background: []
+
+# Context-based routing rules
+context_routing:
+  domain_research:
+    primary: [domain-researcher]
+    secondary: [oracle]
+    background: []
+
+  eval_foundation:
+    primary: [eval]
+    secondary: [validator]
+    background: [oracle]
+
+  discovery:
+    primary: [pm]
+    secondary: []
+    background: [oracle]
+
+  architecture:
+    primary: [architect]
+    secondary: [oracle]
+    background: [validator]
+
+  planning:
+    primary: [pm]
+    secondary: []
+    background: []
+
+  development:
+    primary: [dev]
+    secondary: [eval]
+    background: [oracle, validator]
+
+# Pattern-based routing rules
+pattern_routing:
+  repeated_eval_failures:
+    condition:
+      type: failure_count
+      agent: eval
+      threshold: 2
+    routing:
+      primary: reflection
+      secondary: [oracle, dev]
+      reason: "Repeated test failures require root cause analysis"
+
+  oracle_blocking:
+    condition:
+      type: failure_count
+      agent: oracle
+      threshold: 2
+    routing:
+      primary: reflection
+      secondary: [pm]
+      reason: "Oracle blocking indicates requirements clarity issue"
+
+  high_complexity:
+    condition:
+      type: complexity_score
+      threshold: 8
+    routing:
+      primary: dev
+      secondary: [reflection, architect]
+      reason: "High complexity requires extra support"
+
+  integration_heavy:
+    condition:
+      type: integration_count
+      threshold: 3
+    routing:
+      primary: architect
+      secondary: [dev, oracle]
+      reason: "Many integrations require careful architecture"
+
+# Confidence thresholds
+confidence_thresholds:
+  auto_route: 0.9        # Route automatically
+  suggest: 0.7           # Suggest with option to override
+  confirm: 0.0           # Ask user to confirm
+
+# Learning parameters
+learning:
+  enabled: true
+  history_size: 100      # Number of routings to keep in history
+  pattern_strength_increment: 0.1
+  pattern_strength_decrement: 0.1
+  min_pattern_strength: 0.0
+  max_pattern_strength: 1.0
+
+# Collaboration modes
+collaboration_modes:
+  sequential:
+    description: "Agents execute one after another"
+    use_when: "Tasks have dependencies"
+
+  parallel:
+    description: "Multiple agents execute simultaneously"
+    use_when: "Multiple primary agents selected"
+
+  gated:
+    description: "Validation agents gate progress"
+    use_when: "Oracle or Validator involved"
+
+  swarm_competitive:
+    description: "Multiple agents compete, best selected"
+    use_when: "Need multiple perspectives"
+
+  swarm_collaborative:
+    description: "Agents divide work and combine results"
+    use_when: "Large task with parallel work opportunities"

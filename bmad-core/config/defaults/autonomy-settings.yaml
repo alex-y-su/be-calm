@@ -1,0 +1,52 @@
+# BMAD Autonomy Configuration
+# Controls the level of automation and autonomous behavior
+
+# Autonomy level: conservative, balanced, aggressive, full_auto
+level: balanced
+
+# Auto agent switching configuration
+auto_agent_switching:
+  enabled: true
+  require_confirmation: true
+  confidence_threshold: 0.85
+  preview_time_seconds: 5
+
+# Background agents configuration
+background_agents:
+  enabled: true
+  max_concurrent: 2
+  priority_queue: true
+  resource_limits:
+    max_cpu_percent: 80
+    max_memory_mb: 2048
+
+# Auto command execution
+auto_command_execution:
+  enabled: false  # Requires explicit opt-in
+  whitelist:
+    - "*shard-doc"
+    - "*draft"
+    - "*validate-artifact"
+  blacklist:
+    - "*develop-story"
+    - "*deploy"
+    - "*publish"
+
+# Predictive suggestions
+predictive_suggestions:
+  enabled: true
+  preview_time_seconds: 5
+  auto_accept_threshold: 0.95
+
+# Goal mode configuration
+goal_mode:
+  enabled: true
+  checkpoint_approval: major_milestones_only  # none, minimal, major_milestones_only, all
+  max_auto_tasks: 10
+
+# Truth validation gates
+truth_validation:
+  oracle_blocking: true
+  eval_blocking: true
+  validator_warnings: true
+  monitor_alerts: true

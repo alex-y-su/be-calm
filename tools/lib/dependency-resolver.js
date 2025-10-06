@@ -1,7 +1,7 @@
-const fs = require('node:fs').promises;
-const path = require('node:path');
-const yaml = require('js-yaml');
-const { extractYamlFromAgent } = require('./yaml-utils');
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import yaml from 'js-yaml';
+import { extractYamlFromAgent } from './yaml-utils.js';
 
 class DependencyResolver {
   constructor(rootDir) {
@@ -172,4 +172,4 @@ class DependencyResolver {
   }
 }
 
-module.exports = DependencyResolver;
+export default DependencyResolver;

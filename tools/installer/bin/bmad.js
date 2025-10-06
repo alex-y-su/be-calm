@@ -1,13 +1,20 @@
 #!/usr/bin/env node
 
-const { program } = require('commander');
-const path = require('node:path');
-const fs = require('node:fs').promises;
-const yaml = require('js-yaml');
-const chalk = require('chalk').default || require('chalk');
-const inquirer = require('inquirer').default || require('inquirer');
-const semver = require('semver');
-const https = require('node:https');
+import { program } from 'commander';
+import path from 'node:path';
+import fs from 'node:fs/promises';
+import yaml from 'js-yaml';
+import chalk from 'chalk';
+import inquirer from 'inquirer';
+import semver from 'semver';
+import https from 'node:https';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
+import { createRequire } from 'node:module';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const require = createRequire(import.meta.url);
 
 // Handle both execution contexts (from root via npx or from installer directory)
 let version;
@@ -15,15 +22,17 @@ let installer;
 let packageName;
 try {
   // Try installer context first (when run from tools/installer/)
-  version = require('../package.json').version;
-  packageName = require('../package.json').name;
-  installer = require('../lib/installer');
+  const pkg = require('../package.json');
+  version = pkg.version;
+  packageName = pkg.name;
+  installer = (await import('../lib/installer.js')).default;
 } catch (error) {
   // Fall back to root context (when run via npx from GitHub)
   console.log(`Installer context not found (${error.message}), trying root context...`);
   try {
-    version = require('../../../package.json').version;
-    installer = require('../../../tools/installer/lib/installer');
+    const pkg = require('../../../package.json');
+    version = pkg.version;
+    installer = (await import('../../../tools/installer/lib/installer.js')).default;
   } catch (error) {
     console.error(
       'Error: Could not load required modules. Please ensure you are running from the correct directory.',

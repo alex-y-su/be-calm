@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BMAD - Learning Dashboard</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0e27; color: #e0e0e0; }
+    .header { background: #1a1f3a; padding: 20px; border-bottom: 2px solid #2a3f5f; }
+    .header h1 { font-size: 24px; color: #4a9eff; }
+    .nav { margin-top: 15px; display: flex; gap: 15px; }
+    .nav a { color: #8fa9c4; text-decoration: none; padding: 8px 16px; border-radius: 4px; transition: all 0.2s; }
+    .nav a:hover, .nav a.active { background: #2a3f5f; color: #4a9eff; }
+    .container { padding: 30px; max-width: 1400px; margin: 0 auto; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .card { background: #1a1f3a; border: 1px solid #2a3f5f; border-radius: 8px; padding: 20px; }
+    .card h2 { font-size: 16px; color: #8fa9c4; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+    .metric-large { font-size: 48px; font-weight: bold; color: #4a9eff; text-align: center; margin: 20px 0; }
+    .metric-label { font-size: 14px; color: #6a7a8f; text-align: center; }
+    .stat-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #2a3f5f; }
+    .stat-row:last-child { border-bottom: none; }
+    .stat-label { color: #8fa9c4; }
+    .stat-value { color: #4a9eff; font-weight: bold; }
+    .timestamp { font-size: 12px; color: #6a7a8f; margin-top: 20px; text-align: right; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>BMAD Learning Dashboard</h1>
+    <div class="nav">
+      <a href="/dashboard/realtime">Real-time</a>
+      <a href="/dashboard/health">Health</a>
+      <a href="/dashboard/learning" class="active">Learning</a>
+      <a href="/dashboard/project">Project</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="grid">
+      <div class="card">
+        <h2>Reflection Insights</h2>
+        <div class="metric-large" id="insights-count">--</div>
+        <div class="metric-label">Per Sprint</div>
+      </div>
+
+      <div class="card">
+        <h2>Process Optimization</h2>
+        <div class="metric-large" id="optimization-rate">--</div>
+        <div class="metric-label">Efficiency Gain</div>
+      </div>
+
+      <div class="card">
+        <h2>Pattern Library</h2>
+        <div class="metric-large" id="pattern-count">--</div>
+        <div class="metric-label">Patterns Learned</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 20px;">
+      <h2>Agent Improvement Trends</h2>
+      <div id="agent-stats">
+        <div class="stat-row">
+          <span class="stat-label">Average Improvement</span>
+          <span class="stat-value" id="avg-improvement">--</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Best Performing Agent</span>
+          <span class="stat-value" id="best-agent">--</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Total Optimizations</span>
+          <span class="stat-value" id="total-optimizations">--</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timestamp" id="last-update">Last updated: --</div>
+  </div>
+
+  <script>
+    async function fetchLearning() {
+      try {
+        const response = await fetch('/api/learning');
+        const data = await response.json();
+
+        // Update insights count
+        if (data.reflection_insights?.latest !== undefined) {
+          document.getElementById('insights-count').textContent =
+            Math.round(data.reflection_insights.latest);
+        }
+
+        // Update optimization rate
+        if (data.process_optimization?.latest !== undefined) {
+          const rate = (data.process_optimization.latest * 100).toFixed(1);
+          document.getElementById('optimization-rate').textContent = rate + '%';
+        }
+
+        // Update pattern library
+        if (data.pattern_library_size !== undefined && data.pattern_library_size !== null) {
+          document.getElementById('pattern-count').textContent = data.pattern_library_size;
+        }
+
+        // Update agent improvement stats
+        if (data.agent_improvement) {
+          const avg = (data.agent_improvement.avg * 100).toFixed(2);
+          document.getElementById('avg-improvement').textContent = '+' + avg + '%';
+        }
+
+        // Update timestamp
+        document.getElementById('last-update').textContent =
+          'Last updated: ' + new Date(data.timestamp).toLocaleTimeString();
+
+      } catch (error) {
+        console.error('Failed to fetch learning metrics:', error);
+      }
+    }
+
+    // Initial fetch and periodic updates
+    fetchLearning();
+    setInterval(fetchLearning, 15000); // Update every 15 seconds
+  </script>
+</body>
+</html>

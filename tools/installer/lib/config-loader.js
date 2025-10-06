@@ -1,7 +1,12 @@
-const fs = require('fs-extra');
-const path = require('node:path');
-const yaml = require('js-yaml');
-const { extractYamlFromAgent } = require('../../lib/yaml-utils');
+import fs from 'fs-extra';
+import path from 'node:path';
+import yaml from 'js-yaml';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
+import { extractYamlFromAgent } from '../../lib/yaml-utils.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 class ConfigLoader {
   constructor() {
@@ -134,7 +139,7 @@ class ConfigLoader {
 
   async getAgentDependencies(agentId) {
     // Use DependencyResolver to dynamically parse agent dependencies
-    const DependencyResolver = require('../../lib/dependency-resolver');
+    const { default: DependencyResolver } = await import('../../lib/dependency-resolver.js');
     const resolver = new DependencyResolver(path.join(__dirname, '..', '..', '..'));
 
     const agentDeps = await resolver.resolveAgentDependencies(agentId);
@@ -219,7 +224,7 @@ class ConfigLoader {
 
   async getTeamDependencies(teamId) {
     // Use DependencyResolver to dynamically parse team dependencies
-    const DependencyResolver = require('../../lib/dependency-resolver');
+    const { default: DependencyResolver } = await import('../../lib/dependency-resolver.js');
     const resolver = new DependencyResolver(path.join(__dirname, '..', '..', '..'));
 
     try {
@@ -254,4 +259,5 @@ class ConfigLoader {
   }
 }
 
-module.exports = new ConfigLoader();
+const configLoader = new ConfigLoader();
+export default configLoader;

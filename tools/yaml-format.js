@@ -1,17 +1,9 @@
-const fs = require('node:fs');
-const path = require('node:path');
-const yaml = require('js-yaml');
-const { execSync } = require('node:child_process');
-
-// Dynamic import for ES module
-let chalk;
-
-// Initialize ES modules
-async function initializeModules() {
-  if (!chalk) {
-    chalk = (await import('chalk')).default;
-  }
-}
+import fs from 'node:fs';
+import path from 'node:path';
+import yaml from 'js-yaml';
+import { execSync } from 'node:child_process';
+import chalk from 'chalk';
+import glob from 'glob';
 
 /**
  * YAML Formatter and Linter for BMad-Method
@@ -19,7 +11,6 @@ async function initializeModules() {
  */
 
 async function formatYamlContent(content, filename) {
-  await initializeModules();
   try {
     // First try to fix common YAML issues
     let fixedContent = content
@@ -78,7 +69,6 @@ async function formatYamlContent(content, filename) {
 }
 
 async function processMarkdownFile(filePath) {
-  await initializeModules();
   const content = fs.readFileSync(filePath, 'utf8');
   let modified = false;
   let newContent = content;
@@ -130,7 +120,6 @@ async function processMarkdownFile(filePath) {
 }
 
 async function processYamlFile(filePath) {
-  await initializeModules();
   const content = fs.readFileSync(filePath, 'utf8');
   const formatted = await formatYamlContent(content, filePath);
 
@@ -146,7 +135,6 @@ async function processYamlFile(filePath) {
 }
 
 async function lintYamlFile(filePath) {
-  await initializeModules();
   try {
     // Use yaml-lint for additional validation
     execSync(`npx yaml-lint "${filePath}"`, { stdio: 'pipe' });
@@ -159,9 +147,7 @@ async function lintYamlFile(filePath) {
 }
 
 async function main() {
-  await initializeModules();
   const arguments_ = process.argv.slice(2);
-  const glob = require('glob');
 
   if (arguments_.length === 0) {
     console.error('Usage: node yaml-format.js <file1> [file2] ...');
@@ -243,11 +229,14 @@ async function main() {
   }
 }
 
-if (require.main === module) {
+// Check if this module is being run directly
+const isMainModule = import.meta.url === `file://${process.argv[1]}`;
+
+if (isMainModule) {
   main().catch((error) => {
     console.error('Error:', error);
     process.exit(1);
   });
 }
 
-module.exports = { formatYamlContent, processMarkdownFile, processYamlFile };
+export { formatYamlContent, processMarkdownFile, processYamlFile };

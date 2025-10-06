@@ -1,0 +1,299 @@
+# Prediction Models Configuration
+# Defines transition matrices, artifact dependencies, and validation triggers
+
+version: "1.0"
+updated: "2025-10-05"
+
+# Agent transition probabilities (Markov chain)
+agent_transitions:
+  # Domain Research phase
+  domain-researcher:
+    default:
+      - agent: oracle
+        probability: 0.9
+        context: "Establish domain truth"
+
+    after_analysis:
+      - agent: eval
+        probability: 0.7
+        context: "Create test foundation"
+
+  # Discovery phase
+  pm:
+    after_prd:
+      - agent: architect
+        probability: 0.85
+        context: "Design system architecture"
+
+      - agent: oracle
+        probability: 0.8
+        context: "Validate PRD"
+
+      - agent: eval
+        probability: 0.6
+        context: "Create test datasets"
+
+  # Architecture phase
+  architect:
+    validation:
+      - agent: oracle
+        probability: 0.9
+        context: "Validate architecture"
+
+      - agent: validator
+        probability: 0.7
+        context: "Check traceability"
+
+    after_architecture:
+      - agent: dev
+        probability: 0.75
+        context: "Begin implementation"
+
+  # Development phase
+  dev:
+    development:
+      - agent: eval
+        probability: 0.95
+        context: "Run tests"
+
+      - agent: oracle
+        probability: 0.7
+        context: "Semantic validation"
+
+    on_failure:
+      - agent: reflection
+        probability: 0.8
+        context: "Analyze failure"
+
+  # Eval phase
+  eval:
+    coverage_check:
+      - agent: validator
+        probability: 0.8
+        context: "Verify coverage"
+
+    on_failure:
+      - agent: reflection
+        probability: 0.6
+        context: "Analyze test failure"
+
+      - agent: dev
+        probability: 0.9
+        context: "Fix implementation"
+
+  # Reflection phase
+  reflection:
+    truth_check:
+      - agent: oracle
+        probability: 0.8
+        context: "Validate against truth"
+
+    after_analysis:
+      - agent: dev
+        probability: 0.9
+        context: "Implement fix"
+
+    requirements_issue:
+      - agent: pm
+        probability: 0.6
+        context: "Clarify requirements"
+
+  # Oracle phase
+  oracle:
+    after_validation:
+      - agent: dev
+        probability: 0.5
+        context: "Fix issues"
+
+      - agent: pm
+        probability: 0.3
+        context: "Update requirements"
+
+  # Validator phase
+  validator:
+    after_validation:
+      - agent: dev
+        probability: 0.6
+        context: "Address gaps"
+
+# Artifact dependencies
+artifact_dependencies:
+  architecture:
+    requires:
+      - prd.md
+      - domain-truth.yaml
+    probability: 0.95
+    phase: architecture
+
+  development:
+    requires:
+      - prd.md
+      - architecture.md
+      - story-file
+      - eval-tests
+    probability: 0.99
+    phase: development
+
+  prd:
+    requires:
+      - domain-analysis.md
+      - domain-truth.yaml
+    probability: 0.8
+    phase: discovery
+
+  eval_foundation:
+    requires:
+      - domain-truth.yaml
+      - test-datasets/
+    probability: 0.9
+    phase: eval_foundation
+
+  story:
+    requires:
+      - prd.md
+      - architecture.md
+      - epic-file
+    probability: 0.95
+    phase: planning
+
+  tests:
+    requires:
+      - domain-truth.yaml
+      - test-datasets/
+      - code-implementation
+    probability: 0.9
+    phase: development
+
+# Validation triggers
+validation_triggers:
+  prd_created:
+    validators:
+      - oracle
+      - eval
+      - validator
+    priority: high
+
+  architecture_created:
+    validators:
+      - oracle
+      - validator
+    priority: high
+
+  code_changed:
+    validators:
+      - eval
+      - oracle
+    priority: medium
+
+  story_completed:
+    validators:
+      - validator
+      - eval
+    priority: medium
+
+  phase_completed:
+    validators:
+      - validator
+    priority: high
+
+  domain_truth_updated:
+    validators:
+      - oracle
+    priority: critical
+
+# Bottleneck patterns
+bottleneck_patterns:
+  high_complexity_story:
+    indicators:
+      - complexity > 8
+      - many_dependencies
+    predictions:
+      dev_time_multiplier: 1.5
+      eval_failure_probability: 0.4
+      reflection_needed_probability: 0.6
+    recommendations:
+      - "Consider breaking story into smaller sub-stories"
+      - "Allocate extra time for development"
+      - "Plan for multiple reflection cycles"
+
+  many_integration_points:
+    indicators:
+      - integrations > 3
+    predictions:
+      architecture_phase_delay: 1.3
+      coordination_overhead: 1.4
+    recommendations:
+      - "Review architecture for simplification opportunities"
+      - "Create integration plan early"
+      - "Budget extra time for architecture phase"
+
+  unclear_requirements:
+    indicators:
+      - low_prd_score
+      - oracle_warnings > 5
+    predictions:
+      rework_probability: 0.7
+      pm_clarification_needed: 0.9
+    recommendations:
+      - "Schedule PM clarification session"
+      - "Run Oracle validation early"
+      - "Consider creating proof-of-concept first"
+
+  technical_debt:
+    indicators:
+      - code_quality_score < 0.6
+      - refactoring_backlog > 10
+    predictions:
+      development_slowdown: 1.4
+      bug_probability: 0.6
+    recommendations:
+      - "Allocate time for refactoring"
+      - "Address technical debt before new features"
+      - "Improve code review process"
+
+# Suggestion types and timing
+suggestions:
+  phase_transition:
+    enabled: true
+    timing: on_phase_completion
+    acceptance_threshold: 0.7
+
+  validation_fix:
+    enabled: true
+    timing: on_validation_warning
+    acceptance_threshold: 0.8
+
+  test_coverage:
+    enabled: true
+    timing: periodic
+    threshold: 0.9
+    acceptance_threshold: 0.6
+
+  bottleneck_warning:
+    enabled: true
+    timing: on_pattern_detection
+    acceptance_threshold: 0.7
+
+  proactive_optimization:
+    enabled: true
+    timing: periodic
+    acceptance_threshold: 0.5
+
+# Learning parameters
+learning:
+  enabled: true
+  transition_learning_rate: 0.1
+  min_probability: 0.1
+  max_probability: 0.95
+  normalization: true
+
+# Suggestion frequency adjustment
+suggestion_frequency:
+  high_acceptance: 1.0      # No reduction
+  medium_acceptance: 0.7    # Reduce by 30%
+  low_acceptance: 0.3       # Reduce by 70%
+
+  thresholds:
+    high: 0.7
+    medium: 0.4
+    low: 0.0

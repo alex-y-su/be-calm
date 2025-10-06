@@ -1,11 +1,9 @@
-'use strict';
-
-const fs = require('node:fs/promises');
-const path = require('node:path');
-const zlib = require('node:zlib');
-const { Buffer } = require('node:buffer');
-const crypto = require('node:crypto');
-const cp = require('node:child_process');
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import zlib from 'node:zlib';
+import { Buffer } from 'node:buffer';
+import crypto from 'node:crypto';
+import cp from 'node:child_process';
 
 const KB = 1024;
 const MB = 1024 * KB;
@@ -374,7 +372,7 @@ function buildMarkdownReport(largestFiles, byExtensionArr, byDirectoryArr, total
   return md.join('\n');
 }
 
-module.exports = {
+export {
   KB,
   MB,
   formatSize,

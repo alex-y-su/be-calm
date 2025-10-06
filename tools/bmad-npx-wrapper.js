@@ -5,9 +5,14 @@
  * This file ensures proper execution when run via npx from GitHub
  */
 
-const { execSync } = require('node:child_process');
-const path = require('node:path');
-const fs = require('node:fs');
+import { execSync } from 'node:child_process';
+import path from 'node:path';
+import fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Check if we're running in an npx temporary directory
 const isNpxExecution = __dirname.includes('_npx') || __dirname.includes('.npm');
@@ -35,5 +40,5 @@ if (isNpxExecution) {
   }
 } else {
   // Local execution - use installer for all commands
-  require('./installer/bin/bmad.js');
+  await import('./installer/bin/bmad.js');
 }

@@ -1,16 +1,7 @@
-const fs = require('node:fs');
-const { execSync } = require('node:child_process');
-const path = require('node:path');
-
-// Dynamic import for ES module
-let chalk;
-
-// Initialize ES modules
-async function initializeModules() {
-  if (!chalk) {
-    chalk = (await import('chalk')).default;
-  }
-}
+import fs from 'node:fs';
+import { execSync } from 'node:child_process';
+import path from 'node:path';
+import chalk from 'chalk';
 
 /**
  * Simple version bumping script for BMad-Method
@@ -23,7 +14,6 @@ function getCurrentVersion() {
 }
 
 async function bumpVersion(type = 'patch') {
-  await initializeModules();
 
   const validTypes = ['patch', 'minor', 'major'];
   if (!validTypes.includes(type)) {
@@ -63,7 +53,6 @@ async function bumpVersion(type = 'patch') {
 }
 
 async function main() {
-  await initializeModules();
 
   const type = process.argv[2] || 'patch';
   const currentVersion = getCurrentVersion();
@@ -84,11 +73,14 @@ async function main() {
   console.log(chalk.blue(`📦 ${currentVersion} → ${newVersion}`));
 }
 
-if (require.main === module) {
+// Check if this module is being run directly
+const isMainModule = import.meta.url === `file://${process.argv[1]}`;
+
+if (isMainModule) {
   main().catch((error) => {
     console.error('Error:', error);
     process.exit(1);
   });
 }
 
-module.exports = { bumpVersion, getCurrentVersion };
+export { bumpVersion, getCurrentVersion };

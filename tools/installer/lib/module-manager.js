@@ -111,4 +111,4 @@ class ModuleManager {
 // Singleton instance
 const moduleManager = new ModuleManager();
 
-module.exports = moduleManager;
+export default moduleManager;

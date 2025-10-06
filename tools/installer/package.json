@@ -1,6 +1,7 @@
 {
   "name": "be-calm",
   "version": "4.43.0",
+  "type": "module",
   "description": "BMad Method installer - AI-powered Agile development framework",
   "keywords": [
     "bmad",

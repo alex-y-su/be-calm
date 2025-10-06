@@ -1,6 +1,6 @@
-const fs = require('fs-extra');
-const path = require('node:path');
-const ignore = require('ignore');
+import fs from 'fs-extra';
+import path from 'node:path';
+import ignore from 'ignore';
 
 // Central default ignore patterns for discovery and filtering.
 // These complement .gitignore and are applied regardless of VCS presence.
@@ -171,8 +171,4 @@ async function loadIgnore(rootDir, extraPatterns = []) {
   return { ig, filter, patterns: unique };
 }
 
-module.exports = {
-  DEFAULT_PATTERNS,
-  parseGitignore,
-  loadIgnore,
-};
+export { DEFAULT_PATTERNS, parseGitignore, loadIgnore };

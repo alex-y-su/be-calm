@@ -3,7 +3,7 @@
  * Helps identify memory leaks and optimize resource usage
  */
 
-const v8 = require('node:v8');
+import v8 from 'node:v8';
 
 class MemoryProfiler {
   constructor() {
@@ -222,4 +222,5 @@ class MemoryProfiler {
 }
 
 // Export singleton instance
-module.exports = new MemoryProfiler();
+const memoryProfiler = new MemoryProfiler();
+export default memoryProfiler;

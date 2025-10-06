@@ -1,5 +1,8 @@
-const { execSync } = require('node:child_process');
-const fs = require('node:fs');
+import { execSync } from 'node:child_process';
+import fs from 'node:fs';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
 
 // Get the latest stable tag (exclude beta tags)
 const allTags = execSync('git tag -l | sort -V', { encoding: 'utf8' }).split('\n').filter(Boolean);

@@ -86,7 +86,7 @@ const BMAD_TINY = `[ BMAD-METHOD™ ]`;
 const FLATTENER_TINY = `[ FLATTENER ]`;
 const INSTALLER_TINY = `[ INSTALLER ]`;
 
-module.exports = {
+export {
   BMAD_TITLE,
   FLATTENER_TITLE,
   INSTALLER_TITLE,

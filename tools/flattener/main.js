@@ -1,14 +1,19 @@
-const { Command } = require('commander');
-const fs = require('fs-extra');
-const path = require('node:path');
-const process = require('node:process');
+import { Command } from 'commander';
+import fs from 'fs-extra';
+import path from 'node:path';
+import process from 'node:process';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
 
 // Modularized components
-const { findProjectRoot } = require('./projectRoot.js');
-const { promptYesNo, promptPath } = require('./prompts.js');
-const { discoverFiles, filterFiles, aggregateFileContents } = require('./files.js');
-const { generateXMLOutput } = require('./xml.js');
-const { calculateStatistics } = require('./stats.js');
+import { findProjectRoot } from './projectRoot.js';
+import { promptYesNo, promptPath } from './prompts.js';
+import { discoverFiles, filterFiles, aggregateFileContents } from './files.js';
+import { generateXMLOutput } from './xml.js';
+import { calculateStatistics } from './stats.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 /**
  * Recursively discover all files in a directory
@@ -561,8 +566,11 @@ program
     }
   });
 
-if (require.main === module) {
+// Check if this module is being run directly
+const isMainModule = import.meta.url === `file://${process.argv[1]}`;
+
+if (isMainModule) {
   program.parse();
 }
 
-module.exports = program;
+export default program;

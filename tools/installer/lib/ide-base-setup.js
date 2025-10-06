@@ -3,13 +3,13 @@
  * Reduces duplication and provides shared methods
  */
 
-const path = require('node:path');
-const fs = require('fs-extra');
-const yaml = require('js-yaml');
-const chalk = require('chalk').default || require('chalk');
-const fileManager = require('./file-manager');
-const resourceLocator = require('./resource-locator');
-const { extractYamlFromAgent } = require('../../lib/yaml-utils');
+import path from 'node:path';
+import fs from 'fs-extra';
+import yaml from 'js-yaml';
+import chalk from 'chalk';
+import fileManager from './file-manager.js';
+import resourceLocator from './resource-locator.js';
+import { extractYamlFromAgent } from '../../lib/yaml-utils.js';
 
 class BaseIdeSetup {
   constructor() {
@@ -225,4 +225,4 @@ class BaseIdeSetup {
   }
 }
 
-module.exports = BaseIdeSetup;
+export default BaseIdeSetup;

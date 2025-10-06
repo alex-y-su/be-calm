@@ -1,0 +1,57 @@
+# BMAD Truth Configuration
+# Controls domain truth management and validation
+
+# Domain truth management
+domain_truth:
+  auto_create: true
+  require_approval: true
+  update_protocol: reflection_reviewed
+  version_control: true
+  backup_frequency: every_update
+
+# Eval datasets configuration
+eval_datasets:
+  auto_generate: true
+  coverage_threshold: 0.90
+  update_on_truth_change: true
+  test_data_location: test-datasets/
+  archive_old_datasets: true
+
+# Validation configuration
+validation:
+  oracle_validation: blocking  # blocking, warning, advisory
+  validator_traceability: blocking
+  monitor_drift: warning
+  eval_test_execution: blocking
+
+# Propagation settings
+propagation:
+  cascade_updates: true
+  impact_analysis: true
+  require_approval: major_changes_only  # all, major_changes_only, none
+  auto_regenerate_tests: true
+
+# Brownfield-specific settings
+brownfield_specific:
+  existing_truth_extraction: automatic
+  compatibility_analysis: required
+  migration_strategy_approval: required
+  regression_test_generation: automatic
+
+# Truth sources
+truth_sources:
+  primary_sources:
+    - domain-truth.yaml
+    - existing-system-truth.yaml
+    - enhancement-truth.yaml
+  derived_sources:
+    - eval-criteria.yaml
+    - validation-chain-proof.md
+    - traceability-matrix.yaml
+
+# Truth quality checks
+truth_quality:
+  completeness_check: true
+  consistency_check: true
+  staleness_detection: true
+  auto_refresh_threshold_days: 30

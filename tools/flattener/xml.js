@@ -1,4 +1,4 @@
-const fs = require('fs-extra');
+import fs from 'fs-extra';
 
 function escapeXml(string_) {
   if (typeof string_ !== 'string') {
@@ -85,4 +85,4 @@ function generateXMLOutput(aggregatedContent, outputPath) {
   });
 }
 
-module.exports = { generateXMLOutput };
+export { generateXMLOutput };

@@ -1,7 +1,7 @@
-const fs = require('node:fs').promises;
-const path = require('node:path');
-const DependencyResolver = require('../lib/dependency-resolver');
-const yamlUtilities = require('../lib/yaml-utils');
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import DependencyResolver from '../lib/dependency-resolver.js';
+import * as yamlUtilities from '../lib/yaml-utils.js';
 
 class WebBuilder {
   constructor(options = {}) {
@@ -17,8 +17,14 @@ class WebBuilder {
   }
 
   parseYaml(content) {
-    const yaml = require('js-yaml');
-    return yaml.load(content);
+    return this.yaml.load(content);
+  }
+
+  async ensureYamlLoaded() {
+    if (!this.yaml) {
+      const yamlModule = await import('js-yaml');
+      this.yaml = yamlModule.default;
+    }
   }
 
   convertToWebPath(filePath, bundleRoot = 'bmad-core') {
@@ -159,12 +165,12 @@ These references map directly to bundle sections:
 
     // Add agent configuration
     const agentPath = this.convertToWebPath(dependencies.agent.path, 'bmad-core');
-    sections.push(this.formatSection(agentPath, dependencies.agent.content, 'bmad-core'));
+    sections.push(await this.formatSection(agentPath, dependencies.agent.content, 'bmad-core'));
 
     // Add all dependencies
     for (const resource of dependencies.resources) {
       const resourcePath = this.convertToWebPath(resource.path, 'bmad-core');
-      sections.push(this.formatSection(resourcePath, resource.content, 'bmad-core'));
+      sections.push(await this.formatSection(resourcePath, resource.content, 'bmad-core'));
     }
 
     return sections.join('\n');
@@ -178,24 +184,24 @@ These references map directly to bundle sections:
 
     // Add team configuration
     const teamPath = this.convertToWebPath(dependencies.team.path, 'bmad-core');
-    sections.push(this.formatSection(teamPath, dependencies.team.content, 'bmad-core'));
+    sections.push(await this.formatSection(teamPath, dependencies.team.content, 'bmad-core'));
 
     // Add all agents
     for (const agent of dependencies.agents) {
       const agentPath = this.convertToWebPath(agent.path, 'bmad-core');
-      sections.push(this.formatSection(agentPath, agent.content, 'bmad-core'));
+      sections.push(await this.formatSection(agentPath, agent.content, 'bmad-core'));
     }
 
     // Add all deduplicated resources
     for (const resource of dependencies.resources) {
       const resourcePath = this.convertToWebPath(resource.path, 'bmad-core');
-      sections.push(this.formatSection(resourcePath, resource.content, 'bmad-core'));
+      sections.push(await this.formatSection(resourcePath, resource.content, 'bmad-core'));
     }
 
     return sections.join('\n');
   }
 
-  processAgentContent(content) {
+  async processAgentContent(content) {
     // First, replace content before YAML with the template
     const yamlContent = yamlUtilities.extractYamlFromAgent(content);
     if (!yamlContent) return content;
@@ -208,8 +214,8 @@ These references map directly to bundle sections:
 
     // Parse YAML and remove root and IDE-FILE-RESOLUTION properties
     try {
-      const yaml = require('js-yaml');
-      const parsed = yaml.load(yamlContent);
+      await this.ensureYamlLoaded();
+      const parsed = this.yaml.load(yamlContent);
 
       // Remove the properties if they exist at root level
       delete parsed.root;
@@ -230,7 +236,7 @@ These references map directly to bundle sections:
       }
 
       // Reconstruct the YAML
-      const cleanedYaml = yaml.dump(parsed, { lineWidth: -1 });
+      const cleanedYaml = this.yaml.dump(parsed, { lineWidth: -1 });
 
       // Get the agent name from the YAML for the header
       const agentName = parsed.agent?.id || 'agent';
@@ -247,12 +253,12 @@ These references map directly to bundle sections:
     }
   }
 
-  formatSection(path, content, bundleRoot = 'bmad-core') {
+  async formatSection(path, content, bundleRoot = 'bmad-core') {
     const separator = '====================';
 
     // Process agent content if this is an agent file
     if (path.includes('/agents/')) {
-      content = this.processAgentContent(content);
+      content = await this.processAgentContent(content);
     }
 
     // Replace {root} references with the actual bundle root
@@ -389,14 +395,14 @@ These references map directly to bundle sections:
     const agentPath = path.join(packDir, 'agents', `${agentName}.md`);
     const agentContent = await fs.readFile(agentPath, 'utf8');
     const agentWebPath = this.convertToWebPath(agentPath, packName);
-    sections.push(this.formatSection(agentWebPath, agentContent, packName));
+    sections.push(await this.formatSection(agentWebPath, agentContent, packName));
 
     // Resolve and add agent dependencies
     const yamlContent = yamlUtilities.extractYamlFromAgent(agentContent);
     if (yamlContent) {
       try {
-        const yaml = require('js-yaml');
-        const agentConfig = yaml.load(yamlContent);
+        await this.ensureYamlLoaded();
+        const agentConfig = this.yaml.load(yamlContent);
 
         if (agentConfig.dependencies) {
           // Add resources, first try expansion pack, then core
@@ -410,7 +416,7 @@ These references map directly to bundle sections:
                 try {
                   const resourceContent = await fs.readFile(resourcePath, 'utf8');
                   const resourceWebPath = this.convertToWebPath(resourcePath, packName);
-                  sections.push(this.formatSection(resourceWebPath, resourceContent, packName));
+                  sections.push(await this.formatSection(resourceWebPath, resourceContent, packName));
                   found = true;
                 } catch {
                   // Not in expansion pack, continue
@@ -422,7 +428,7 @@ These references map directly to bundle sections:
                   try {
                     const coreContent = await fs.readFile(corePath, 'utf8');
                     const coreWebPath = this.convertToWebPath(corePath, packName);
-                    sections.push(this.formatSection(coreWebPath, coreContent, packName));
+                    sections.push(await this.formatSection(coreWebPath, coreContent, packName));
                     found = true;
                   } catch {
                     // Not in core either, continue
@@ -435,7 +441,7 @@ These references map directly to bundle sections:
                   try {
                     const commonContent = await fs.readFile(commonPath, 'utf8');
                     const commonWebPath = this.convertToWebPath(commonPath, packName);
-                    sections.push(this.formatSection(commonWebPath, commonContent, packName));
+                    sections.push(await this.formatSection(commonWebPath, commonContent, packName));
                     found = true;
                   } catch {
                     // Not in common either, continue
@@ -467,9 +473,10 @@ These references map directly to bundle sections:
     // Add team configuration and parse to get agent list
     const teamContent = await fs.readFile(teamConfigPath, 'utf8');
     const teamFileName = path.basename(teamConfigPath, '.yaml');
+    await this.ensureYamlLoaded();
     const teamConfig = this.parseYaml(teamContent);
     const teamWebPath = this.convertToWebPath(teamConfigPath, packName);
-    sections.push(this.formatSection(teamWebPath, teamContent, packName));
+    sections.push(await this.formatSection(teamWebPath, teamContent, packName));
 
     // Get list of expansion pack agents
     const expansionAgents = new Set();
@@ -519,12 +526,13 @@ These references map directly to bundle sections:
         const agentPath = path.join(agentsDir, `${agentId}.md`);
         const agentContent = await fs.readFile(agentPath, 'utf8');
         const expansionAgentWebPath = this.convertToWebPath(agentPath, packName);
-        sections.push(this.formatSection(expansionAgentWebPath, agentContent, packName));
+        sections.push(await this.formatSection(expansionAgentWebPath, agentContent, packName));
 
         // Parse and collect dependencies from expansion agent
         const agentYaml = agentContent.match(/```yaml\n([\s\S]*?)\n```/);
         if (agentYaml) {
           try {
+            await this.ensureYamlLoaded();
             const agentConfig = this.parseYaml(agentYaml[1]);
             if (agentConfig.dependencies) {
               for (const [resourceType, resources] of Object.entries(agentConfig.dependencies)) {
@@ -548,12 +556,13 @@ These references map directly to bundle sections:
           const coreAgentPath = path.join(this.rootDir, 'bmad-core', 'agents', `${agentId}.md`);
           const coreAgentContent = await fs.readFile(coreAgentPath, 'utf8');
           const coreAgentWebPath = this.convertToWebPath(coreAgentPath, packName);
-          sections.push(this.formatSection(coreAgentWebPath, coreAgentContent, packName));
+          sections.push(await this.formatSection(coreAgentWebPath, coreAgentContent, packName));
 
           // Parse and collect dependencies from core agent
           const yamlContent = yamlUtilities.extractYamlFromAgent(coreAgentContent, true);
           if (yamlContent) {
             try {
+              await this.ensureYamlLoaded();
               const agentConfig = this.parseYaml(yamlContent);
               if (agentConfig.dependencies) {
                 for (const [resourceType, resources] of Object.entries(agentConfig.dependencies)) {
@@ -589,7 +598,7 @@ These references map directly to bundle sections:
         try {
           const content = await fs.readFile(expansionPath, 'utf8');
           const expansionWebPath = this.convertToWebPath(expansionPath, packName);
-          sections.push(this.formatSection(expansionWebPath, content, packName));
+          sections.push(await this.formatSection(expansionWebPath, content, packName));
           console.log(`      ✓ Using expansion override for ${key}`);
           found = true;
         } catch {
@@ -603,7 +612,7 @@ These references map directly to bundle sections:
         try {
           const content = await fs.readFile(corePath, 'utf8');
           const coreWebPath = this.convertToWebPath(corePath, packName);
-          sections.push(this.formatSection(coreWebPath, content, packName));
+          sections.push(await this.formatSection(coreWebPath, content, packName));
           found = true;
         } catch {
           // Not in core either, continue
@@ -616,7 +625,7 @@ These references map directly to bundle sections:
         try {
           const content = await fs.readFile(commonPath, 'utf8');
           const commonWebPath = this.convertToWebPath(commonPath, packName);
-          sections.push(this.formatSection(commonWebPath, content, packName));
+          sections.push(await this.formatSection(commonWebPath, content, packName));
           found = true;
         } catch {
           // Not in common either, continue
@@ -645,7 +654,7 @@ These references map directly to bundle sections:
           if (!allDependencies.has(resourceKey)) {
             const fullResourcePath = path.join(resourcePath, resourceFile);
             const resourceWebPath = this.convertToWebPath(fullResourcePath, packName);
-            sections.push(this.formatSection(resourceWebPath, fileContent, packName));
+            sections.push(await this.formatSection(resourceWebPath, fileContent, packName));
           }
         }
       } catch {
@@ -672,4 +681,4 @@ These references map directly to bundle sections:
   }
 }
 
-module.exports = WebBuilder;
+export default WebBuilder;

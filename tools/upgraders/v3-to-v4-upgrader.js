@@ -1,16 +1,14 @@
-const fs = require('node:fs').promises;
-const path = require('node:path');
-const { glob } = require('glob');
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { glob } from 'glob';
+import chalk from 'chalk';
+import ora from 'ora';
+import inquirer from 'inquirer';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
 
-// Dynamic imports for ES modules
-let chalk, ora, inquirer;
-
-// Initialize ES modules
-async function initializeModules() {
-  chalk = (await import('chalk')).default;
-  ora = (await import('ora')).default;
-  inquirer = (await import('inquirer')).default;
-}
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 class V3ToV4Upgrader {
   constructor() {
@@ -19,8 +17,6 @@ class V3ToV4Upgrader {
 
   async upgrade(options = {}) {
     try {
-      // Initialize ES modules
-      await initializeModules();
       // Keep readline open throughout the process
       process.stdin.resume();
 
@@ -485,7 +481,7 @@ class V3ToV4Upgrader {
       return;
     }
 
-    const ideSetup = require('../installer/lib/ide-setup');
+    const { default: ideSetup } = await import('../installer/lib/ide-setup.js');
     const spinner = ora('Setting up IDE rules for all agents...').start();
 
     try {
@@ -646,8 +642,7 @@ class V3ToV4Upgrader {
   }
 
   async createInstallManifest(projectPath) {
-    const fileManager = require('../installer/lib/file-manager');
-    const { glob } = require('glob');
+    const { default: fileManager } = await import('../installer/lib/file-manager.js');
 
     // Get all files in .bmad-core for the manifest
     const bmadCorePath = path.join(projectPath, '.bmad-core');
@@ -670,4 +665,4 @@ class V3ToV4Upgrader {
   }
 }
 
-module.exports = V3ToV4Upgrader;
+export default V3ToV4Upgrader;

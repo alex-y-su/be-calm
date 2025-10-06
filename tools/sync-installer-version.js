@@ -3,8 +3,13 @@
  * Used by semantic-release to keep versions in sync
  */
 
-const fs = require('node:fs');
-const path = require('node:path');
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 function syncInstallerVersion() {
   // Read main package.json
@@ -24,9 +29,11 @@ function syncInstallerVersion() {
   console.log(`Synced installer version to ${mainPackage.version}`);
 }
 
-// Run if called directly
-if (require.main === module) {
+// Check if this module is being run directly
+const isMainModule = import.meta.url === `file://${process.argv[1]}`;
+
+if (isMainModule) {
   syncInstallerVersion();
 }
 
-module.exports = { syncInstallerVersion };
+export { syncInstallerVersion };

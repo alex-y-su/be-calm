@@ -1,8 +1,8 @@
-const path = require('node:path');
-const { execFile } = require('node:child_process');
-const { promisify } = require('node:util');
-const { glob } = require('glob');
-const { loadIgnore } = require('./ignoreRules.js');
+import path from 'node:path';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
+import { glob } from 'glob';
+import { loadIgnore } from './ignoreRules.js';
 
 const pExecFile = promisify(execFile);
 
@@ -66,6 +66,4 @@ async function discoverFiles(rootDir, options = {}) {
   return filteredRel.map((p) => path.resolve(rootDir, p));
 }
 
-module.exports = {
-  discoverFiles,
-};
+export { discoverFiles };

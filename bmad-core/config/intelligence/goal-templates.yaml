@@ -1,0 +1,410 @@
+# Goal Templates Configuration
+# Defines templates for common goal types with phases, agents, and success criteria
+
+version: "1.0"
+updated: "2025-10-05"
+
+templates:
+  greenfield_feature:
+    name: "Greenfield New Feature"
+    description: "Build a completely new feature from scratch"
+
+    phases:
+      - domain_research
+      - eval_foundation
+      - discovery
+      - architecture
+      - planning
+      - development
+
+    default_agents:
+      - domain-researcher
+      - oracle
+      - pm
+      - architect
+      - eval
+      - dev
+      - validator
+
+    default_checkpoints:
+      - after_domain_research
+      - after_prd
+      - after_architecture
+      - halfway
+      - before_completion
+
+    success_criteria:
+      - "All phases completed"
+      - "PRD validated by Oracle"
+      - "Architecture validated"
+      - "All eval tests passing"
+      - "Traceability 100%"
+      - "No Oracle violations"
+
+    estimated_effort:
+      small: 40      # hours
+      medium: 120
+      large: 320
+      xlarge: 800
+
+  brownfield_enhancement:
+    name: "Brownfield Enhancement"
+    description: "Enhance existing codebase with new functionality"
+
+    phases:
+      - codebase_discovery
+      - compatibility_analysis
+      - discovery
+      - architecture
+      - planning
+      - development
+
+    default_agents:
+      - oracle
+      - pm
+      - architect
+      - eval
+      - dev
+      - validator
+
+    default_checkpoints:
+      - after_discovery
+      - after_compatibility
+      - after_planning
+      - before_integration
+
+    success_criteria:
+      - "Compatibility validated"
+      - "No breaking changes (unless approved)"
+      - "Existing tests still pass"
+      - "New functionality validated"
+      - "Traceability maintained"
+
+    estimated_effort:
+      small: 24
+      medium: 80
+      large: 200
+      xlarge: 500
+
+  bug_fix:
+    name: "Bug Fix"
+    description: "Identify root cause and fix a bug"
+
+    phases:
+      - root_cause_analysis
+      - fix_planning
+      - implementation
+      - validation
+
+    default_agents:
+      - reflection
+      - dev
+      - eval
+      - oracle
+
+    default_checkpoints:
+      - after_root_cause
+      - after_fix
+
+    success_criteria:
+      - "Root cause identified"
+      - "Fix implemented"
+      - "Tests confirm fix"
+      - "No regressions"
+      - "Related tests added"
+
+    estimated_effort:
+      small: 4
+      medium: 16
+      large: 40
+      xlarge: 80
+
+  performance_optimization:
+    name: "Performance Optimization"
+    description: "Analyze and improve system performance"
+
+    phases:
+      - performance_analysis
+      - optimization_planning
+      - implementation
+      - benchmarking
+
+    default_agents:
+      - reflection
+      - architect
+      - dev
+      - eval
+
+    default_checkpoints:
+      - after_analysis
+      - after_implementation
+
+    success_criteria:
+      - "Performance bottlenecks identified"
+      - "Optimization implemented"
+      - "Target metrics achieved"
+      - "No functionality regressions"
+      - "Performance tests added"
+
+    estimated_effort:
+      small: 16
+      medium: 40
+      large: 120
+      xlarge: 240
+
+  refactoring:
+    name: "Refactoring"
+    description: "Improve code quality without changing behavior"
+
+    phases:
+      - code_analysis
+      - refactoring_plan
+      - implementation
+      - validation
+
+    default_agents:
+      - reflection
+      - architect
+      - dev
+      - eval
+      - validator
+
+    default_checkpoints:
+      - after_plan
+      - after_refactoring
+
+    success_criteria:
+      - "Code quality improved"
+      - "All tests still passing"
+      - "No behavior changes"
+      - "Traceability maintained"
+      - "Documentation updated"
+
+    estimated_effort:
+      small: 8
+      medium: 32
+      large: 80
+      xlarge: 200
+
+  documentation:
+    name: "Documentation"
+    description: "Create or update documentation"
+
+    phases:
+      - content_planning
+      - writing
+      - review
+      - publication
+
+    default_agents:
+      - pm
+      - oracle
+      - validator
+
+    default_checkpoints:
+      - after_planning
+      - after_writing
+
+    success_criteria:
+      - "Documentation complete"
+      - "Terminology consistent with domain truth"
+      - "Examples verified"
+      - "Reviewed and approved"
+
+    estimated_effort:
+      small: 4
+      medium: 16
+      large: 40
+      xlarge: 80
+
+  testing:
+    name: "Testing"
+    description: "Create comprehensive test suite"
+
+    phases:
+      - test_planning
+      - test_creation
+      - execution
+      - coverage_validation
+
+    default_agents:
+      - eval
+      - validator
+      - oracle
+
+    default_checkpoints:
+      - after_planning
+      - after_creation
+
+    success_criteria:
+      - "Test coverage >= 90%"
+      - "All tests passing"
+      - "Edge cases covered"
+      - "Traceability to requirements"
+
+    estimated_effort:
+      small: 8
+      medium: 24
+      large: 64
+      xlarge: 160
+
+  security_audit:
+    name: "Security Audit"
+    description: "Review and enhance security"
+
+    phases:
+      - security_assessment
+      - vulnerability_identification
+      - remediation_planning
+      - implementation
+      - validation
+
+    default_agents:
+      - reflection
+      - architect
+      - dev
+      - validator
+
+    default_checkpoints:
+      - after_assessment
+      - after_remediation
+
+    success_criteria:
+      - "Security assessment complete"
+      - "Vulnerabilities identified"
+      - "Critical issues fixed"
+      - "Security tests passing"
+
+    estimated_effort:
+      small: 16
+      medium: 40
+      large: 120
+      xlarge: 320
+
+  migration:
+    name: "Migration"
+    description: "Migrate to new technology or architecture"
+
+    phases:
+      - migration_planning
+      - compatibility_analysis
+      - implementation
+      - testing
+      - deployment
+
+    default_agents:
+      - architect
+      - dev
+      - eval
+      - validator
+      - oracle
+
+    default_checkpoints:
+      - after_planning
+      - after_compatibility
+      - before_deployment
+
+    success_criteria:
+      - "Migration plan complete"
+      - "Compatibility validated"
+      - "All functionality migrated"
+      - "Tests passing"
+      - "Rollback plan ready"
+
+    estimated_effort:
+      small: 40
+      medium: 120
+      large: 400
+      xlarge: 1000
+
+# Checkpoint definitions
+checkpoints:
+  after_domain_research:
+    name: "Domain Research Complete"
+    trigger_phase: domain_research
+    checks:
+      - "domain-truth.yaml created"
+      - "domain-analysis.md complete"
+      - "Oracle validation passed"
+
+  after_prd:
+    name: "PRD Complete"
+    trigger_phase: discovery
+    checks:
+      - "prd.md created"
+      - "Oracle validation passed"
+      - "All FRs and NFRs defined"
+
+  after_architecture:
+    name: "Architecture Complete"
+    trigger_phase: architecture
+    checks:
+      - "architecture.md created"
+      - "Architecture validated"
+      - "Technical decisions documented"
+
+  halfway:
+    name: "Halfway Point"
+    trigger: task_percentage
+    threshold: 0.5
+    checks:
+      - "50% tasks complete"
+      - "No blocking issues"
+      - "On track for completion"
+
+  before_completion:
+    name: "Final Review"
+    trigger: near_completion
+    threshold: 0.9
+    checks:
+      - "All tasks complete"
+      - "All validations passed"
+      - "Documentation updated"
+
+  after_root_cause:
+    name: "Root Cause Identified"
+    trigger_phase: root_cause_analysis
+    checks:
+      - "Root cause documented"
+      - "Fix approach defined"
+
+  after_compatibility:
+    name: "Compatibility Verified"
+    trigger_phase: compatibility_analysis
+    checks:
+      - "Breaking changes identified"
+      - "Migration path defined"
+      - "Risks documented"
+
+# Effort estimation factors
+effort_factors:
+  complexity:
+    simple: 1.0
+    moderate: 1.5
+    complex: 2.5
+    very_complex: 4.0
+
+  scope:
+    small: 1.0
+    medium: 3.0
+    large: 8.0
+    xlarge: 20.0
+
+  uncertainty:
+    low: 1.0
+    medium: 1.3
+    high: 1.8
+    very_high: 2.5
+
+  risk:
+    low: 1.0
+    medium: 1.2
+    high: 1.5
+    critical: 2.0
+
+# Task decomposition rules
+decomposition_rules:
+  max_task_size: 8        # hours
+  min_task_size: 0.5      # hours
+  prefer_parallelizable: true
+  dependency_aware: true

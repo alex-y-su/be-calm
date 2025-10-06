@@ -1,7 +1,7 @@
-const os = require('node:os');
-const path = require('node:path');
-const readline = require('node:readline');
-const process = require('node:process');
+import os from 'node:os';
+import path from 'node:path';
+import readline from 'node:readline';
+import process from 'node:process';
 
 function expandHome(p) {
   if (!p) return p;
@@ -41,4 +41,4 @@ async function promptPath(question, defaultValue) {
   return expandHome(ans || defaultValue);
 }
 
-module.exports = { promptYesNo, promptPath, promptQuestion, expandHome };
+export { promptYesNo, promptPath, promptQuestion, expandHome };
