@@ -45,6 +45,12 @@ async function bumpAllVersions() {
 
     fs.writeFileSync(packagePath, JSON.stringify(packageJson, null, 2) + '\n');
 
+    // Also update installer package.json
+    const installerPackagePath = path.join(__dirname, '..', 'tools', 'installer', 'package.json');
+    const installerPackageJson = JSON.parse(fs.readFileSync(installerPackagePath, 'utf8'));
+    installerPackageJson.version = newCoreVersion;
+    fs.writeFileSync(installerPackagePath, JSON.stringify(installerPackageJson, null, 2) + '\n');
+
     updatedItems.push({
       type: 'core',
       name: 'BMad Core',
@@ -52,6 +58,9 @@ async function bumpAllVersions() {
       newVersion: newCoreVersion,
     });
     console.log(`✓ BMad Core (package.json): ${oldCoreVersion} → ${newCoreVersion}`);
+    console.log(
+      `✓ Installer (tools/installer/package.json): ${oldCoreVersion} → ${newCoreVersion}`,
+    );
   } catch (error) {
     console.error(`✗ Failed to update BMad Core: ${error.message}`);
   }

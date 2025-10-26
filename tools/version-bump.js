@@ -59,6 +59,14 @@ async function bumpVersion(type = 'patch') {
 
   console.log(chalk.green(`✓ Updated package.json to ${newVersion}`));
 
+  // Update installer package.json
+  const installerPackagePath = path.join('tools', 'installer', 'package.json');
+  const installerPackageJson = JSON.parse(fs.readFileSync(installerPackagePath, 'utf8'));
+  installerPackageJson.version = newVersion;
+  fs.writeFileSync(installerPackagePath, JSON.stringify(installerPackageJson, null, 2) + '\n');
+
+  console.log(chalk.green(`✓ Updated installer package.json to ${newVersion}`));
+
   return newVersion;
 }
 
