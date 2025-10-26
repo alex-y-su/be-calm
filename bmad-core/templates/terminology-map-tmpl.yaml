@@ -1,131 +1,34 @@
 # Terminology Map
-# Oracle Agent - Canonical Terminology Reference
-# Project: {{project_name}}
+# Canonical business terms - use these consistently across all artifacts
+# Source: {{domain_truth_file}}
 # Generated: {{timestamp}}
 
-project:
-  name: "{{project_name}}"
-  domain: "{{domain}}"
-  terminology_version: "{{version}}"
-  last_updated: "{{timestamp}}"
-  source: "{{domain_truth_file}}"
+project: "{{project_name}}"
+domain: "{{domain}}"
 
-canonical_terms:
-  # Format: term with canonical definition and forbidden alternatives
+# Core Business Terms
+# Use the canonical term everywhere; avoid the forbidden alternatives
 
+terms:
   # Example:
   # - term: "user"
-  #   definition: "An authenticated person with account credentials"
-  #   context: "authentication domain"
-  #   preferred: true
-  #   alternatives_forbidden:
-  #     - "customer"
-  #     - "client"
-  #     - "account holder"
-  #   rationale: "Domain truth distinguishes 'user' (authenticated) from 'visitor' (unauthenticated)"
-  #   source: "domain-truth.yaml#FACT-001"
-  #   usage_examples:
-  #     - "User logs in with credentials"
-  #     - "User session expires after 15 minutes"
+  #   meaning: "Person with active account credentials"
+  #   instead_of: ["customer", "client", "member"]
+  #   source: "domain-truth.yaml"
 
   {{#terms}}
   - term: "{{term}}"
-    definition: "{{definition}}"
-    context: "{{context}}"
-    preferred: {{is_preferred}}
-    alternatives_forbidden:
-      {{#forbidden_alternatives}}
-      - "{{alternative}}"
-      {{/forbidden_alternatives}}
-    rationale: "{{rationale}}"
-    source: "{{source_reference}}"
-    usage_examples:
-      {{#examples}}
-      - "{{example}}"
-      {{/examples}}
+    meaning: "{{business_meaning}}"
+    instead_of: [{{forbidden_alternatives}}]
+    source: "{{source}}"
   {{/terms}}
 
-domain_concepts:
-  # High-level concepts with specific meanings in this domain
+# Business Concepts
+# High-level concepts with specific domain meanings
 
+concepts:
   {{#concepts}}
   - concept: "{{concept_name}}"
-    definition: "{{definition}}"
-    related_terms:
-      {{#related}}
-      - "{{term}}"
-      {{/related}}
-    boundaries: "{{boundary_description}}"
-    source: "{{source_reference}}"
+    what_it_means: "{{business_definition}}"
+    source: "{{source}}"
   {{/concepts}}
-
-ambiguity_resolutions:
-  # Terms that have been clarified due to ambiguity
-
-  {{#resolutions}}
-  - term: "{{term}}"
-    ambiguity: "{{ambiguity_description}}"
-    resolution: "{{resolution}}"
-    use_when: "{{use_condition}}"
-    avoid_when: "{{avoid_condition}}"
-    decided_date: "{{decision_date}}"
-    source: "{{source_reference}}"
-  {{/resolutions}}
-
-deprecated_terms:
-  # Terms no longer used in this project
-
-  {{#deprecated}}
-  - term: "{{old_term}}"
-    replaced_by: "{{new_term}}"
-    reason: "{{deprecation_reason}}"
-    deprecated_date: "{{date}}"
-    migration_status: "{{status}}"
-  {{/deprecated}}
-
-domain_specific_meanings:
-  # Terms with special meaning in this domain vs general usage
-
-  {{#special_meanings}}
-  - term: "{{term}}"
-    general_meaning: "{{general}}"
-    domain_meaning: "{{domain}}"
-    why_different: "{{rationale}}"
-    source: "{{source_reference}}"
-  {{/special_meanings}}
-
-validation_rules:
-  # Rules Oracle uses to check terminology consistency
-
-  {{#rules}}
-  - rule_id: "{{rule_id}}"
-    type: "{{rule_type}}"
-    description: "{{description}}"
-    check: "{{validation_check}}"
-    severity: "{{severity}}"
-    auto_fix: {{can_auto_fix}}
-  {{/rules}}
-
-usage_statistics:
-  total_canonical_terms: {{total_terms}}
-  total_concepts: {{total_concepts}}
-  total_resolutions: {{total_resolutions}}
-  total_deprecated: {{total_deprecated}}
-  last_validation: "{{last_validation_date}}"
-  artifacts_checked: {{artifacts_checked}}
-  violations_found: {{violations_found}}
-
-brownfield_migrations:
-  # Terminology changes for brownfield projects
-
-  {{#migrations}}
-  - old_term: "{{existing_term}}"
-    new_term: "{{target_term}}"
-    migration_strategy: "{{strategy}}"
-    backward_compatible_period: "{{period}}"
-    status: "{{migration_status}}"
-    affected_files:
-      {{#files}}
-      - "{{file_path}}"
-      {{/files}}
-  {{/migrations}}

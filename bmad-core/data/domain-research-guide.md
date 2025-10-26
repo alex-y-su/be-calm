@@ -4,7 +4,11 @@
 
 ## Purpose
 
-This guide provides best practices and strategies for conducting effective domain research. Use this when executing domain context research tasks to ensure comprehensive, accurate, and actionable results.
+This guide provides best practices and strategies for conducting effective BUSINESS domain research. Use this when executing domain context research tasks to ensure comprehensive, accurate, and actionable business context.
+
+**SCOPE:** This guide focuses on BUSINESS domain research only:
+- ✅ Industry context, business methodologies, regulations, terminology, market dynamics
+- ❌ Team roles, technical processes, tools/technologies (handled by Architect/PM agents)
 
 ---
 
@@ -54,6 +58,14 @@ This guide provides best practices and strategies for conducting effective domai
 - Validate findings against user's experience
 - Defer to user on domain-specific nuances
 
+### 6. Token Efficiency Over Completeness
+- **AI agents will process this document repeatedly** - every token has a cost
+- **Target: 1500-2500 tokens total** - ruthlessly prioritize high-value information
+- **Quality > Quantity:** 3 well-chosen methodologies > 10 superficial ones
+- **Prefer bullets over prose:** More scannable, fewer tokens
+- **Eliminate redundancy:** Don't repeat the same point in different sections
+- **No fluff:** Skip introductory phrases, marketing language, historical context
+
 ---
 
 ## Effective Web Search Strategies
@@ -62,13 +74,14 @@ This guide provides best practices and strategies for conducting effective domai
 
 **Good Query Patterns:**
 ```
-"{domain} industry methodologies 2025"
-"{domain} standard roles and responsibilities"
-"{domain} best practices framework"
-"{domain} technology stack current"
+"{domain} industry overview 2025"
+"{domain} business methodologies 2025"
+"{domain} business frameworks"
 "{domain} regulatory compliance requirements"
-"typical {domain} project workflow"
-"common {domain} tools and platforms"
+"{domain} industry standards"
+"{domain} market trends current"
+"{domain} business challenges"
+"{domain} industry terminology"
 ```
 
 **Poor Query Patterns:**
@@ -82,23 +95,23 @@ This guide provides best practices and strategies for conducting effective domai
 ### Search Iteration Strategy
 
 1. **Start Broad**
-   - "{domain} overview"
-   - Identify sub-domains and specializations
+   - "{domain} industry overview"
+   - Identify sub-domains and business specializations
 
 2. **Narrow by Category**
-   - "{domain} agile methodology"
-   - "{domain} DevOps practices"
-   - "{domain} team structure"
+   - "{domain} business methodologies"
+   - "{domain} regulatory requirements"
+   - "{domain} market dynamics"
 
 3. **Get Specific**
-   - "{domain} sprint planning best practices"
-   - "{domain} CI/CD pipeline tools"
-   - "{domain} scrum master responsibilities"
+   - "{domain} lean manufacturing principles"
+   - "{domain} GDPR compliance requirements"
+   - "{domain} customer acquisition challenges"
 
 4. **Verify Currency**
    - Add "2024" or "2025" to queries
-   - Search for "latest {domain} trends"
-   - Look for "deprecated {domain} practices"
+   - Search for "latest {domain} business trends"
+   - Look for "{domain} emerging market opportunities"
 
 ---
 
@@ -127,21 +140,23 @@ This guide provides best practices and strategies for conducting effective domai
 
 ---
 
-### 2. Standard Methodologies & Frameworks
+### 2. Business Methodologies & Frameworks
 
 **What to Capture:**
-- Name and origin of methodology
-- Core principles and values
-- Typical implementation approach
-- When it's appropriate to use
+- Name and origin of BUSINESS methodology (NOT software development methods)
+- Core business principles and values
+- Typical business implementation approach
+- When it's appropriate to use in business context
 - Known limitations or trade-offs
 
-**Common Methodologies by Domain:**
-- **Software Development:** Agile, Scrum, Kanban, XP, SAFe, Waterfall
-- **Infrastructure:** DevOps, SRE, ITIL, GitOps
-- **Data Science:** CRISP-DM, TDSP, Agile Data Science
-- **Product Management:** Lean Startup, Jobs-to-be-Done, Design Thinking
-- **Game Development:** Scrum, Kanban, Producer-driven, Milestone-based
+**Common Business Methodologies by Domain:**
+- **Manufacturing:** Lean Manufacturing, Six Sigma, Kaizen, Just-In-Time, Total Quality Management
+- **Product Management:** Lean Startup, Jobs-to-be-Done, Design Thinking, Blue Ocean Strategy
+- **Business Strategy:** Porter's Five Forces, SWOT, Business Model Canvas, OKRs
+- **Customer Experience:** Customer Journey Mapping, Service Design, Voice of Customer
+- **Process Improvement:** Six Sigma, Lean, Business Process Reengineering
+
+**NOTE:** Focus on BUSINESS methodologies, NOT technical implementation methods like Agile/Scrum/DevOps
 
 **Documentation Pattern:**
 ```
@@ -161,122 +176,16 @@ This guide provides best practices and strategies for conducting effective domai
 
 ---
 
-### 3. Typical Roles & Responsibilities
+### 3. Key Terminology & Concepts
 
 **What to Capture:**
-- Official job titles (industry standard naming)
-- Primary responsibilities and deliverables
-- Required skills (technical and soft skills)
-- Seniority levels (junior, mid, senior, lead, principal)
-- Reporting relationships
-- Collaboration patterns
-
-**Common Role Categories:**
-- **Leadership:** CTO, VP Engineering, Director
-- **Management:** Engineering Manager, Product Manager, Project Manager
-- **Technical:** Software Engineer, DevOps Engineer, Data Scientist, QA Engineer
-- **Design:** UX Designer, UI Designer, Design Researcher
-- **Product:** Product Owner, Business Analyst, Product Marketing
-- **Specialized:** Security Engineer, ML Engineer, Site Reliability Engineer
-
-**Documentation Pattern:**
-```
-### [Role Title]
-
-**Primary Responsibilities:**
-- [Responsibility 1 with specific deliverables]
-- [Responsibility 2 with specific deliverables]
-- [Responsibility 3 with specific deliverables]
-
-**Key Skills:**
-- Technical: [specific technologies, tools, languages]
-- Domain: [domain-specific knowledge]
-- Soft Skills: [communication, leadership, etc.]
-
-**Collaborates With:** [Other roles and how they interact]
-```
-
-**Avoid:**
-- Company-specific role titles (use industry standards)
-- Overly granular specializations
-- Outdated titles (e.g., "Webmaster")
-
----
-
-### 4. Standard Processes & Workflows
-
-**What to Capture:**
-- Project lifecycle phases
-- Key workflows and their triggers
-- Decision gates and approval points
-- Handoffs between teams or roles
-- Iteration/cycle lengths
-- Common cadences (daily standup, weekly planning, etc.)
-
-**Process Patterns to Look For:**
-- Planning → Design → Implementation → Testing → Deployment
-- Discovery → Definition → Development → Delivery
-- Research → Prototype → Build → Test → Release
-- Ideation → Validation → Development → Launch
-
-**Workflow Documentation:**
-```
-### [Workflow Name]
-
-**Purpose:** [What this workflow accomplishes]
-
-**Trigger:** [What initiates this workflow]
-
-**Participants:** [Roles involved]
-
-**Steps:**
-1. [Step 1 with owner and artifact]
-2. [Step 2 with owner and artifact]
-3. [Step 3 with owner and artifact]
-
-**Outcomes:** [Deliverables and next steps]
-
-**Typical Duration:** [Time estimate]
-```
-
----
-
-### 5. Common Tools & Technologies
-
-**Categories to Research:**
-- **Development:** IDEs, languages, frameworks, libraries
-- **Collaboration:** Communication tools, documentation platforms
-- **Project Management:** Issue tracking, sprint planning, roadmapping
-- **Version Control:** Git platforms, branching strategies
-- **CI/CD:** Build automation, deployment pipelines
-- **Testing:** Unit testing, integration testing, E2E testing frameworks
-- **Monitoring:** Logging, metrics, APM, error tracking
-- **Infrastructure:** Cloud providers, container orchestration, IaC
-- **Domain-Specific:** Industry-specific platforms and tools
-
-**What to Document:**
-- Tool name and vendor/maintainer
-- Primary use case
-- Popularity/market share (if notable)
-- Key features
-- Pricing model (free/open-source/commercial)
-- Integration ecosystem
-
-**Avoid:**
-- Listing every possible tool (focus on most popular/relevant)
-- Deep technical details (high-level overview sufficient)
-- Recommending specific tools (present options neutrally)
-
----
-
-### 6. Key Terminology & Concepts
-
-**What to Capture:**
-- Domain-specific jargon
-- Acronyms and abbreviations
-- Technical concepts unique to domain
+- Domain-specific BUSINESS jargon
+- Industry acronyms and abbreviations
+- Business concepts unique to domain
 - Industry buzzwords with clear definitions
-- Terms with domain-specific meanings (differ from general usage)
+- Terms with domain-specific business meanings (differ from general usage)
+
+**NOTE:** Focus on BUSINESS terminology, not technical/implementation terms
 
 **Glossary Best Practices:**
 - Define terms in plain language
@@ -303,7 +212,7 @@ to push validated changes to users quickly and safely.
 
 ---
 
-### 7. Standards & Compliance
+### 4. Standards & Compliance
 
 **What to Capture:**
 - Regulatory frameworks (laws, regulations, mandates)
@@ -339,17 +248,59 @@ to push validated changes to users quickly and safely.
 - Note geographic scope (US-only, EU, global)
 - Flag high-impact requirements early
 - Indicate if specialized compliance expertise needed
+- Focus on BUSINESS/REGULATORY requirements, not technical standards
+
+---
+
+### 5. Business Challenges & Market Characteristics
+
+**What to Capture:**
+- Common business challenges and pain points
+- Competitive landscape and market dynamics
+- Key success factors for businesses in this domain
+- Business risk areas
+- Market opportunities and trends
+- Customer/user expectations and behaviors
+- Barriers to entry
+- Industry consolidation or fragmentation trends
+
+**Documentation Approach:**
+```
+### Business Challenges
+
+**Common Pain Points:**
+- [Challenge 1: description and impact]
+- [Challenge 2: description and impact]
+- [Challenge 3: description and impact]
+
+**Market Characteristics:**
+- Market maturity: [Emerging/Growing/Mature/Declining]
+- Competition level: [High/Medium/Low with explanation]
+- Key players: [Major competitors and their positioning]
+- Differentiation factors: [What drives competitive advantage]
+
+**Success Factors:**
+- [Factor 1: why it's critical]
+- [Factor 2: why it's critical]
+- [Factor 3: why it's critical]
+```
+
+**Important:**
+- Focus on BUSINESS challenges, not technical implementation challenges
+- Provide evidence-based insights, not speculation
+- Include market data when available
+- Consider different business sizes (startup vs enterprise perspectives)
 
 ---
 
 ## Synthesis Best Practices
 
 ### Organize Information Hierarchically
-1. **Start with big picture** (domain overview)
-2. **Add framework** (methodologies, processes)
-3. **Detail execution** (roles, tools, workflows)
-4. **Provide context** (terminology, standards)
-5. **Offer guidance** (best practices, resources)
+1. **Start with big picture** (domain overview, market context)
+2. **Add business framework** (business methodologies)
+3. **Provide context** (terminology, standards, compliance)
+4. **Identify challenges** (business challenges, market characteristics)
+5. **Offer resources** (learning materials, organizations)
 
 ### Remove Noise and Redundancy
 - Eliminate marketing fluff
@@ -357,12 +308,23 @@ to push validated changes to users quickly and safely.
 - Remove contradictory information (or note disagreement)
 - Focus on actionable insights
 
-### Balance Detail and Brevity
-- **Overview sections:** 2-4 paragraphs
-- **Methodology descriptions:** 1 paragraph + bullet points
-- **Role descriptions:** 3-5 bullets per section
-- **Glossary definitions:** 1-3 sentences
-- **Tool lists:** Name + one-line description
+### Balance Detail and Brevity - TOKEN EFFICIENCY IS CRITICAL
+
+**Target Token Budget:** 1500-2500 tokens total for entire document
+
+**Section Budgets:**
+- **Domain Overview:** 150-250 tokens (bullet points, not paragraphs)
+- **Business Methodologies:** 200-300 tokens (3-4 methodologies, 50-75 tokens each)
+- **Terminology:** 250-400 tokens (15-20 terms, 15-20 tokens per definition)
+- **Standards & Compliance:** 150-250 tokens (bullet lists, minimal explanation)
+- **Business Challenges:** 200-300 tokens (bullets only)
+- **Resources:** 100-150 tokens (names only, no descriptions)
+
+**Format Preferences:**
+- Bullet points > prose paragraphs
+- Short definitions (1-2 sentences) > verbose explanations
+- Structured lists > narrative descriptions
+- Concise labels > lengthy titles
 
 ### Make It Actionable
 - Describe what practitioners *do*, not just what things *are*
@@ -410,21 +372,35 @@ to push validated changes to users quickly and safely.
 - **Problem:** Including outdated practices without verification
 - **Solution:** Check publication dates, verify currency, flag deprecated approaches
 
+### 8. **Verbosity and Token Waste**
+- **Problem:** Long prose paragraphs, verbose explanations, repetitive content
+- **Solution:** Use bullets, keep definitions to 1-2 sentences, eliminate redundancy
+- **Example:**
+  - ❌ Bad: "Six Sigma is a methodology that was developed by Motorola in the 1980s and focuses on improving quality by identifying and removing the causes of defects and minimizing variability in manufacturing and business processes through the use of statistical methods."
+  - ✅ Good: "Six Sigma: Data-driven methodology for reducing defects and process variation using statistical analysis."
+
 ---
 
 ## Quality Checklist
 
 Before finalizing domain context document, verify:
 
+**Token Efficiency:**
+- [ ] Total document is 1500-2500 tokens (approximately 1200-2000 words)
+- [ ] Bullet points used instead of prose paragraphs where possible
+- [ ] Glossary definitions are 1-2 sentences maximum (15-20 tokens)
+- [ ] No redundancy between sections
+- [ ] No marketing language, fluff, or verbose explanations
+- [ ] Every section stays within token budget
+
 **Completeness:**
-- [ ] All 10 template sections populated
-- [ ] At least 3-5 methodologies documented
-- [ ] At least 5-8 roles identified
-- [ ] At least 3-5 workflows mapped
-- [ ] Tools categorized by function
-- [ ] 15+ glossary terms defined
-- [ ] Applicable standards identified
-- [ ] Best practices for each phase
+- [ ] All 6 template sections populated (Overview, Methodologies, Terminology, Standards, Challenges, Resources)
+- [ ] 3-4 business methodologies documented (NOT 10+)
+- [ ] 15-20 business glossary terms defined (NOT exhaustive list)
+- [ ] Applicable regulatory/compliance standards identified (key ones only)
+- [ ] Business challenges and market characteristics documented (top 5-7)
+- [ ] Additional learning resources curated (3-5 total)
+- [ ] NO technical implementation details included (roles, processes, tools)
 
 **Accuracy:**
 - [ ] Information from 2023-2025 (or verified as still current)
@@ -433,83 +409,85 @@ Before finalizing domain context document, verify:
 - [ ] No obvious vendor bias or marketing language
 
 **Actionability:**
-- [ ] Methodologies include "when to use" guidance
-- [ ] Roles connected to deliverables and workflows
-- [ ] Tools linked to use cases
-- [ ] Best practices are specific and actionable
-- [ ] Standards include "impact on development"
+- [ ] Business methodologies include "when to use" guidance
+- [ ] Challenges include business impact and context
+- [ ] Market characteristics provide actionable insights
+- [ ] Standards include "impact on business operations"
 
 **Clarity:**
-- [ ] Technical jargon defined in glossary
+- [ ] Business jargon defined in glossary
 - [ ] Sections organized logically
 - [ ] Appropriate level of detail (not too shallow, not overwhelming)
 - [ ] Consistent terminology throughout
 - [ ] Clear headings and structure
+- [ ] Clear separation between business and technical concerns
 
 **Utility:**
 - [ ] Analyst can use for market research and competitive analysis
-- [ ] PM can reference for PRD (roles, processes, features)
-- [ ] Architect can reference for technology and compliance decisions
-- [ ] All agents benefit from shared terminology and context
+- [ ] PM can reference for PRD (business context, terminology, challenges)
+- [ ] Architect can reference for compliance requirements
+- [ ] All agents benefit from shared business terminology and domain context
+- [ ] Provides foundation for business decisions, NOT technical decisions
 
 ---
 
 ## Domain-Specific Research Tips
 
 ### SaaS / Web Applications
-- Focus on modern architectures (cloud-native, microservices, serverless)
-- DevOps and SRE practices critical
-- Security and data privacy standards (GDPR, SOC 2)
-- SaaS metrics (ARR, MRR, churn, NPS)
+- **Business Models:** Subscription-based (per-user, usage-based, tiered pricing)
+- **Key Metrics:** ARR, MRR, churn rate, CAC, LTV, NPS
+- **Market Dynamics:** Highly competitive, low switching costs, product-led growth common
+- **Compliance:** GDPR, SOC 2, data residency requirements
+- **Business Challenges:** Customer acquisition costs, retention, market saturation
 
 ### Mobile Applications
-- Platform-specific considerations (iOS vs Android)
-- App store guidelines and policies
-- Mobile-first design patterns
-- Performance and battery optimization
-- Push notification strategies
+- **Business Models:** Freemium, in-app purchases, subscriptions, advertising
+- **Market Dynamics:** App store monopolies, high discoverability challenges
+- **Compliance:** App store policies, COPPA (children's apps), regional data laws
+- **Business Challenges:** User acquisition, retention, monetization balance
+- **Success Factors:** Strong user experience, viral growth potential, category positioning
 
 ### Game Development
-- Engine-specific workflows (Unity, Unreal, Godot)
-- Milestone-based vs sprint-based approaches
-- Creative roles (artists, designers, narrative)
-- Platform certification requirements (console, mobile, PC)
-- Live ops and game-as-a-service
+- **Business Models:** Premium, free-to-play, live service, subscription (Game Pass)
+- **Market Dynamics:** Hit-driven industry, high development costs, publisher relationships
+- **Compliance:** Platform certification, age ratings (ESRB, PEGI), regional regulations
+- **Business Challenges:** Long development cycles, uncertain ROI, live ops sustainability
+- **Success Factors:** Player retention, monetization without player backlash, community engagement
 
 ### Enterprise Software
-- Longer sales cycles and deployment timelines
-- Integration requirements (APIs, SSO, directory services)
-- Compliance and security critical (SOC 2, ISO 27001)
-- Change management and user training
-- Multi-tenant architecture considerations
+- **Business Models:** Enterprise licensing, multi-year contracts, professional services
+- **Market Dynamics:** Long sales cycles (6-18 months), relationship-driven, high switching costs
+- **Compliance:** SOC 2, ISO 27001, industry-specific regulations
+- **Business Challenges:** Complex procurement, change management, ROI demonstration
+- **Success Factors:** Customer success programs, integration ecosystems, regulatory compliance
 
 ### Data Science / ML
-- Experimentation and iteration focus
-- Model lifecycle (training, validation, deployment, monitoring)
-- Data engineering and pipeline tools
-- Specialized roles (data scientist, ML engineer, data engineer)
-- Model governance and ethics
+- **Business Models:** SaaS platforms, consulting services, embedded AI features
+- **Market Dynamics:** Rapidly evolving, talent shortage, commoditization of basic ML
+- **Compliance:** Model governance, algorithmic bias regulations, data privacy laws
+- **Business Challenges:** Demonstrating ROI, managing expectations, ethics and bias
+- **Success Factors:** Explainability, measurable business outcomes, continuous improvement
 
 ### E-commerce
-- Payment processing and PCI compliance
-- Inventory and order management systems
-- Customer data platforms and personalization
-- Fulfillment and logistics integrations
-- Conversion optimization and A/B testing
+- **Business Models:** Direct-to-consumer, marketplace, dropshipping, subscription boxes
+- **Market Dynamics:** Amazon dominance, thin margins, logistics challenges
+- **Compliance:** PCI-DSS, consumer protection laws, accessibility standards
+- **Business Challenges:** Customer acquisition costs, cart abandonment, logistics costs
+- **Success Factors:** Conversion optimization, customer experience, supply chain efficiency
 
 ### Healthcare / HealthTech
-- HIPAA and HITECH compliance critical
-- HL7 and FHIR interoperability standards
-- Clinical validation and FDA approval (if medical device)
-- EHR integration requirements
-- Privacy and security heightened importance
+- **Business Models:** B2B (providers/payers), B2C (direct to patient), B2B2C (employer)
+- **Market Dynamics:** Heavily regulated, long sales cycles, reimbursement complexity
+- **Compliance:** HIPAA, HITECH, FDA approval (medical devices), state licensing
+- **Business Challenges:** Clinical validation, reimbursement pathways, interoperability
+- **Success Factors:** Clinical evidence, integration with existing workflows, regulatory approval
 
 ### FinTech / Financial Services
-- Regulatory compliance (SOX, PCI-DSS, KYC, AML)
-- Financial reporting and audit requirements
-- Banking integrations and payment rails
-- Security and fraud prevention
-- Regulatory approval processes
+- **Business Models:** Transaction fees, subscription, interest spread, SaaS licensing
+- **Market Dynamics:** Traditional banks vs disruptors, trust-dependent, network effects
+- **Compliance:** SOX, PCI-DSS, KYC, AML, banking licenses, regional regulations
+- **Business Challenges:** Regulatory approval, fraud prevention, building trust
+- **Success Factors:** Security, regulatory compliance, partnerships with established banks
 
 ---
 
@@ -524,24 +502,61 @@ Before finalizing domain context document, verify:
 > "Project management software helps teams manage projects. There are many tools available. Companies use them to track work. The market is growing."
 
 **Good Methodology Description:**
-> **Agile Project Management**
+> **Lean Startup**
 >
-> **Description:** Iterative approach to planning and guiding project processes, emphasizing flexibility, collaboration, and customer feedback. Work is broken into short cycles (sprints) with regular reassessment and adaptation.
+> **Description:** Business methodology for developing products and businesses through Build-Measure-Learn feedback loops, emphasizing validated learning, experimentation, and iterative product releases to minimize waste and market risk.
 >
-> **When Used:** Best for projects with evolving requirements, cross-functional teams, and need for rapid delivery. Common in software development, product design, and marketing campaigns. Less suitable for highly regulated, fixed-scope projects.
+> **When Used:** Best for new product development with uncertain market demand, startup environments, and innovation initiatives. Common in SaaS, consumer products, and new market entry. Less suitable for products with well-understood markets or strict regulatory requirements demanding upfront certainty.
 >
 > **Key Principles:**
-> - Individuals and interactions over processes and tools
-> - Working software over comprehensive documentation
-> - Customer collaboration over contract negotiation
-> - Responding to change over following a plan
+> - Build Minimum Viable Product (MVP) to test assumptions
+> - Measure real customer behavior and feedback
+> - Learn from data to pivot or persevere
+> - Validated learning over vanity metrics
+> - Continuous deployment and rapid iteration
 >
-> **Typical Workflow:** Sprint Planning → Daily Standups → Development → Sprint Review → Retrospective → Repeat
+> **Typical Workflow:** Hypothesis → Build MVP → Launch to Customers → Measure Results → Learn & Decide → Pivot or Persevere → Repeat
 >
-> **Considerations:** Requires cultural buy-in and discipline. Can feel chaotic without strong facilitation. Documentation may suffer if not deliberately prioritized. Works best with co-located or highly synchronized distributed teams.
+> **Considerations:** Requires comfort with uncertainty and potential failure. MVP quality must balance speed with credibility. Can struggle with enterprise sales requiring polished demos. Risk of over-pivoting without adequate conviction. Works best when customer feedback is accessible and actionable.
 
 **Poor Methodology Description:**
-> "Agile is a way to manage projects. Teams work in sprints and have meetings. It's very popular in software development."
+> "Lean Startup is about building things quickly and testing them. Companies use it to save money and move fast."
+
+---
+
+## Token Efficiency Examples
+
+### Example 1: Domain Overview
+
+**❌ VERBOSE (400+ tokens):**
+> "The Software as a Service (SaaS) industry has experienced tremendous growth over the past decade, fundamentally transforming how businesses consume and deploy software solutions. Unlike traditional on-premises software that required significant upfront capital investment and ongoing maintenance costs, SaaS products are delivered over the internet and typically follow a subscription-based pricing model. The market has become increasingly competitive, with major players like Salesforce, Microsoft, and Google competing alongside thousands of smaller startups and niche solutions. Current trends in the industry include the rise of artificial intelligence integration, increased focus on product-led growth strategies, and a shift toward vertical-specific solutions rather than horizontal platforms. The market is considered mature but still growing, with an estimated compound annual growth rate of 18% through 2027. Key challenges include customer acquisition costs, churn management, and market saturation in certain categories."
+
+**✅ LEAN (150 tokens):**
+> **SaaS Industry Overview**
+> - Subscription-based software delivered via internet
+> - Market maturity: Mature but growing (18% CAGR through 2027)
+> - Key trends:
+>   - AI integration becoming standard
+>   - Product-led growth strategies
+>   - Shift to vertical-specific solutions
+>   - Platform consolidation
+> - Competitive landscape: Highly competitive, dominated by major players (Salesforce, Microsoft) with thousands of niche competitors
+
+### Example 2: Methodology Description
+
+**❌ VERBOSE (120 tokens):**
+> "Design Thinking is a human-centered approach to innovation that draws from the designer's toolkit to integrate the needs of people, the possibilities of technology, and the requirements for business success. Originally developed at Stanford's d.school and popularized by IDEO, this methodology has become increasingly popular across industries. It involves five key phases that teams iterate through: empathize with users, define the problem, ideate solutions, prototype concepts, and test with users. The methodology is particularly valuable when dealing with complex, ambiguous problems."
+
+**✅ LEAN (45 tokens):**
+> **Design Thinking:** Human-centered innovation methodology. Five phases: Empathize → Define → Ideate → Prototype → Test. Best for complex, ambiguous problems requiring user understanding. Iterative process emphasizing rapid experimentation.
+
+### Example 3: Glossary Term
+
+**❌ VERBOSE (60 tokens):**
+> **Customer Acquisition Cost (CAC)**: This is a critical business metric that represents the total amount of money a company spends to acquire a new customer, calculated by dividing all sales and marketing expenses by the number of new customers acquired during a specific time period.
+
+**✅ LEAN (18 tokens):**
+> **CAC (Customer Acquisition Cost)**: Total sales/marketing spend divided by new customers acquired in a period.
 
 ---
 
@@ -549,10 +564,14 @@ Before finalizing domain context document, verify:
 
 **The goal of domain research is to establish a shared foundation of knowledge that informs all subsequent planning.**
 
-- Be thorough but concise
-- Prioritize actionable insights over encyclopedic coverage
+**CRITICAL: Target 1500-2500 tokens total. AI agents will process this repeatedly - every token must provide value.**
+
+- Ruthlessly prioritize: Quality over quantity
+- Prefer bullets over prose paragraphs
+- Keep definitions to 1-2 sentences
+- Eliminate redundancy and fluff
 - Validate with user expertise
 - Focus on current, credible information
-- Make it useful for Analyst, PM, and Architect agents
+- Make it actionable for Analyst, PM, and Architect agents
 
 **When in doubt, ask the user.** They are the ultimate authority on their domain needs.

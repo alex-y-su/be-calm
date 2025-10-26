@@ -4,364 +4,175 @@
 
 ## Purpose
 
-To generate the canonical domain truth file (`domain-truth.yaml`) from domain analysis documentation. This file establishes the immutable foundation that all other artifacts (PRD, Architecture, Stories, Code) must trace to and validate against. Every domain assertion must be empirically testable through eval datasets.
+Generate `domain-truth.yaml` from domain analysis - the canonical business knowledge foundation that all artifacts must align with. Focus on BUSINESS requirements, not technical implementation.
 
-## SEQUENTIAL Task Execution (Do not proceed until current Task is complete)
+## Task Workflow
 
-### 1. Load Configuration and Locate Domain Analysis
+### 1. Load and Validate Inputs
 
-#### 1.1 Load Core Configuration
+**Load Configuration:**
+- Load `{root}/core-config.yaml`
+- If missing, HALT: "core-config.yaml not found. Please install BMAD."
 
-- Load `{root}/core-config.yaml` from the project root
-- If the file does not exist, HALT and inform the user: "core-config.yaml not found. This file is required. Please install BMAD or copy the configuration from bmad-core/core-config.yaml"
-- Extract key configurations: `prd.*`, `architecture.*`, `truth.*` settings
+**Locate Domain Analysis:**
+Check these paths (in order):
+1. User-specified path
+2. `docs/domain-analysis.md`
+3. `docs/research/domain-analysis.md`
+4. `domain-analysis.md`
 
-#### 1.2 Locate Domain Analysis Document
+If not found, HALT: "Where is the domain analysis document?"
 
-- Check for domain analysis document in these locations (in order):
-  1. Path specified in user prompt
-  2. `docs/domain-analysis.md`
-  3. `docs/research/domain-analysis.md`
-  4. `domain-analysis.md`
-- If not found, HALT and ask user: "Where is the domain analysis document? Please provide the path."
-- Load the domain analysis document
+**Verify Quality:**
+Domain analysis must include:
+- Domain description and scope
+- Business concepts/entities
+- Business rules and constraints
+- Concrete examples
 
-#### 1.3 Verify Domain Analysis Quality
+If insufficient, HALT and list missing elements.
 
-Check that domain analysis contains:
-- Clear domain description and scope
-- Domain concepts/entities identified
-- Domain rules and constraints
-- Examples or scenarios
+### 2. Extract Business Domain Knowledge
 
-If analysis is insufficient, HALT and inform user: "Domain analysis lacks sufficient detail. Please ensure it includes concepts, rules, constraints, and examples."
+**Domain Scope:**
+- Domain name and business description
+- What business problems this solves (included scope)
+- What's explicitly out of scope (excluded scope)
 
-### 2. Extract Domain Scope and Boundaries
+**Key Business Terms:**
+- Identify domain-specific terminology
+- Define each term in business language
+- Note forbidden alternatives (for consistency)
 
-#### 2.1 Identify Domain Scope
+**Business Concepts:**
+For each concept:
+- Name and business description (what it represents)
+- Key attributes (essential business information)
+- Business rules that must always be true
+- Link to test reference (e.g., "TEST-001")
 
-Extract and formalize:
-- **Domain Name:** Clear, concise identifier for this domain
-- **Description:** 1-3 paragraph summary of what this domain encompasses
-- **Included Scope:** List of what IS in this domain's responsibility
-- **Excluded Scope:** List of what is NOT in this domain (clear boundaries)
-- **Domain Boundaries:** Interfaces with other domains/systems
+Use BUSINESS language, not technical patterns (no "entity/value_object/aggregate" - just describe what it is).
 
-#### 2.2 Build Domain Glossary
-
-Extract all domain-specific terminology:
-- Identify terms that have specific meaning in this domain
-- Define each term unambiguously
-- List aliases or alternative names
-- Specify validation criteria for correct term usage
-
-**Critical Rule:** Terms must be used consistently across ALL artifacts.
-
-### 3. Extract Domain Concepts
-
-#### 3.1 Identify Core Concepts
-
-For each concept/entity in the domain:
-- Extract concept name
-- Classify type: [entity, value_object, aggregate, event, service]
-- Write clear description
-- Assign unique ID (e.g., "CONCEPT-001")
-
-#### 3.2 Define Concept Properties
-
-For each concept, extract properties:
-- Property name
-- Data type
-- Required vs. optional
-- Constraints (validation rules)
-- Link to test dataset that will validate this property
-
-#### 3.3 Define Concept Relationships
-
-For each relationship between concepts:
-- Identify related concept
-- Classify type: [one-to-one, one-to-many, many-to-many]
-- Describe relationship meaning
-- List constraints on the relationship
-
-#### 3.4 Define Concept Invariants
-
-Identify invariants (rules that must ALWAYS be true):
-- Write clear invariant description
-- Assign unique ID (e.g., "INV-001")
-- Specify criticality: [critical, important, nice_to_have]
-- **CRITICAL:** Link to test dataset ID that will prove this invariant
-
-**Rule:** Every invariant MUST have a test dataset reference.
-
-### 4. Extract Domain Rules
-
-#### 4.1 Identify Domain Rules
-
-Extract all business logic and constraints:
-- Rule name and unique ID (e.g., "RULE-001")
-- Clear description of the rule
-- Classify type: [business_logic, validation, calculation, workflow]
-- Specify criticality: [critical, important, nice_to_have]
-
-#### 4.2 Formalize Rule Specifications
-
+**Business Rules:**
 For each rule:
-- **Preconditions:** What must be true before rule applies
-- **Postconditions:** What must be true after rule executes
-- **Formula:** Mathematical or logical formula (if applicable)
+- What happens (the rule)
+- When it applies (conditions)
+- Why it matters (business justification)
+- Concrete example: given scenario → expected outcome
+- Test reference
+- Priority
 
-#### 4.3 Provide Concrete Examples
+**CRITICAL:** Every rule needs a concrete business example with test reference.
 
-**CRITICAL REQUIREMENT:** Every rule MUST have at least one concrete example:
-- Define example input (specific values)
-- Define expected output (specific values)
-- Link to test dataset ID (e.g., "TEST-DATASET-003")
+**Requirements:**
+For each requirement:
+- What user needs
+- Why it matters (business value)
+- How to verify (acceptance criteria)
+- Test reference
+- Priority
 
-**Rule:** Abstract rules without examples are NOT ALLOWED.
+**Quality Goals:**
+Business-driven quality expectations:
+- What quality goal (e.g., "fast response time")
+- Why it impacts business
+- Measurable target
+- Test reference
 
-#### 4.4 Define Exceptions
+**Constraints:**
+Real business/regulatory constraints:
+- What the constraint is
+- Why it exists
+- What it limits
 
-For each rule, identify exception cases:
-- Exception condition
-- How exception should be handled
-- Link to test dataset ID for exception scenario
+### 3. Generate domain-truth.yaml
 
-### 5. Extract Functional Requirements
+**Load Template:**
+- Load `{root}/templates/domain-truth-tmpl.yaml`
+- If missing, HALT: "Template not found. Check BMAD installation."
 
-#### 5.1 Identify Domain-Level FRs
+**Populate Sections:**
+Fill template with extracted business knowledge:
+- Metadata (version, date, domain name, status: "draft")
+- Domain scope and key terms
+- Business concepts with attributes and rules
+- Business rules with examples
+- Requirements with acceptance criteria
+- Quality goals
+- Constraints
+- Validation settings
 
-Extract high-level functional requirements from domain:
-- Unique ID (e.g., "FR-001")
-- Requirement name
-- Clear description
-- Rationale (why this is required)
-- Priority: [critical, high, medium, low]
+**Validate Completeness:**
+Before saving, verify:
+- [ ] Every business rule has concrete example
+- [ ] Every rule has test reference
+- [ ] Every requirement has acceptance criteria
+- [ ] Scope clearly defined (what we solve / don't solve)
+- [ ] Key terms defined with forbidden alternatives
+- [ ] Uses BUSINESS language, not technical jargon
 
-#### 5.2 Define Actors and Flows
+If ANY check fails, HALT and fix.
 
-For each FR:
-- List actors (who interacts with this)
-- Define preconditions
-- Define postconditions
-- Document main flow (happy path steps)
-- Document alternate flows (variations)
-- Document exception flows (error handling)
+**Save File:**
+- Save to: `domain-truth.yaml` (project root or per core-config)
+- Status: "draft"
 
-#### 5.3 Define Acceptance Criteria
+### 4. Generate Supporting Files
 
-**CRITICAL REQUIREMENT:** Every FR MUST have acceptance criteria:
-- Clear, testable criterion
-- Validation method: [automated_test, manual_test, inspection]
-- **Link to test dataset ID**
+**Terminology Map:**
+Create `terminology-map.yaml`:
+- Terms → Business definitions
+- Forbidden alternatives → Canonical terms
+- Keep it simple and scannable
 
-**Rule:** All acceptance criteria must be testable via eval datasets.
+**Initial Report:**
+Create brief `consistency-report.md`:
+- Summary: domain truth created
+- Counts: concepts, rules, requirements
+- List of test references needed
+- Status: DRAFT
 
-### 6. Define Quality Attributes
+### 5. Inform User
 
-#### 6.1 Extract Non-Functional Requirements
-
-Identify quality attributes required by the domain:
-- Category: [performance, security, usability, reliability, etc.]
-- Specific attribute name
-- Requirement description
-- How to measure (measurement method)
-- Target value/range
-- Priority: [critical, high, medium, low]
-
-#### 6.2 Link to Validation
-
-For each quality attribute:
-- Specify how it will be measured
-- Link to test dataset ID for validation
-
-### 7. Document Constraints and Assumptions
-
-#### 7.1 Identify Constraints
-
-Extract limitations and boundaries:
-- Constraint type: [technical, business, regulatory, resource]
-- Description
-- Impact on the domain
-- Mitigation strategy (if applicable)
-- How to validate compliance
-
-#### 7.2 Document Assumptions
-
-Extract stated or implicit assumptions:
-- Clear assumption description
-- Validation status: [assumed, validated, invalidated]
-- Risk if assumption proves invalid
-- Link to test dataset for validation (if assumption is testable)
-
-### 8. Establish Validation Linkage
-
-#### 8.1 Link to Eval Criteria
-
-Specify linkage to validation infrastructure:
-- Path to `eval-criteria.yaml` (will be generated by Eval agent)
-- Path to `test-datasets/` directory
-- Path to `validation-chain-proof.yaml` (generated by Validator)
-
-#### 8.2 Link to External Authorities
-
-If domain traces to external standards:
-- Source (e.g., "ISO 8601", "GDPR Article 17", industry standard)
-- Description of what is traced
-- How to verify compliance
-
-### 9. Generate domain-truth.yaml File
-
-#### 9.1 Load Template
-
-- Load template: `{root}/templates/domain-truth-tmpl.yaml`
-
-#### 9.2 Populate All Sections
-
-Fill in all template sections with extracted data:
-- Metadata (version, dates, authors, validation status)
-- Domain (name, description, scope, glossary)
-- Concepts (with properties, relationships, invariants)
-- Domain Rules (with examples, exceptions)
-- Functional Requirements (with acceptance criteria)
-- Quality Attributes
-- Constraints and Assumptions
-- Validation Linkage
-- Traceability
-
-#### 9.3 Validate Completeness
-
-**CRITICAL VALIDATION CHECKS:**
-- [ ] Every domain rule has at least one concrete example
-- [ ] Every domain rule has at least one test dataset reference
-- [ ] Every FR has acceptance criteria
-- [ ] Every acceptance criterion has a test dataset reference
-- [ ] Every invariant has a test dataset reference
-- [ ] Glossary defines all domain-specific terms
-- [ ] Scope is clearly defined (included/excluded)
-- [ ] All validation_test_ids are specified (format: "TEST-DATASET-XXX")
-
-If ANY check fails, HALT and fix before proceeding.
-
-#### 9.4 Save File
-
-- Save to: `domain-truth.yaml` (project root, or path from core-config)
-- Set validation_status to "draft"
-- Record creation date and version
-
-### 10. Generate Supporting Documentation
-
-#### 10.1 Create Terminology Map
-
-- Generate `terminology-map.yaml` mapping:
-  - Terms → Definitions
-  - Aliases → Canonical terms
-  - Context where each term applies
-
-#### 10.2 Create Initial Consistency Report
-
-- Generate `consistency-report.md` with:
-  - Summary of domain truth created
-  - List of concepts extracted
-  - List of rules formalized
-  - List of test datasets needed (all TEST-DATASET-XXX references)
-  - Validation status: DRAFT (not yet validated)
-
-### 11. Coordinate with Eval Agent
-
-#### 11.1 Identify Required Test Datasets
-
-Extract all test dataset references from domain-truth.yaml:
-- Collect all `test_dataset_id` values
-- Collect all `validation_test_ids` arrays
-- Create master list of required datasets
-
-#### 11.2 Inform User of Next Steps
-
-Present to user:
+Present completion summary:
 
 ```
-Domain truth created successfully!
+✅ Domain truth created!
 
 File: domain-truth.yaml
-Status: DRAFT (not yet validated)
-Concepts: [count]
-Domain Rules: [count]
-Functional Requirements: [count]
+Status: DRAFT
+Business Concepts: [count]
+Business Rules: [count]
+Requirements: [count]
+Test References: [count] needed
 
-NEXT STEPS REQUIRED:
-1. Run Eval agent command: *create-eval-dataset
-   - Eval will generate [count] test datasets to validate domain truth
-   - All domain rules and FRs will have concrete test cases
+NEXT STEPS:
+1. Review domain-truth.yaml for business accuracy
+2. Create test datasets for all test references
+3. Run: *validate-artifact to check consistency
+4. Update status from "draft" to "validated"
 
-2. After eval datasets created, run Oracle command: *validate-artifact
-   - This will validate domain-truth.yaml for consistency
-
-3. Change validation_status from "draft" to "validated" when ready
-
-Required Test Datasets:
-[List all TEST-DATASET-XXX IDs that Eval needs to create]
+domain-truth.yaml is now the foundation - all artifacts must align with it.
 ```
-
-### 12. Task Completion
-
-#### 12.1 Verify Deliverables
-
-Confirm these files exist:
-- [ ] `domain-truth.yaml`
-- [ ] `terminology-map.yaml`
-- [ ] `consistency-report.md`
-
-#### 12.2 Mark Truth as Foundation
-
-Inform user:
-
-```
-domain-truth.yaml is now the FOUNDATION for this project.
-
-All other artifacts (PRD, Architecture, Stories, Code) MUST:
-- Trace to elements in this file
-- Maintain consistency with domain truth
-- Validate against the test datasets
-
-Oracle agent will enforce consistency.
-Validator agent will verify traceability.
-Eval agent will provide empirical validation.
-```
-
-#### 12.3 Complete Task
-
-Return control to Oracle agent with success status.
 
 ---
 
 ## Error Handling
 
-### If Domain Analysis Missing
-- HALT and request path to domain analysis document
-- Suggest running Analyst agent first if no analysis exists
+**Missing domain analysis:** HALT, request path or suggest running Analyst agent first
 
-### If Domain Analysis Insufficient
-- List missing elements
-- Request user to enhance analysis
-- Provide specific guidance on what to add
+**Insufficient analysis:** List missing elements, request enhancement
 
-### If Template Not Found
-- HALT with error: "domain-truth-tmpl.yaml not found at {root}/templates/"
-- Suggest checking BMAD installation
+**Missing template:** HALT, suggest checking BMAD installation
 
-### If Validation Fails
-- List all validation failures
-- Do NOT generate file until all checks pass
-- Provide guidance on fixing each issue
+**Validation fails:** List failures, provide fix guidance, do not save until resolved
 
 ---
 
-## Notes
+## Key Principles
 
-- This task creates Level 0 truth - the immutable foundation
-- Every assertion must be empirically testable
-- No abstract rules without concrete examples
-- Test dataset references are MANDATORY, not optional
-- Domain truth should rarely change (understanding may deepen, but truth doesn't change)
-- For brownfield projects, use `create-existing-system-truth` task instead/in addition
+- Focus on BUSINESS knowledge, not technical implementation
+- Use business language (avoid "entity", "aggregate", "value object")
+- Every rule needs concrete business example
+- Keep it minimal - only essential business knowledge
+- This is WHAT the business needs, not HOW to build it

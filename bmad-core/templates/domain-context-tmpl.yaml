@@ -28,13 +28,20 @@ workflow:
 sections:
   - id: introduction
     instruction: |
-      [[LLM: This template guides creation of a comprehensive Domain Context document that establishes foundational knowledge for the project.
+      [[LLM: This template guides creation of a LEAN, TOKEN-EFFICIENT Domain Context document (target: 1500-2500 tokens total).
+
+      CRITICAL EFFICIENCY RULES:
+      - Use bullet points and lists over prose paragraphs
+      - Keep definitions to 1-2 sentences maximum
+      - Include only high-value, actionable information
+      - Ruthlessly eliminate redundancy and fluff
+      - Every token must provide value to downstream AI agents
 
       Before beginning:
       1. Ask user for domain name/area
       2. Determine user's expertise level (Novice/Intermediate/Expert)
       3. Use web search to research current, accurate domain information
-      4. Work through each section systematically
+      4. Work through each section systematically with token budgets in mind
 
       Present each section for user review and offer elicitation options before proceeding.]]
 
@@ -52,37 +59,40 @@ sections:
   - id: domain-overview
     title: 1. Domain Overview
     instruction: |
-      [[LLM: Provide a comprehensive overview of the domain. Use web search results to ensure accuracy and currency.
+      [[LLM: TOKEN BUDGET: 150-250 tokens (approximately 120-200 words).
 
-      Include:
-      - Clear definition of the domain
-      - Scope and boundaries
-      - Current state and maturity
-      - Key market trends (2024-2025)
-      - Primary value proposition
-      - Typical project types in this domain
+      Provide concise bullet-point overview covering:
+      - Domain definition (1 sentence)
+      - Market maturity and current state (1-2 sentences)
+      - Key market trends 2024-2025 (3-5 bullet points)
+      - Primary value proposition (1 sentence)
 
-      Keep to 2-4 paragraphs. Be specific and evidence-based.]]
+      FORMAT: Use bullet points, NOT prose paragraphs. Be specific and evidence-based.
+      AVOID: Marketing language, redundancy, historical background, speculation.]]
     template: "{{domain_overview_content}}"
 
-  - id: industry-methodologies
-    title: 2. Industry Methodologies & Frameworks
+  - id: business-methodologies
+    title: 2. Business Methodologies & Frameworks
     instruction: |
-      [[LLM: Document standard methodologies used in this domain. Research current best practices.
+      [[LLM: TOKEN BUDGET: 200-300 tokens total.
 
-      For each methodology:
-      - Name and brief description
-      - When it's typically used
-      - Key principles or phases
-      - Advantages and limitations
+      Document 3-4 BUSINESS methodologies only (NOT Agile/Scrum/DevOps - those are implementation details).
 
-      Include at least 3-5 methodologies. Examples might include Agile, Waterfall, DevOps, Domain-Driven Design, or domain-specific frameworks.]]
+      For each methodology (keep to 50-75 tokens each):
+      - Name + 1-sentence description
+      - When used (1 sentence)
+      - Key principles (3-4 bullets, SHORT)
+      - Trade-offs (1 sentence)
+
+      FORMAT: Use structured bullets and short definitions.
+      FOCUS: Domain-specific business frameworks (e.g., Lean Manufacturing, Six Sigma, Design Thinking).
+      AVOID: Verbose explanations, redundant information, generic advice.]]
     sections:
       - id: methodology-list
         title: Standard Methodologies
         type: subsections
         instruction: |
-          [[LLM: Create a subsection for each major methodology]]
+          [[LLM: Create concise subsection for each methodology. Keep tight to token budget.]]
         template: |
           ### {{methodology_name}}
 
@@ -90,244 +100,124 @@ sections:
 
           **When Used:** {{use_cases}}
 
-          **Key Principles/Phases:**
+          **Key Principles:**
           {{key_principles_or_phases}}
 
-          **Considerations:** {{advantages_and_limitations}}
-
-      - id: framework-comparison
-        title: Framework Selection Guidance
-        instruction: |
-          [[LLM: Provide brief guidance on when to choose which methodology/framework based on project characteristics]]
-        template: "{{framework_selection_guidance}}"
-
-  - id: typical-roles
-    title: 3. Typical Roles & Responsibilities
-    instruction: |
-      [[LLM: Document the roles commonly found in teams working in this domain.
-
-      For each role:
-      - Job title (industry standard naming)
-      - Primary responsibilities
-      - Key skills required
-      - How they interact with other roles
-
-      Include 5-10 roles. Cover both technical and non-technical positions.]]
-    sections:
-      - id: role-list
-        title: Common Roles
-        type: subsections
-        instruction: |
-          [[LLM: Create a subsection for each major role]]
-        template: |
-          ### {{role_title}}
-
-          **Primary Responsibilities:**
-          {{role_responsibilities}}
-
-          **Key Skills:**
-          {{required_skills}}
-
-          **Collaborates With:** {{collaboration_info}}
-
-      - id: team-structure
-        title: Typical Team Structure
-        instruction: |
-          [[LLM: Describe how these roles typically organize into teams. Include team sizes, reporting structures, and common organizational patterns.]]
-        template: "{{team_structure_description}}"
-
-  - id: standard-processes
-    title: 4. Standard Processes & Workflows
-    instruction: |
-      [[LLM: Map the standard processes and workflows used in this domain.
-
-      Include:
-      - Project lifecycle phases
-      - Key workflows and their steps
-      - Decision points and gates
-      - Handoffs between roles/teams
-      - Iteration/cycle patterns
-
-      Focus on industry-standard approaches, not company-specific processes.]]
-    sections:
-      - id: project-lifecycle
-        title: Typical Project Lifecycle
-        instruction: |
-          [[LLM: Describe the phases a typical project goes through in this domain]]
-        template: |
-          {{project_lifecycle_phases}}
-
-      - id: key-workflows
-        title: Key Workflows
-        type: subsections
-        instruction: |
-          [[LLM: Document 3-5 important workflows. For each, describe the trigger, steps, participants, and outcomes.]]
-        template: |
-          ### {{workflow_name}}
-
-          **Purpose:** {{workflow_purpose}}
-
-          **Participants:** {{workflow_participants}}
-
-          **Steps:**
-          {{workflow_steps}}
-
-          **Outcomes:** {{workflow_outcomes}}
-
-  - id: tools-technologies
-    title: 5. Common Tools & Technologies
-    instruction: |
-      [[LLM: List the tools, platforms, frameworks, and technologies commonly used in this domain.
-
-      Organize by category:
-      - Development/Implementation
-      - Collaboration & Communication
-      - Project Management
-      - Testing & Quality Assurance
-      - Deployment & Operations
-      - Domain-Specific Tools
-
-      Include both popular commercial and open-source options. Use web search to ensure current recommendations (2024-2025).]]
-    sections:
-      - id: tool-categories
-        type: subsections
-        instruction: |
-          [[LLM: Create subsections for each tool category relevant to this domain]]
-        template: |
-          ### {{tool_category}}
-
-          {{tool_list_with_descriptions}}
-
-      - id: technology-stack
-        title: Typical Technology Stack
-        instruction: |
-          [[LLM: Describe a common technology stack for this domain, including frontend, backend, database, infrastructure, etc.]]
-        template: "{{technology_stack_description}}"
+          **Trade-offs:** {{advantages_and_limitations}}
 
   - id: terminology
-    title: 6. Key Terminology & Concepts
+    title: 3. Key Terminology & Concepts
     instruction: |
-      [[LLM: Create a glossary of essential domain terminology.
+      [[LLM: TOKEN BUDGET: 250-400 tokens total.
 
-      Include:
-      - Domain-specific jargon
-      - Common acronyms
-      - Technical concepts unique to this domain
-      - Industry buzzwords with real definitions
+      Create glossary of 15-20 essential BUSINESS terms (NOT technical terms).
 
-      Define 15-25 key terms. Order alphabetically or by importance.]]
+      For each term (15-20 tokens per definition):
+      - 1-2 sentence definition maximum
+      - Focus on domain-specific meaning
+      - Use plain language
+
+      PRIORITIZE: High-frequency terms, domain-specific jargon, acronyms unique to industry.
+      FORMAT: Alphabetically or by importance. Concise definitions only.
+      AVOID: Circular definitions, verbose explanations, common terms everyone knows.]]
     sections:
       - id: glossary
         title: Domain Glossary
         type: definition-list
         instruction: |
-          [[LLM: For each term, provide a clear, concise definition (1-3 sentences)]]
+          [[LLM: Keep each definition to 1-2 sentences (15-20 tokens). Be ruthlessly concise.]]
         template: |
           - **{{term}}**: {{definition}}
 
   - id: standards-compliance
-    title: 7. Standards & Compliance
+    title: 4. Standards & Compliance
     instruction: |
-      [[LLM: Document relevant industry standards, regulations, and compliance requirements.
+      [[LLM: TOKEN BUDGET: 150-250 tokens total.
 
-      Include:
-      - Regulatory frameworks (laws, regulations)
-      - Industry standards (ISO, IEEE, etc.)
-      - Certification requirements
-      - Quality standards
-      - Security/privacy requirements
-      - Accessibility standards
+      Document key regulations and standards in bullet format:
+      - Regulatory frameworks (e.g., GDPR, HIPAA, SOX) - name + 1 sentence on impact
+      - Industry standards (e.g., ISO certifications) - name only or very brief note
+      - Critical compliance requirements - bullets only
 
-      Be specific about which apply to this domain. If minimal compliance requirements exist, note that explicitly.]]
+      FORMAT: Bulleted lists with minimal explanation.
+      PRIORITIZE: Mandatory regulations and high-impact standards only.
+      AVOID: Detailed compliance procedures, implementation guidance, optional standards.
+      NOTE: If minimal requirements exist, state "Limited regulatory requirements" in 1 sentence.]]
     sections:
       - id: regulations
         title: Regulatory Requirements
         instruction: |
-          [[LLM: List applicable regulations and laws (e.g., GDPR, HIPAA, SOX). If none specific to domain, note general requirements.]]
+          [[LLM: Bullet list of key regulations. Name + 1 sentence max per item.]]
         template: "{{regulatory_requirements}}"
 
       - id: industry-standards
         title: Industry Standards
         instruction: |
-          [[LLM: Document relevant industry standards and certifications]]
+          [[LLM: Bullet list of relevant standards. Name + brief note if necessary.]]
         template: "{{industry_standards}}"
 
-      - id: quality-standards
-        title: Quality & Best Practice Standards
-        instruction: |
-          [[LLM: Note quality frameworks and best practice guidelines]]
-        template: "{{quality_standards}}"
-
-  - id: best-practices
-    title: 8. Best Practices & Recommendations
+  - id: challenges-market
+    title: 5. Business Challenges & Market Characteristics
     instruction: |
-      [[LLM: Synthesize best practices from research and industry knowledge.
+      [[LLM: TOKEN BUDGET: 200-300 tokens total.
 
-      Organize by category:
-      - Planning & Requirements
-      - Design & Architecture
-      - Implementation & Development
-      - Testing & Quality Assurance
-      - Deployment & Operations
-      - Team Collaboration
-      - Risk Management
+      Document in bullet format:
+      - Top 5-7 business challenges (1 sentence each)
+      - Market characteristics (3-5 bullets: maturity, competition, key players)
+      - Key success factors (3-5 bullets)
 
-      Provide 3-5 concrete, actionable practices per category.]]
+      FORMAT: Bullets only, no prose paragraphs.
+      FOCUS: BUSINESS challenges and market dynamics, NOT technical implementation.
+      AVOID: Speculation, generic advice, verbose explanations.]]
     sections:
-      - id: practice-categories
-        type: subsections
+      - id: business-challenges
+        title: Common Business Challenges
         instruction: |
-          [[LLM: Create subsections for each practice category]]
-        template: |
-          ### {{practice_category}}
+          [[LLM: 5-7 bullets, 1 sentence each. Be specific and actionable.]]
+        template: "{{business_challenges_content}}"
 
-          {{best_practices_list}}
+      - id: market-characteristics
+        title: Market Characteristics
+        instruction: |
+          [[LLM: 3-5 bullets covering maturity, competition, dynamics. Short and factual.]]
+        template: "{{market_characteristics_content}}"
 
-  - id: challenges-risks
-    title: 9. Common Challenges & Risk Areas
-    instruction: |
-      [[LLM: Identify typical challenges and risks encountered in this domain.
-
-      Include:
-      - Technical challenges
-      - Process/workflow issues
-      - Resource/skill constraints
-      - Market/business risks
-      - Compliance pitfalls
-
-      For each, note common mitigation strategies.]]
-    template: |
-      {{challenges_and_risks_content}}
+      - id: success-factors
+        title: Key Success Factors
+        instruction: |
+          [[LLM: 3-5 bullets. Critical success factors only.]]
+        template: "{{success_factors_content}}"
 
   - id: resources
-    title: 10. Additional Resources
+    title: 6. Additional Resources
     instruction: |
-      [[LLM: Provide curated list of valuable resources for learning more about this domain.
+      [[LLM: TOKEN BUDGET: 100-150 tokens total.
 
-      Include:
-      - Key industry publications/blogs
-      - Professional organizations
-      - Community forums
-      - Learning resources (courses, books)
-      - Conferences and events
-      - Influential thought leaders
+      Curated list of top resources only:
+      - 3-5 key publications/blogs (names only, no descriptions)
+      - 2-3 professional organizations (names only)
+      - 2-3 learning resources (names only)
 
-      Focus on high-quality, current resources.]]
+      FORMAT: Bulleted lists with names only. NO descriptions or explanations.
+      PRIORITIZE: Most authoritative and relevant resources only.
+      AVOID: Exhaustive lists, descriptions, links, commentary.]]
     sections:
       - id: publications
         title: Key Publications & Blogs
+        instruction: |
+          [[LLM: 3-5 names only, bulleted list]]
         template: "{{publications_list}}"
 
       - id: organizations
         title: Professional Organizations
+        instruction: |
+          [[LLM: 2-3 names only, bulleted list]]
         template: "{{organizations_list}}"
-
-      - id: communities
-        title: Communities & Forums
-        template: "{{communities_list}}"
 
       - id: learning
         title: Learning Resources
+        instruction: |
+          [[LLM: 2-3 top resources only, names only]]
         template: "{{learning_resources_list}}"
 
   - id: next-steps
@@ -336,11 +226,12 @@ sections:
       - id: handoff
         title: Planning Agent Handoff
         content: |
-          This Domain Context document provides foundational knowledge for {{domain_name}}.
+          **Domain Context for {{domain_name}}** - Business knowledge for planning agents.
 
-          **Recommended Next Steps:**
-          1. **Analyst Agent** - Use this domain context to inform market research, competitive analysis, and project brief creation
-          2. **PM Agent** - Reference domain roles, processes, and methodologies when creating PRD
-          3. **Architect Agent** - Consider domain-specific tools, technologies, and compliance requirements in architecture design
+          **Included:** Business overview, methodologies, terminology, compliance, challenges
+          **Excluded:** Team roles, technical processes, tools (handled by Architect/PM)
 
-          All planning agents should consult this document to ensure domain-appropriate recommendations and decisions.
+          **Next Agents:**
+          - **Analyst:** Use for market research and competitive analysis
+          - **PM:** Reference terminology, challenges, and business methodologies
+          - **Architect:** Consider compliance requirements and standards

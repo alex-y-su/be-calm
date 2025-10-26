@@ -3,7 +3,17 @@
 # Research Domain Context Task
 
 ## Purpose
-Research and document comprehensive domain context including industry methodologies, typical roles, standard processes, tools, and best practices. This establishes foundational knowledge that informs all subsequent planning agents (Analyst, PM, Architect, etc.).
+Research and document BUSINESS-FOCUSED domain context including industry overview, business methodologies, regulations, terminology, and market characteristics. This establishes foundational business knowledge that informs all subsequent planning agents (Analyst, PM, Architect, etc.).
+
+**SCOPE:** This task focuses ONLY on business domain knowledge, NOT implementation details:
+- ✅ INCLUDES: Industry context, business methodologies, regulations, terminology, market trends, business challenges
+- ❌ EXCLUDES: Team roles, technical processes, tools/technologies, implementation best practices (handled by Architect/PM)
+
+**OUTPUT REQUIREMENTS - LEAN & TOKEN-EFFICIENT:**
+- **Target:** 1500-2500 tokens total (approximately 1200-2000 words)
+- **Priority:** High-value, actionable information only - NO fluff or verbose explanations
+- **Format:** Prefer bullet points and concise definitions over prose paragraphs
+- **Balance:** Enough context for AI agents to make informed decisions, minimal redundancy
 
 ## Input Parameters
 - Domain name or description (from user)
@@ -34,8 +44,8 @@ Research and document comprehensive domain context including industry methodolog
    - "What is your level of familiarity with this domain? (Novice/Intermediate/Expert)"
    - This helps calibrate research depth
 
-4. **Specific Interests** (optional)
-   - "Are there specific methodologies, roles, or processes you want to ensure are covered?"
+4. **Specific Business Interests** (optional)
+   - "Are there specific business methodologies, market challenges, compliance areas, or industry frameworks you want to ensure are covered?"
 
 **Store responses for use in research queries.**
 
@@ -48,51 +58,49 @@ Research and document comprehensive domain context including industry methodolog
 - Search: "{domain} market trends current"
 - Extract: Industry definition, scope, current state, key trends
 
-#### 3.2 Standard Methodologies & Frameworks
-- Search: "{domain} industry methodologies"
-- Search: "{domain} best practices frameworks"
-- Search: "{domain} development lifecycle"
-- Extract: Common approaches (Agile, Waterfall, domain-specific methods)
-- Identify: Industry-standard frameworks and their use cases
+#### 3.2 Business Methodologies & Frameworks
+- Search: "{domain} industry business methodologies"
+- Search: "{domain} business frameworks"
+- Search: "{domain} industry best practices"
+- Extract: Domain-specific business approaches (e.g., Lean Manufacturing, Six Sigma, Design Thinking)
+- Identify: Business frameworks and when they're used
+- NOTE: Focus on BUSINESS methodologies, not software development processes
 
-#### 3.3 Typical Roles & Responsibilities
-- Search: "{domain} typical roles and responsibilities"
-- Search: "{domain} team structure"
-- Extract: Common job titles, role definitions, team compositions
-- Map: Responsibilities and skill requirements per role
-
-#### 3.4 Standard Processes & Workflows
-- Search: "{domain} standard processes"
-- Search: "{domain} workflow best practices"
-- Extract: Typical project phases, process steps, workflow patterns
-- Document: Standard operating procedures
-
-#### 3.5 Common Tools & Technologies
-- Search: "{domain} industry tools 2025"
-- Search: "{domain} technology stack"
-- Extract: Popular platforms, frameworks, software, and services
-- Categorize: By function (development, collaboration, deployment, etc.)
-
-#### 3.6 Key Terminology & Concepts
+#### 3.3 Key Terminology & Concepts
 - Extract domain-specific terminology from all searches
 - Define: Important acronyms, jargon, and concepts
 - Create: Mini-glossary of essential terms
 
-#### 3.7 Standards & Compliance
+#### 3.4 Standards & Compliance
 - Search: "{domain} industry standards"
 - Search: "{domain} regulatory compliance"
 - Extract: Relevant regulations, certifications, compliance requirements
-- Note: Quality standards and best practice guidelines
+- Note: Quality standards and business practice guidelines
+
+#### 3.5 Business Challenges & Market Characteristics
+- Search: "{domain} industry challenges"
+- Search: "{domain} market dynamics"
+- Extract: Common business challenges, competitive landscape, market opportunities
+- Identify: Key success factors and risk areas
+- NOTE: Focus on business/market challenges, not technical implementation challenges
 
 ### 4. Synthesize Research Findings
 
-**Organize collected information into structured format:**
+**Organize collected information into LEAN, TOKEN-EFFICIENT format:**
 
 1. **Review all research findings**
 2. **Remove duplicates and conflicting information**
-3. **Prioritize most relevant and current information**
-4. **Validate findings against user's domain expertise** (if provided)
-5. **Structure content according to template sections**
+3. **Ruthlessly prioritize:** Keep only high-value, actionable information
+4. **Eliminate verbose explanations:** Use bullet points, short definitions, concise descriptions
+5. **Target token budget:**
+   - Domain Overview: 150-250 tokens (3-5 key points)
+   - Business Methodologies: 200-300 tokens (3-4 methodologies, brief descriptions)
+   - Terminology: 250-400 tokens (15-20 terms, 1-2 sentence definitions)
+   - Standards & Compliance: 150-250 tokens (key regulations only)
+   - Business Challenges: 200-300 tokens (top 5-7 challenges/characteristics)
+   - Resources: 100-150 tokens (curated list, no descriptions)
+6. **Validate findings against user's domain expertise** (if provided)
+7. **Structure content according to template sections**
 
 ### 5. Generate Domain Context Document
 
@@ -101,13 +109,11 @@ Research and document comprehensive domain context including industry methodolog
 **Populate template sections with researched information:**
 
 - Domain Overview (synthesized from industry overview searches)
-- Industry Methodologies (from methodology searches)
-- Typical Roles (from role searches)
-- Standard Processes (from workflow searches)
-- Common Tools & Technologies (from tools searches)
+- Business Methodologies & Frameworks (from methodology searches)
 - Key Terminology (extracted glossary)
 - Standards & Compliance (from standards searches)
-- Best Practices (synthesized recommendations)
+- Business Challenges & Market Characteristics (from market research)
+- Additional Resources (curated learning resources)
 
 **Follow template instructions for:**
 - Variable substitution using `{{placeholders}}`
@@ -151,22 +157,22 @@ Domain Context Research Complete! 🔍
 **Document:** docs/domain-context.md
 **Sections Documented:**
 - ✓ Domain Overview
-- ✓ Industry Methodologies ({{methodology_count}} identified)
-- ✓ Typical Roles ({{role_count}} documented)
-- ✓ Standard Processes ({{process_count}} mapped)
-- ✓ Common Tools & Technologies
-- ✓ Key Terminology & Concepts
+- ✓ Business Methodologies & Frameworks ({{methodology_count}} identified)
+- ✓ Key Terminology & Concepts ({{term_count}} terms)
 - ✓ Standards & Compliance
-- ✓ Best Practices
+- ✓ Business Challenges & Market Characteristics
+- ✓ Additional Resources
 
 **Next Steps:**
-This domain context will inform all subsequent planning agents:
-- Analyst: Will reference industry trends and methodologies
-- PM: Will use standard roles and processes for PRD
-- Architect: Will consider typical tools and compliance requirements
-- All agents: Will use terminology and best practices
+This business domain context will inform all subsequent planning agents:
+- Analyst: Will reference industry trends, methodologies, and market characteristics
+- PM: Will use domain terminology and business challenges for PRD
+- Architect: Will consider compliance requirements and industry standards
+- All agents: Will use consistent domain terminology
 
 **Recommended Next Agent:** Analyst (for project brief creation)
+
+**Note:** Team structure, technical processes, and technology selection will be defined by Architect and PM agents.
 ```
 
 ### 9. Return Status
@@ -207,24 +213,29 @@ This domain context will inform all subsequent planning agents:
 ## Success Criteria
 
 - [ ] Domain name and context clearly identified
-- [ ] Web search conducted across all 7 research categories
-- [ ] At least 3-5 methodologies documented
-- [ ] At least 5-8 typical roles identified
-- [ ] Standard processes/workflows mapped
-- [ ] Common tools and technologies listed
-- [ ] Key terminology glossary created (10+ terms)
+- [ ] Web search conducted across all 5 research categories
+- [ ] At least 3-5 business methodologies/frameworks documented
+- [ ] Key terminology glossary created (15+ terms)
 - [ ] Standards and compliance requirements noted
+- [ ] Business challenges and market characteristics documented
+- [ ] Additional resources curated
 - [ ] User reviewed and approved all sections
 - [ ] Document saved to correct location
 - [ ] Summary presented with next steps
 - [ ] Return status: SUCCESS
+- [ ] NO technical implementation details included (roles, processes, tools)
 
 ---
 
 ## Notes
 
+- **BUSINESS FOCUS ONLY:** This task researches the BUSINESS domain, NOT implementation details. Team structure, development processes, and technology choices are handled by Architect/PM agents.
+- **TOKEN EFFICIENCY IS CRITICAL:** AI agents will process this document repeatedly. Keep it lean (1500-2500 tokens). Every token must provide value.
+- **Quality Over Quantity:** 5 well-chosen methodologies are better than 15 superficial ones. Ruthlessly prioritize.
 - **Web Search is Critical:** This task requires active web search to get current, accurate domain information
 - **User Expertise Matters:** Leverage user's domain knowledge to validate and enhance research
 - **Concise but Complete:** Balance thoroughness with readability - don't overwhelm with excessive detail
 - **Foundation for All Agents:** The quality of this research directly impacts all downstream planning
 - **Living Document:** Domain context can be updated as project evolves and more is learned
+- **Clear Boundaries:** If user asks about roles, processes, or tools, remind them these are defined later by Architect/PM
+- **Prefer Bullets Over Prose:** Use bullet points, short definitions, and structured lists instead of paragraphs where possible
